@@ -1,0 +1,23 @@
+<odoo>
+    <data>
+        <template id="inject_eruda_head" inherit_id="web.layout">
+            <xpath expr="//head" position="inside">
+                <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+                <script>
+                    // Initialize Eruda immediately
+                    eruda.init();
+                    window.debug_data = {}
+
+                    // --- Global Debug Helper ---
+                    window.odooDebug = function (data) {
+                        let label = Object.keys(data)[0];
+                        data = data[label];
+                        window.debug_data[label] = data;
+                        console.log(`✅ Dumped '${label}'`);
+                        console.dir(data);
+                    };
+                </script>
+            </xpath>
+        </template>
+    </data>
+</odoo>

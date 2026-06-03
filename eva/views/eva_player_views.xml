@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="eva_player_view_list" model="ir.ui.view">
+        <field name="name">eva.player.list</field>
+        <field name="model">eva.player</field>
+        <field name="arch" type="xml">
+            <list expand="1">
+                <field name="name"/>
+                <field name="team_id" optional="hide" widget="many2one"/>
+                <field name="player_name"/>
+                <field name="tokens_available" decoration-danger="not tokens_available"/>
+                <field name="tokens_reserved"/>
+                <field name="token_balance" decoration-danger="not token_balance"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="eva_player_view_form" model="ir.ui.view">
+        <field name="name">eva.player.form</field>
+        <field name="model">eva.player</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_sessions"
+                            class="oe_stat_button"
+                            icon="event_upcoming" icon_class="oi-filled"
+                            type="object">
+                            <div class="o_stat_info">
+                                Sessions
+                                <span class="o_stat_value">
+                                    <field name="session_count"/>
+                                </span>
+                            </div>
+                        </button>
+                        <button name="action_open_token_moves"
+                            class="oe_stat_button"
+                            icon="currency_bitcoin" icon_class="oi-filled"
+                            type="object">
+                            <div class="o_stat_info">
+                                Moves
+                                <span class="o_stat_value">
+                                    <field name="token_move_count"/>
+                                </span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" options="{'line_breaks': False}" widget="text"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="team_id" options="{'no_open': True}"/>
+                        </group>
+                        <group>
+                            <field name="user_id" widget="many2one_avatar_user"/>
+                        </group>
+                        <group string="Subscription">
+                            <field name="tokens_per_month" string="Amount" widget="labeled_integer"
+                                   options="{'unit': 'tokens / month', 'width': '3em'}"/>
+                            <field name="tokens_grant_day" string="Day" widget="labeled_integer"
+                                   options="{'ordinal': True, 'unit': 'of each month', 'width': '3em'}"/>
+                        </group>
+                        <group string="Tokens">
+                            <field name="token_balance" string="Balance" widget="labeled_integer"
+                                   options="{'unit': 'tokens', 'width': '2em'}"/>
+                            <field name="tokens_reserved" string="Reserved" widget="labeled_integer"
+                                   options="{'unit': 'tokens', 'width': '2em'}"/>
+                            <field name="tokens_available" string="Available" widget="labeled_integer"
+                                   options="{'unit': 'tokens', 'width': '2em'}"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="eva_player_view_search" model="ir.ui.view">
+        <field name="name">eva.player.search</field>
+        <field name="model">eva.player</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" filter_domain="['|', ('name', 'ilike', self), ('player_name', 'ilike', self)]" string="Name"/>
+                <filter name="available_tokens" string="With Available Tokens" domain="[('tokens_available', '>', 0)]"/>
+                <filter name="group_by_team" context="{'group_by': 'team_id'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_eva_player" model="ir.actions.act_window">
+        <field name="name">Players</field>
+        <field name="res_model">eva.player</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_group_by_team': True}</field>
+    </record>
+</odoo>

@@ -1,0 +1,40 @@
+.o_bg_transparent {
+    > div > img {
+        background-color: transparent !important;
+        background-clip: unset !important; // clip only matters combined with a background color
+    }
+}
+
+.o_banner_fill > div {
+    height: 100%;
+}
+.o_banner_fill > div > img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.o_map_title_field {
+    .o_input, span {
+        font-weight: bold !important;
+        text-transform: uppercase !important;
+    }
+}
+
+.o_game_kanban_teams {
+    color: #fff !important;
+    font-weight: bold !important;
+
+    * {
+        color: #fff !important;
+        font-weight: bold !important;
+    }
+}
+
+.minimap_field {
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+}

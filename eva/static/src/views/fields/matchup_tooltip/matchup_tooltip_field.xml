@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="eva.MatchupTooltipField">
+        <t t-if="this.props.readonly">
+            <span t-ref="this.root" t-out="this.formattedValue"/>
+        </t>
+        <t t-else="">
+            <span t-out="this.formattedValue"/>
+        </t>
+    </t>
+
+    <t t-name="eva.MatchupTooltip">
+        <table class="text-center mb-0" style="border-collapse: collapse; width: 100%;">
+            <tbody>
+                <tr>
+                    <td style="border: 1px solid currentColor !important; font-weight: bold !important; padding: 4px 8px;"
+                        t-out="team_a_name"/>
+                    <td style="border: 1px solid currentColor !important; font-weight: bold !important; padding: 4px 8px;"
+                        t-out="team_b_name"/>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid currentColor !important; white-space: pre-line; padding: 4px 8px;"
+                        t-out="team_a_maps"/>
+                    <td style="border: 1px solid currentColor !important; white-space: pre-line; padding: 4px 8px;"
+                        t-out="team_b_maps"/>
+                </tr>
+            </tbody>
+        </table>
+    </t>
+
+</templates>

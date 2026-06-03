@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<odoo>
+    <menuitem
+        id="menu_eva_root"
+        name="EVA"
+        groups="base.group_user"
+        web_icon="eva,static/description/icon.png"
+        sequence="0"/>
+
+    <menuitem
+        id="menu_eva_sessions_menu"
+        name="Sessions"
+        parent="menu_eva_root"
+        sequence="10"/>
+
+    <menuitem
+        id="menu_eva_sessions"
+        name="Sessions"
+        parent="menu_eva_sessions_menu"
+        action="eva.action_eva_session"
+        sequence="0"/>
+
+    <menuitem
+        id="menu_eva_games"
+        name="Games"
+        parent="menu_eva_sessions_menu"
+        action="eva.action_eva_game"
+        sequence="20"/>
+
+    <menuitem
+        id="menu_eva_game_results"
+        name="Game Results"
+        parent="menu_eva_sessions_menu"
+        action="eva.action_eva_game_result"
+        sequence="60"/>
+
+    <menuitem
+        id="menu_eva_maps"
+        name="Maps"
+        parent="menu_eva_root"
+        action="eva.action_eva_map"
+        sequence="30"/>
+
+    <menuitem
+        id="menu_eva_players"
+        name="Players"
+        parent="menu_eva_root"
+        action="eva.action_eva_player"
+        sequence="40"/>
+
+    <menuitem
+        id="menu_eva_teams"
+        name="Teams"
+        parent="menu_eva_root"
+        action="eva.action_eva_team"
+        sequence="50"/>
+</odoo>

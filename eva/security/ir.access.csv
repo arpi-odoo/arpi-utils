@@ -1,0 +1,10 @@
+id,name,model_id,group_id/id,operation,domain
+access_eva_session,eva.session,eva.session,base.group_user,crud,
+access_eva_map,eva.map,eva.map,base.group_user,crud,
+access_eva_player,eva.player,eva.player,base.group_user,crud,
+access_eva_game,eva.game,eva.game,base.group_user,crud,
+access_eva_game_result,eva.game.result,eva.game.result,base.group_user,r,
+access_eva_session_matchup,eva.session.matchup,eva.session.matchup,base.group_user,r,
+access_eva_team,eva.team,eva.team,base.group_user,crud,
+access_eva_token_move,eva.token.move,eva.token.move,base.group_user,crud,
+access_eva_gg_sync,eva.gg.sync,eva.gg.sync,base.group_system,crud,

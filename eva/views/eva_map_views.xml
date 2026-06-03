@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="eva_map_view_form" model="ir.ui.view">
+        <field name="name">eva.map.form</field>
+        <field name="model">eva.map</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_sessions"
+                            class="oe_stat_button"
+                            icon="event_upcoming" icon_class="oi-filled"
+                            invisible="not game_ids"
+                            type="object">
+                            <div class="o_stat_info">
+                                Sessions
+                                <span class="o_stat_value">
+                                    <field name="my_team_session_count"/>
+                                    (<field name="session_count"/>)
+                                </span>
+                            </div>
+                        </button>
+                        <button name="action_open_games"
+                            class="oe_stat_button"
+                            icon="movie" icon_class="oi-filled"
+                            invisible="not game_ids"
+                            type="object">
+                            <div class="o_stat_info">
+                                Games
+                                <span class="o_stat_value">
+                                    <field name="my_team_game_count"/>
+                                    (<field name="game_count"/>)
+                                </span>
+                            </div>
+                        </button>
+                        <button name="action_open_game_results"
+                            class="oe_stat_button"
+                            icon="bar_chart" icon_class="oi-filled"
+                            invisible="not game_ids"
+                            type="object">
+                            <div class="o_stat_info">
+                                Results
+                            </div>
+                        </button>
+                    </div>
+                    <div class="position-relative w-100 overflow-hidden" style="height: 280px;">
+                        <field name="banner" widget="image" class="o_banner_fill position-absolute top-0 start-0 w-100 h-100"/>
+                        <div class="position-absolute top-0 start-0 w-100 h-100"
+                             style="background: linear-gradient(to right, rgba(0, 0, 0, .7) 0%, rgba(0, 0, 0, 0) 100%); pointer-events: none;"/>
+                        <div class="oe_title d-flex align-items-center position-absolute top-0 start-0 mw-100 h-100 px-4 pe-none">
+                            <h1 style="font-size: 3rem;" class="w-50 text-center pe-auto">
+                                <field name="name" class="o_map_title_field"/>
+                            </h1>
+                            <field name="minimap" widget="image" class="o_bg_transparent minimap_field w-50 pe-auto h-100 p-2" style="object-fit: contain;"/>
+                        </div>
+                    </div>
+                    <notebook>
+                        <page string="Tactics">
+                            <field name="tactics" nolabel="1" type="html" options="{'collaborative': True}"/>
+                        </page>
+                        <page string="Comments">
+                            <field name="comments" nolabel="1" type="html" options="{'collaborative': True}"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter reload_on_follower="True"/>
+            </form>
+        </field>
+    </record>
+
+    <record id="eva_map_view_kanban" model="ir.ui.view">
+        <field name="name">eva.map.kanban</field>
+        <field name="model">eva.map</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <templates>
+                    <t t-name="card">
+                        <div class="p-5">
+                            <field name="banner" widget="image" class="position-absolute top-0 start-0 w-100 h-100" options="{'img_class': 'w-100 h-100 object-fit-cover'}"/>
+                            <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center px-3" style="background: linear-gradient(to right, rgba(0,0,0,0.6), rgba(0,0,0,0) 70%);">
+                                <strong class="w-50 text-truncate pe-2 text-uppercase">
+                                    <field name="name"/>
+                                </strong>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="eva_map_view_list" model="ir.ui.view">
+        <field name="name">eva.map.list</field>
+        <field name="model">eva.map</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="banner" widget="image" options="{'size': [128, 64], 'img_class': 'rounded object-fit-contain'}"/>
+                <field name="name"/>
+                <field name="minimap" widget="image" options="{'size': [128, 64], 'img_class': 'rounded object-fit-contain'}"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_eva_map" model="ir.actions.act_window">
+        <field name="name">Maps</field>
+        <field name="res_model">eva.map</field>
+        <field name="view_mode">kanban,list,form</field>
+    </record>
+</odoo>

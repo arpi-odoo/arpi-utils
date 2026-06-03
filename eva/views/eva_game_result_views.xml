@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="eva_game_result_view_graph" model="ir.ui.view">
+        <field name="name">eva.game.result.graph</field>
+        <field name="model">eva.game.result</field>
+        <field name="arch" type="xml">
+            <graph type="bar" stacked="True" js_class="eva_game_result_graph">
+                <field name="datetime" interval="week"/>
+                <field name="result"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="eva_game_result_view_pivot" model="ir.ui.view">
+        <field name="name">eva.game.result.pivot</field>
+        <field name="model">eva.game.result</field>
+        <field name="arch" type="xml">
+            <pivot>
+                <field name="datetime" interval="month" type="row"/>
+                <field name="result" type="col"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="eva_game_result_view_list" model="ir.ui.view">
+        <field name="name">eva.game.result.list</field>
+        <field name="model">eva.game.result</field>
+        <field name="arch" type="xml">
+            <list create="false" edit="false" delete="false" action="action_open_game" type="object">
+                <field name="datetime"/>
+                <field name="team_id"/>
+                <field name="opponent_id"/>
+                <field name="map_id"/>
+                <field name="result"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="eva_game_result_view_search" model="ir.ui.view">
+        <field name="name">eva.game.result.search</field>
+        <field name="model">eva.game.result</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="team_id"/>
+                <field name="map_id"/>
+                <field name="opponent_id"/>
+                <field name="session_type"/>
+                <filter name="my_team" string="My Team" domain="[('team_id.player_ids.user_id', '=', uid)]"/>
+                <separator/>
+                <filter name="win" string="Win" domain="[('result', '=', 'win')]"/>
+                <filter name="draw" string="Draw" domain="[('result', '=', 'draw')]"/>
+                <filter name="loss" string="Loss" domain="[('result', '=', 'loss')]"/>
+                <group>
+                    <filter name="group_by_team" string="Team" context="{'group_by': 'team_id'}"/>
+                    <filter name="group_by_map" string="Map" context="{'group_by': 'map_id'}"/>
+                    <filter name="group_by_result" string="Result" context="{'group_by': 'result'}"/>
+                    <filter name="group_by_month" string="Month" context="{'group_by': 'datetime:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_eva_game_result" model="ir.actions.act_window">
+        <field name="name">Game Results</field>
+        <field name="res_model">eva.game.result</field>
+        <field name="view_mode">graph,pivot,list</field>
+        <field name="search_view_id" ref="eva_game_result_view_search"/>
+        <field name="context">{
+            'search_default_group_by_month': 1,
+            'search_default_group_by_result': 2,
+            'search_default_my_team': True,
+        }</field>
+    </record>
+</odoo>

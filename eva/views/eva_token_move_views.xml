@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="eva_token_move_view_list" model="ir.ui.view">
+        <field name="name">eva.token_move.list</field>
+        <field name="model">eva.token.move</field>
+        <field name="arch" type="xml">
+            <list editable="bottom" decoration-info="state == 'draft'" decoration-muted="state == 'cancelled'">
+                <field name="date"/>
+                <field name="move_type"/>
+                <field name="amount"/>
+                <field name="session_id" widget="many2one"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_eva_token_move" model="ir.actions.act_window">
+        <field name="name">token_moves</field>
+        <field name="res_model">eva.token.move</field>
+        <field name="view_mode">list</field>
+    </record>
+</odoo>

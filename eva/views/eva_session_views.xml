@@ -1,0 +1,195 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="eva_session_view_form" model="ir.ui.view">
+        <field name="name">eva.session.form</field>
+        <field name="model">eva.session</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_new_game" type="object" string="Add Game" class="btn-primary"
+                            invisible="state != 'done'"/>
+                    <field name="state" widget="statusbar" options="{'clickable': True}" force_save="1"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_games"
+                            class="oe_stat_button"
+                            icon="movie" icon_class="oi-filled"
+                            invisible="not game_ids"
+                            type="object">
+                            <div class="o_stat_info">
+                                Games
+                                <span class="o_stat_value">
+                                    <field name="my_team_game_count"/>
+                                    (<field name="game_count"/>)
+                                </span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="type"/>
+                            <field name="division" invisible="type != 'league'"/>
+                            <field name="player_ids" widget="many2many_tags" options="{'no_create': True}"
+                                   force_save="1"/>
+                            <field name="warning_text" class="alert alert-warning w-100" role="alert"
+                                   invisible="not warning_text or state != 'draft'" nolabel="1" colspan="2"/>
+                        </group>
+                        <group>
+                            <field name="datetime" widget="datetime"/>
+                            <field name="advanced_cost_distribution" string="Detailed Cost" invisible="not player_ids"/>
+                            <field name="token_cost" string="Cost" widget="labeled_integer"
+                                   invisible="advanced_cost_distribution or not player_ids"
+                                   options="{'unit': 'tokens / player', 'width': '1em'}"/>
+                        </group>
+                        <field name="token_move_ids" nolabel="1" colspan="2"
+                               invisible="not advanced_cost_distribution or not player_ids">
+                            <list editable="bottom" create="0" delete="0">
+                                <field name="player_id" readonly="1" force_save="1"/>
+                                <field name="cost" string="Tokens"/>
+                                <field name="amount" column_invisible="1"/>
+                                <field name="state" column_invisible="1"/>
+                                <field name="move_type" column_invisible="1"/>
+                            </list>
+                        </field>
+                    </group>
+                    <notebook invisible="state != 'done'">
+                        <page string="Matchups" invisible="not matchup_ids">
+                            <field name="matchup_ids" nolabel="1" widget="matchup_list">
+                                <list create="false" edit="false" delete="false">
+                                    <field name="team_a_name" column_invisible="1"/>
+                                    <field name="team_b_name" column_invisible="1"/>
+                                    <field name="team_a_maps" column_invisible="1"/>
+                                    <field name="team_b_maps" column_invisible="1"/>
+                                    <field name="name" widget="matchup_tooltip"/>
+                                    <field name="score"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Analysis">
+                            <field name="analysis" nolabel="1" type="html" options="{'collaborative': True}"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter reload_on_follower="True"/>
+            </form>
+        </field>
+    </record>
+
+    <record id="eva_session_view_kanban" model="ir.ui.view">
+        <field name="name">eva.session.kanban</field>
+        <field name="model">eva.session</field>
+        <field name="arch" type="xml">
+            <kanban js_class="eva_session_kanban" default_group_by="state" quick_create="false">
+                <field name="state"/>
+                <templates>
+                    <t t-name="card">
+                        <t t-set="stateColor" t-value="{draft: 'info', confirmed: 'primary', done: 'success', cancelled: 'danger'}[record.state.raw_value]"/>
+                        <div t-attf-class="d-flex flex-column gap-1 border-start border-3 border-{{stateColor}} ps-2">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div class="d-flex align-items-center text-truncate">
+                                    <strong class="text-truncate">
+                                        <field name="name"/>
+                                    </strong>
+                                    <i class="fa fa-exclamation-triangle text-warning ms-1"
+                                       invisible="not warning_text or state != 'draft'"
+                                       t-att-data-tooltip="record.warning_text.value"/>
+                                </div>
+                                <div class="text-muted small flex-shrink-0 ms-2">
+                                    <field name="datetime" widget="datetime"/>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mt-1">
+                                <field name="player_ids" widget="many2many_tags" readonly="1"
+                                       options="{'no_create': True}"/>
+                                <button name="action_open_games" type="object"
+                                        class="btn btn-sm btn-light rounded-pill py-0 px-2 text-muted flex-shrink-0 ms-2"
+                                        invisible="not game_count">
+                                    <i class="oi oi-filled me-1" data-icon="movie"/><field name="game_count"/>
+                                </button>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="eva_session_view_list" model="ir.ui.view">
+        <field name="name">eva.session.list</field>
+        <field name="model">eva.session</field>
+        <field name="arch" type="xml">
+            <list decoration-muted="state == 'cancelled'" decoration-info="state == 'draft'"
+                  decoration-success="state == 'confirmed'">
+                <field name="datetime"/>
+                <field name="name"/>
+                <field name="type"/>
+                <field name="player_ids" widget="many2many_tags" readonly="state == 'cancelled'"/>
+                <field name="state" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="eva_session_view_calendar" model="ir.ui.view">
+        <field name="name">eva.session.calendar</field>
+        <field name="model">eva.session</field>
+        <field name="arch" type="xml">
+            <calendar
+                    js_class="eva_session_calendar"
+                    date_start="datetime"
+                    date_stop="datetime_end"
+                    color="calendar_color"
+                    mode="month"
+                    create="1"
+                    edit="1"
+                    delete="1"
+                    quick_create_view_id="%(eva.eva_session_view_form)d"
+                    event_open_popup="1"
+                    form_view_id="%(eva.eva_session_view_form)d">
+                <field name="player_ids" widget="many2many_tags" options="{'no_create': True}"
+                       readonly="state == 'cancelled'"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="eva_session_view_search" model="ir.ui.view">
+        <field name="name">eva.session.search</field>
+        <field name="model">eva.session</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter name="my_sessions" string="My Sessions" domain="[('player_ids.user_id', '=', uid)]"/>
+                <filter name="my_team" string="My Team"
+                        domain="['|',
+                                    ('game_ids.team_1_id.player_ids.user_id', '=', uid),
+                                    ('game_ids.team_2_id.player_ids.user_id', '=', uid)]"/>
+                <separator/>
+                <filter name="available_slots" string="Available Slots"
+                        domain="[('player_ids', '=', False),
+                                 ('state', '=', 'draft')]"/>
+                <!-- Used when drilling down from a map's "Sessions" smart button (which sets
+                     'map_id' in context): unlike 'my_team' above, this requires the SAME game
+                     to match both the map and the team, instead of two independently-satisfied
+                     conditions across different games in the session. -->
+                <filter name="my_team_on_map" string="My Team"
+                        domain="[('game_ids', 'any', ['&amp;', ('map_id', '=', context.get('map_id')), '|',
+                                      ('team_1_id.player_ids.user_id', '=', uid),
+                                      ('team_2_id.player_ids.user_id', '=', uid)])]"
+                        invisible="not context.get('map_id')"/>
+                <filter name="group_by_month" context="{'group_by': 'datetime:month'}"/>
+                <filter name="group_by_type" context="{'group_by': 'type'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_eva_session" model="ir.actions.act_window">
+        <field name="name">Sessions</field>
+        <field name="res_model">eva.session</field>
+        <field name="view_mode">kanban,calendar,list,form</field>
+        <field name="context">{'search_default_my_sessions': True}</field>
+    </record>
+</odoo>

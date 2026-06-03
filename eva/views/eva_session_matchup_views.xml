@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="eva_session_matchup_view_list" model="ir.ui.view">
+        <field name="name">eva.session.matchup.list</field>
+        <field name="model">eva.session.matchup</field>
+        <field name="arch" type="xml">
+            <list create="false" edit="false" delete="false" action="action_open_games" type="object">
+                <field name="name"/>
+                <field name="score"/>
+                <button name="action_open_games" type="object" string="Games" icon="fa-list-ul"/>
+            </list>
+        </field>
+    </record>
+</odoo>

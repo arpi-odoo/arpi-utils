@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="map_reef_point" model="eva.map">
+        <field name="name">Reef Point</field>
+        <field name="banner" type="bytes" file="eva/static/maps/reef_point_banner.webp"/>
+        <field name="minimap" type="bytes" file="eva/static/maps/reef_point.webp"/>
+    </record>
+
+    <record id="map_horizon" model="eva.map">
+        <field name="name">Horizon</field>
+        <field name="banner" type="bytes" file="eva/static/maps/horizon_banner.webp"/>
+        <field name="minimap" type="bytes" file="eva/static/maps/horizon.webp"/>
+    </record>
+
+    <record id="map_engine" model="eva.map">
+        <field name="name">Engine</field>
+        <field name="banner" type="bytes" file="eva/static/maps/engine_banner.webp"/>
+        <field name="minimap" type="bytes" file="eva/static/maps/engine.webp"/>
+    </record>
+
+    <record id="map_outlaw" model="eva.map">
+        <field name="name">Outlaw</field>
+        <field name="banner" type="bytes" file="eva/static/maps/outlaw_banner.webp"/>
+        <field name="minimap" type="bytes" file="eva/static/maps/outlaw.webp"/>
+    </record>
+
+    <record id="map_ceres" model="eva.map">
+        <field name="name">Ceres</field>
+        <field name="banner" type="bytes" file="eva/static/maps/ceres_banner.webp"/>
+        <field name="minimap" type="bytes" file="eva/static/maps/ceres.webp"/>
+    </record>
+
+    <record id="map_artefact" model="eva.map">
+        <field name="name">Artefact</field>
+        <field name="banner" type="bytes" file="eva/static/maps/artefact_banner.webp"/>
+        <field name="minimap" type="bytes" file="eva/static/maps/artefact.webp"/>
+    </record>
+
+    <record id="map_silva" model="eva.map">
+        <field name="name">Silva</field>
+        <field name="banner" type="bytes" file="eva/static/maps/silva_banner.webp"/>
+        <field name="minimap" type="bytes" file="eva/static/maps/silva.webp"/>
+    </record>
+
+    <record id="map_bastion" model="eva.map">
+        <field name="name">Bastion</field>
+        <field name="banner" type="bytes" file="eva/static/maps/bastion_banner.webp"/>
+        <field name="minimap" type="bytes" file="eva/static/maps/bastion.webp"/>
+    </record>
+
+    <record id="map_polaris" model="eva.map">
+        <field name="name">Polaris</field>
+        <field name="banner" type="bytes" file="eva/static/maps/polaris_banner.webp"/>
+        <field name="minimap" type="bytes" file="eva/static/maps/polaris.webp"/>
+    </record>
+
+    <record id="map_coliseum" model="eva.map">
+        <field name="name">Coliseum</field>
+        <field name="banner" type="bytes" file="eva/static/maps/coliseum_banner.webp"/>
+        <field name="minimap" type="bytes" file="eva/static/maps/coliseum.webp"/>
+    </record>
+
+    <record id="map_the_cliff" model="eva.map">
+        <field name="name">The Cliff</field>
+        <field name="banner" type="bytes" file="eva/static/maps/the_cliff_banner.webp"/>
+        <field name="minimap" type="bytes" file="eva/static/maps/the_cliff.webp"/>
+    </record>
+
+    <record id="map_helios_station" model="eva.map">
+        <field name="name">Helios Station</field>
+        <field name="banner" type="bytes" file="eva/static/maps/helios_banner.webp"/>
+        <field name="minimap" type="bytes" file="eva/static/maps/helios.webp"/>
+    </record>
+
+    <record id="map_lunar_outpost" model="eva.map">
+        <field name="name">Lunar Outpost</field>
+        <field name="banner" type="bytes" file="eva/static/maps/lunar_outpost_banner.webp"/>
+        <field name="minimap" type="bytes" file="eva/static/maps/lunar_outpost.webp"/>
+    </record>
+
+    <record id="map_atlantis" model="eva.map">
+        <field name="name">Atlantis</field>
+        <field name="banner" type="bytes" file="eva/static/maps/atlantis_banner.webp"/>
+        <field name="minimap" type="bytes" file="eva/static/maps/atlantis.webp"/>
+    </record>
+</odoo>

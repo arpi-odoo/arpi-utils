@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="eva.LabeledIntegerField">
+        <div class="d-flex align-items-baseline gap-1">
+            <span t-if="this.props.readonly" t-attf-style="width: {{this.props.width}}; flex: none;" t-out="this.formattedValue"/>
+            <input
+                t-else=""
+                t-ref="this.numpadDecimalRef"
+                t-on-focusin="this.onFocusIn"
+                t-on-focusout="this.onFocusOut"
+                t-att-id="this.props.id"
+                t-att-min="this.props.min"
+                t-att-max="this.props.max"
+                t-att-type="this.props.inputType"
+                inputmode="numeric"
+                class="o_input"
+                t-attf-style="width: {{this.props.width}}; flex: none;"
+                autocomplete="off"
+                t-att-step="this.props.step" />
+            <span t-if="this.props.unit" t-out="this.props.unit"/>
+        </div>
+    </t>
+
+</templates>

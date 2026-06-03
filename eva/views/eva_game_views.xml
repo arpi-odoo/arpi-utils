@@ -1,0 +1,154 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="eva_game_view_form" model="ir.ui.view">
+        <field name="name">eva.game.form</field>
+        <field name="model">eva.game</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <field name="winner_short_name" invisible="1"/>
+                    <field name="winner_is_my_team" invisible="1"/>
+                    <field name="loser_is_my_team" invisible="1"/>
+                    <widget name="game_ribbon" invisible="not winner"/>
+                    <widget name="web_ribbon" title="Draw" bg_color="text-bg-secondary"
+                            invisible="not team_1_id or not team_2_id or winner"/>
+                    <div class="position-relative overflow-hidden mb-3"
+                         style="height: 280px;
+                                margin-top: calc(var(--formView-sheet-padding-y, 1rem) * -1);
+                                margin-left: calc(var(--formView-sheet-padding-x, 1rem) * -1);
+                                margin-right: calc(var(--formView-sheet-padding-x, 1rem) * -1);
+                                width: calc(100% + 2 * var(--formView-sheet-padding-x, 1rem));">
+                        <field name="banner" widget="image" nolabel="1" class="o_banner_fill position-absolute top-0 start-0 w-100 h-100" readonly="1" invisible="not banner"/>
+                        <div class="position-absolute top-0 start-0 w-100 h-100"
+                             style="background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, .85) 100%); pointer-events: none;"
+                             invisible="not banner"/>
+                        <div class="position-absolute bottom-0 start-0 w-100 d-flex justify-content-around px-4 pb-3"
+                             style="color: #fff !important;
+                                    text-shadow: 0 1px 6px rgba(0, 0, 0, .8);
+                                    --o-input-background-color: transparent;
+                                    --o-input-border-color: rgba(255, 255, 255, .6);">
+                            <field name="team_1_id" nolabel="1" placeholder="Team 1" options="{'no_create': True}"
+                                   class="flex-fill text-center" style="font-size: 2rem;"/>
+                            <span style="font-size: 2rem;" class="px-5">VS</span>
+                            <field name="team_2_id" nolabel="1" placeholder="Team 2" options="{'no_create': True}"
+                                   class="flex-fill text-center" style="font-size: 2rem;"/>
+                        </div>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="winner" placeholder="Draw" options="{'no_create': True}"/>
+                            <field name="replay"/>
+                            <field name="ebp"/>
+                        </group>
+                        <group>
+                            <field name="map_id"/>
+                            <field name="session_id"/>
+                            <field name="datetime"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Analysis">
+                            <field name="analysis" nolabel="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter reload_on_follower="True"/>
+            </form>
+        </field>
+    </record>
+
+    <record id="eva_game_view_list" model="ir.ui.view">
+        <field name="name">eva.game.list</field>
+        <field name="model">eva.game</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="datetime"/>
+                <field name="session_id" widget="many2one" options="{'no_create': True}"/>
+                <field name="map_id" widget="many2one" options="{'no_create': True}"/>
+                <field name="team_1_id" widget="many2one" options="{'no_create': True}"/>
+                <field name="team_2_id" widget="many2one" options="{'no_create': True}"/>
+                <field name="winner" widget="many2one_with_fallback" placeholder="Draw" options="{'no_create': True}"/>
+                <field name="replay" widget="url"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="eva_game_view_kanban" model="ir.ui.view">
+        <field name="name">eva.game.kanban</field>
+        <field name="model">eva.game</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <templates>
+                    <t t-name="card">
+                        <div class="p-5">
+                            <field name="map_id" widget="image" class="position-absolute top-0 start-0 w-100 h-100" options="{'preview_image': 'banner_card', 'img_class': 'w-100 h-100 object-fit-cover'}"/>
+                            <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, .8) 100%);"/>
+                            <field name="winner" invisible="1"/>
+                            <field name="winner_short_name" invisible="1"/>
+                            <field name="winner_is_my_team" invisible="1"/>
+                            <field name="loser_is_my_team" invisible="1"/>
+                            <div style="--Ribbon-wrapper-width: 6rem; --Ribbon-font-size: .65rem;">
+                                <widget name="game_ribbon" invisible="not winner"/>
+                                <widget name="web_ribbon" title="Draw" bg_color="text-bg-secondary"
+                                        invisible="not team_1_id or not team_2_id or winner"/>
+                            </div>
+                            <div class="o_game_kanban_teams position-absolute bottom-0 start-0 w-100 px-2 pb-2">
+                                <div class="text-center text-truncate small text-uppercase">
+                                    <field name="map_id" options="{'no_open': True}"/>
+                                </div>
+                                <div class="d-flex align-items-center fw-bold">
+                                    <field name="team_1_short_name" options="{'no_open': True}"
+                                           class="flex-fill text-truncate text-end text-uppercase"/>
+                                    <span class="px-2" invisible="not team_1_id or not team_2_id">vs</span>
+                                    <field name="team_2_short_name" options="{'no_open': True}"
+                                           class="flex-fill text-truncate text-start text-uppercase"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="eva_game_view_calendar" model="ir.ui.view">
+        <field name="name">eva.game.calendar</field>
+        <field name="model">eva.game</field>
+        <field name="arch" type="xml">
+            <calendar date_start="datetime" mode="month" create="0" event_open_popup="1">
+                <field name="map_id"/>
+                <field name="team_1_id"/>
+                <field name="team_2_id"/>
+                <field name="winner"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="eva_game_view_search" model="ir.ui.view">
+        <field name="name">eva.game.search</field>
+        <field name="model">eva.game</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="map_id"/>
+                <field name="division"/>
+                <filter name="my_team" string="My Team"
+                        domain="['|', ('team_1_id.player_ids.user_id', '=', uid),
+                                      ('team_2_id.player_ids.user_id', '=', uid)]"/>
+                <filter name="group_by_map" string="Map" context="{'group_by': 'map_id'}"/>
+                <filter name="group_by_session" string="Session" context="{'group_by': 'session_id'}"/>
+                <filter name="group_by_month" string="Month" context="{'group_by': 'datetime:month'}"/>
+                <filter name="group_by_winner" string="Winner" context="{'group_by': 'winner'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_eva_game" model="ir.actions.act_window">
+        <field name="name">Games</field>
+        <field name="res_model">eva.game</field>
+        <field name="view_mode">kanban,calendar,list,form</field>
+        <field name="context">{
+            'search_default_my_team': 1,
+            'search_default_group_by_session': 1,
+        }</field>
+    </record>
+</odoo>

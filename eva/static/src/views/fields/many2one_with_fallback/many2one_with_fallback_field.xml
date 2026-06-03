@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="eva.Many2OneWithFallbackField">
+        <span t-if="this.props.readonly and !this.m2oProps.value and this.props.placeholder" t-out="this.props.placeholder"/>
+        <Many2One t-else="" t-props="this.m2oProps"/>
+    </t>
+
+</templates>

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="ir_cron_eva_subscriptions" model="ir.cron">
+        <field name="name">EVA: Subscriptions</field>
+        <field name="model_id" ref="model_eva_player"/>
+        <field name="state">code</field>
+        <field name="code">model._tokens_subscriptions()</field>
+        <field name='interval_number'>1</field>
+        <field name='interval_type'>days</field>
+        <field name="priority">3</field>
+    </record>
+
+    <record id="ir_cron_eva_gg_sync" model="ir.cron">
+        <field name="name">EVA: Sync Charleroi local league (eva.gg)</field>
+        <field name="model_id" ref="model_eva_gg_sync"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_import_charleroi_local_league()</field>
+        <field name='interval_number'>1</field>
+        <field name='interval_type'>days</field>
+        <field name="priority">5</field>
+    </record>
+
+</odoo>

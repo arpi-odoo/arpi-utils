@@ -1,0 +1,7 @@
+// The footer bar (including its border-top) is otherwise always rendered by
+// web.CardPopoverRenderer even with no button left inside it to show.
+.o_ts_availability_overlap_popover .o_popover_footer {
+    // Bootstrap's own d-flex utility class (also on this element) sets
+    // display via !important, so this needs to match it to actually win.
+    display: none !important;
+}

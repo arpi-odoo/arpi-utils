@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="ir_cron_ts_meeting_reminders" model="ir.cron">
+        <field name="name">TS: Send Meeting Reminders</field>
+        <field name="model_id" ref="model_ts_meeting"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_send_meeting_reminders()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+    </record>
+</odoo>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.ts</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="90"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app data-string="Tactical Strike" id="ts" string="Tactical Strike" name="ts" groups="ts.group_ts_administrator">
+                    <block title="Meetings" id="ts_meeting_setting">
+                        <setting string="Send a Reminder Email to Participants">
+                            <div class="text-muted content-group mt16">
+                                <field name="ts_meeting_reminder_days" class="text-center me-1"
+                                       style="width: 5%; min-width: 2rem;"/>
+                                <span> days before the meeting</span>
+                            </div>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_ts_config_settings" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="context">{'module': 'ts', 'bin_size': False}</field>
+    </record>
+
+    <menuitem
+        id="menu_ts_config_settings"
+        name="Settings"
+        parent="menu_ts_root"
+        action="action_ts_config_settings"
+        groups="group_ts_administrator"
+        sequence="100"/>
+</odoo>

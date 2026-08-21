@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="ts_meeting_view_form" model="ir.ui.view">
+        <field name="name">ts.meeting.form</field>
+        <field name="model">ts.meeting</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_send_reminder_email" type="object" invisible="not participant_ids"
+                            string="Send Reminder Email" class="btn-primary"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" options="{'line_breaks': False}" widget="text"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="date"/>
+                        <field name="participant_ids" widget="many2many_tags"/>
+                    </group>
+                    <notebook>
+                        <page string="Agenda">
+                            <field name="agenda" nolabel="1"/>
+                        </page>
+                        <page string="Meeting Minutes">
+                            <field name="minutes" nolabel="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="ts_meeting_view_list" model="ir.ui.view">
+        <field name="name">ts.meeting.list</field>
+        <field name="model">ts.meeting</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="date"/>
+                <field name="participant_ids" widget="many2many_tags"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="ts_meeting_view_kanban" model="ir.ui.view">
+        <field name="name">ts.meeting.kanban</field>
+        <field name="model">ts.meeting</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <templates>
+                    <t t-name="card">
+                        <field name="name" class="fw-bold fs-5"/>
+                        <field name="date"/>
+                        <field name="participant_ids" widget="many2many_tags"/>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="ts_meeting_view_calendar" model="ir.ui.view">
+        <field name="name">ts.meeting.calendar</field>
+        <field name="model">ts.meeting</field>
+        <field name="arch" type="xml">
+            <calendar string="Meetings" date_start="date" mode="month" event_open_popup="1" quick_create="0">
+                <field name="name"/>
+                <field name="participant_ids"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="ts_meeting_view_search" model="ir.ui.view">
+        <field name="name">ts.meeting.search</field>
+        <field name="model">ts.meeting</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="participant_ids"/>
+                <filter name="group_by_month" string="Month" context="{'group_by': 'date:month'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_ts_meeting" model="ir.actions.act_window">
+        <field name="name">Meetings</field>
+        <field name="res_model">ts.meeting</field>
+        <field name="view_mode">calendar,kanban,list,form</field>
+    </record>
+
+    <menuitem
+        id="menu_ts_root"
+        name="Tactical Strike"
+        groups="group_ts_member"
+        web_icon="ts,static/description/icon.png"
+        sequence="0"/>
+
+    <menuitem
+        id="menu_ts_meetings"
+        name="Meetings"
+        parent="menu_ts_root"
+        action="action_ts_meeting"
+        sequence="10"/>
+</odoo>

@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="ts_availability_view_form" model="ir.ui.view">
+        <field name="name">ts.availability.form</field>
+        <field name="model">ts.availability</field>
+        <field name="arch" type="xml">
+            <form string="Availability">
+                <group>
+                    <group>
+                        <field name="user_id" widget="many2one_avatar_user" groups="ts.group_ts_administrator"/>
+                        <label for="start_datetime" string="When"/>
+                        <div class="o_row">
+                            <field name="start_datetime"/>
+                            <i class="fa fa-long-arrow-right mx-2" role="img" aria-label="To" title="To"/>
+                            <field name="stop_datetime"/>
+                        </div>
+                    </group>
+                    <group>
+                        <field name="availability_type" widget="radio"/>
+                    </group>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="ts_availability_view_calendar" model="ir.ui.view">
+        <field name="name">ts.availability.calendar</field>
+        <field name="model">ts.availability</field>
+        <field name="arch" type="xml">
+            <calendar js_class="ts_availability_calendar" string="Availabilities"
+                      date_start="start_datetime" date_stop="stop_datetime"
+                      mode="week" color="color" event_open_popup="true"
+                      quick_create="0" form_view_id="%(ts_availability_view_form)d">
+                <field name="user_id" invisible="1" filters="1" avatar_field="avatar_128"
+                       write_model="ts.availability.filter" write_field="target_user_id" filter_field="checked"/>
+                <field name="availability_type"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="ts_availability_view_list" model="ir.ui.view">
+        <field name="name">ts.availability.list</field>
+        <field name="model">ts.availability</field>
+        <field name="arch" type="xml">
+            <list string="Availabilities">
+                <field name="user_id" widget="many2one_avatar_user"/>
+                <field name="start_datetime"/>
+                <field name="stop_datetime"/>
+                <field name="availability_type"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="ts_availability_view_search" model="ir.ui.view">
+        <field name="name">ts.availability.search</field>
+        <field name="model">ts.availability</field>
+        <field name="arch" type="xml">
+            <search string="Search Availabilities">
+                <field name="user_id"/>
+                <field name="availability_type"/>
+                <filter string="My Availabilities" name="my_availabilities" domain="[('user_id', '=', uid)]"/>
+                <group>
+                    <filter string="User" name="group_by_user" domain="[]" context="{'group_by': 'user_id'}"/>
+                    <filter string="Availability" name="group_by_availability_type" domain="[]" context="{'group_by': 'availability_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_ts_availability" model="ir.actions.act_window">
+        <field name="name">Availabilities</field>
+        <field name="res_model">ts.availability</field>
+        <field name="view_mode">calendar,list,form</field>
+        <field name="search_view_id" ref="ts_availability_view_search"/>
+        <field name="context">{'search_default_my_availabilities': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Add your availabilities to help find a good date for the next meeting
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="menu_ts_availabilities"
+        name="Availabilities"
+        parent="menu_ts_root"
+        action="action_ts_availability"
+        sequence="20"/>
+</odoo>

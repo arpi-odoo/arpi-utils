@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="base.partner_admin" model="res.partner">
+        <field name="name">Arthur</field>
+        <field name="email">arthur.pierrot@hotmail.com</field>
+    </record>
+
+    <record id="base.user_admin" model="res.users">
+        <field name="name">Arthur</field>
+    </record>
+
+    <record id="partner_simon" model="res.partner">
+        <field name="name">Simon</field>
+    </record>
+
+    <record id="user_simon" model="res.users">
+        <field name="name">Simon</field>
+        <field name="partner_id" ref="partner_simon"/>
+        <field name="group_ids" eval="[(4, ref('ts.group_ts_administrator'))]"/>
+        <field name="login">bloup</field>
+    </record>
+
+    <record id="partner_hugo" model="res.partner">
+        <field name="name">Hugo</field>
+    </record>
+
+    <record id="user_hugo" model="res.users">
+        <field name="name">Hugo</field>
+        <field name="partner_id" ref="partner_hugo"/>
+        <field name="group_ids" eval="[(4, ref('ts.group_ts_administrator'))]"/>
+        <field name="login">blop</field>
+    </record>
+
+    <record id="partner_tristan" model="res.partner">
+        <field name="name">Tristan</field>
+    </record>
+
+    <record id="user_tristan" model="res.users">
+        <field name="name">Tristan</field>
+        <field name="partner_id" ref="partner_tristan"/>
+        <field name="group_ids" eval="[(4, ref('ts.group_ts_member'))]"/>
+        <field name="login">blip</field>
+    </record>
+
+    <record id="partner_rocco" model="res.partner">
+        <field name="name">Rocco</field>
+    </record>
+
+    <record id="user_rocco" model="res.users">
+        <field name="name">Rocco</field>
+        <field name="partner_id" ref="partner_rocco"/>
+        <field name="group_ids" eval="[(4, ref('ts.group_ts_member'))]"/>
+        <field name="login">blap</field>
+    </record>
+
+    <record id="partner_shain" model="res.partner">
+        <field name="name">Shain</field>
+    </record>
+
+    <record id="user_shain" model="res.users">
+        <field name="name">Shain</field>
+        <field name="partner_id" ref="partner_shain"/>
+        <field name="group_ids" eval="[(4, ref('ts.group_ts_member'))]"/>
+        <field name="login">blorp</field>
+    </record>
+</odoo>

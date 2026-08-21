@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="ts_availability_overlap_view_calendar" model="ir.ui.view">
+        <field name="name">ts.availability.overlap.calendar</field>
+        <field name="model">ts.availability.overlap</field>
+        <field name="arch" type="xml">
+            <calendar js_class="ts_availability_overlap_calendar" string="Best Meeting Times"
+                      date_start="start_datetime" date_stop="stop_datetime"
+                      mode="week" scales="day,week,month" color="color" quick_create="0"
+                      event_open_popup="true" create="0" edit="0" delete="0">
+                <field name="attendee_summary" nolabel="1"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="action_ts_availability_overlap" model="ir.actions.act_window">
+        <field name="name">Best Meeting Times</field>
+        <field name="res_model">ts.availability.overlap</field>
+        <field name="view_mode">calendar</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No availabilities recorded yet to compute overlap from
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="menu_ts_availability_overlap"
+        name="Best Meeting Times"
+        parent="menu_ts_root"
+        action="action_ts_availability_overlap"
+        sequence="21"/>
+</odoo>

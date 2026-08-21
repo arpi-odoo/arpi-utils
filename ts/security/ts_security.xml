@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.module.category" id="module_category_ts">
+        <field name="name">Tactical Strike</field>
+    </record>
+
+    <record model="res.groups.privilege" id="res_groups_privilege_ts">
+        <field name="name">Tactical Strike</field>
+        <field name="category_id" ref="module_category_ts"/>
+    </record>
+
+    <record id="group_ts_member" model="res.groups">
+        <field name="name">Effective Member</field>
+        <field name="sequence">10</field>
+        <field name="privilege_id" ref="res_groups_privilege_ts"/>
+    </record>
+
+    <record id="group_ts_administrator" model="res.groups">
+        <field name="name">Administrator</field>
+        <field name="sequence">20</field>
+        <field name="privilege_id" ref="res_groups_privilege_ts"/>
+        <field name="implied_ids" eval="[(4, ref('group_ts_member'))]"/>
+        <field name="user_ids" eval="[(4, ref('base.user_admin'))]"/>
+    </record>
+</odoo>

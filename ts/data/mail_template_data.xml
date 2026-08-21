@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="mail_template_meeting_reminder" model="mail.template">
+        <field name="name">TS: Meeting Reminder</field>
+        <field name="model_id" ref="model_ts_meeting"/>
+        <field name="subject">Reminder: {{ object.name }}</field>
+        <field name="partner_to">{{ ','.join(map(str, object.participant_ids.partner_id.ids)) }}</field>
+        <field name="use_default_to" eval="False"/>
+        <field name="description">Sent to participants ahead of a meeting</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px; font-size: 14px;">
+                <p>Hello,</p>
+                <p>
+                    This is a reminder for the upcoming meeting
+                    <strong t-out="object.name">Meeting</strong>
+                    scheduled on
+                    <strong t-out="format_datetime(object.date)">08/20/2026</strong>.
+                </p>
+                <p>Agenda:</p>
+                <div t-out="object.agenda"/>
+            </div>
+        </field>
+    </record>
+</odoo>

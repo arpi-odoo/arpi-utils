@@ -1,0 +1,8 @@
+id,name,model_id,group_id/id,operation,domain
+access_ts_meeting_administrator,ts.meeting administrator,ts.meeting,group_ts_administrator,crud,
+access_ts_meeting_member,ts.meeting effective member,ts.meeting,group_ts_member,r,
+access_ts_availability_administrator,ts.availability administrator,ts.availability,group_ts_administrator,crud,
+access_ts_availability_read_all,ts.availability read all,ts.availability,group_ts_member,r,
+access_ts_availability_own,ts.availability manage own,ts.availability,group_ts_member,cud,"[('user_id', '=', user.id)]"
+access_ts_availability_filter_own,ts.availability.filter manage own,ts.availability.filter,group_ts_member,crud,"[('user_id', '=', user.id)]"
+access_ts_availability_overlap_read,ts.availability.overlap read,ts.availability.overlap,group_ts_member,r,

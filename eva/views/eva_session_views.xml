@@ -162,6 +162,10 @@
         <field name="model">eva.session</field>
         <field name="arch" type="xml">
             <search>
+                <field name="name"/>
+                <field name="division"/>
+                <field name="type"/>
+                <field name="player_ids"/>
                 <filter name="my_sessions" string="My Sessions" domain="[('player_ids.user_id', '=', uid)]"/>
                 <filter name="my_team" string="My Team"
                         domain="['|',

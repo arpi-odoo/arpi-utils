@@ -66,7 +66,7 @@ class EvaPlayer(models.Model):
             'type': 'ir.actions.act_window',
             'name': 'Sessions',
             'res_model': 'eva.session',
-            'view_mode': 'list,form',
+            'view_mode': 'kanban,calendar,list,form',
             'domain': [('id', 'in', self.session_ids.ids), ('state', '!=', 'cancelled')],
         }
 

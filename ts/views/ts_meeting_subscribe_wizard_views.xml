@@ -23,7 +23,6 @@
         <field name="res_model">ts.meeting.subscribe.wizard</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
-        <field name="binding_model_id" ref="model_ts_meeting"/>
-        <field name="binding_type">action</field>
+        <field name="binding_model_id" eval="False"/>
     </record>
 </odoo>

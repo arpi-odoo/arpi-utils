@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="ts.TsMeetingSubscribeCogMenu">
+        <DropdownItem class="'o_ts_meeting_subscribe_menu'" onSelected.bind="this.onSubscribeClick">
+            <i class="fa fa-fw fa-calendar-plus-o me-1"/>Subscribe to Calendar
+        </DropdownItem>
+    </t>
+
+</templates>

@@ -23,13 +23,7 @@
         <field name="res_model">ts.meeting.subscribe.wizard</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
+        <field name="binding_model_id" ref="model_ts_meeting"/>
+        <field name="binding_type">action</field>
     </record>
-
-    <menuitem
-        id="menu_ts_meeting_subscribe"
-        name="Subscribe to Calendar"
-        parent="menu_ts_root"
-        action="action_ts_meeting_subscribe_wizard"
-        groups="group_ts_member"
-        sequence="20"/>
 </odoo>

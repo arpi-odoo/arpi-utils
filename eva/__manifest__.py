@@ -25,6 +25,7 @@
         'views/eva_website_templates.xml',
         'data/eva_map_data.xml',
         'data/ir_cron_data.xml',
+        'data/eva_website_menu_data.xml',
     ],
     'post_init_hook': 'post_init_hook',
     'application': True,

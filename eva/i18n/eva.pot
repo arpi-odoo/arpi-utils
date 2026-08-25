@@ -750,6 +750,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:eva.field_eva_player__team_id
 #: model:ir.model.fields,field_description:eva.field_eva_session_matchup__team_a_id
 #: model_terms:ir.ui.view,arch_db:eva.eva_game_result_view_search
+#: model:website.menu,name:eva.menu_eva_team
 msgid "Team"
 msgstr ""
 

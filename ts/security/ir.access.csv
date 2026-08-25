@@ -6,3 +6,4 @@ access_ts_availability_read_all,ts.availability read all,ts.availability,group_t
 access_ts_availability_own,ts.availability manage own,ts.availability,group_ts_member,cud,"[('user_id', '=', user.id)]"
 access_ts_availability_filter_own,ts.availability.filter manage own,ts.availability.filter,group_ts_member,crud,"[('user_id', '=', user.id)]"
 access_ts_availability_overlap_read,ts.availability.overlap read,ts.availability.overlap,group_ts_member,r,
+access_ts_meeting_subscribe_wizard,ts.meeting.subscribe.wizard manage own,ts.meeting.subscribe.wizard,group_ts_member,crud,

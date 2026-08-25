@@ -18,6 +18,7 @@
                     </div>
                     <group>
                         <field name="date"/>
+                        <field name="duration" widget="float_time"/>
                         <field name="participant_ids" widget="many2many_tags"/>
                     </group>
                     <notebook>
@@ -65,7 +66,7 @@
         <field name="name">ts.meeting.calendar</field>
         <field name="model">ts.meeting</field>
         <field name="arch" type="xml">
-            <calendar string="Meetings" date_start="date" mode="month" event_open_popup="1" quick_create="0">
+            <calendar string="Meetings" date_start="date" date_stop="date_end" mode="month" event_open_popup="1" quick_create="0">
                 <field name="name"/>
                 <field name="participant_ids"/>
             </calendar>

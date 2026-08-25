@@ -15,6 +15,7 @@
         'data/ir_cron_data.xml',
         'data/ts_data.xml',
         'views/ts_meeting_views.xml',
+        'views/ts_meeting_subscribe_wizard_views.xml',
         'views/ts_availability_views.xml',
         'views/ts_availability_overlap_views.xml',
         'views/res_config_settings_views.xml',

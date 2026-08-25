@@ -1,8 +1,18 @@
-from odoo import api, models
+import uuid
+
+from odoo import api, fields, models
 
 
 class ResUsers(models.Model):
     _inherit = 'res.users'
+
+    ts_meeting_feed_token = fields.Char(copy=False)
+
+    def _get_ts_meeting_feed_token(self):
+        self.ensure_one()
+        if not self.ts_meeting_feed_token:
+            self.sudo().ts_meeting_feed_token = uuid.uuid4().hex
+        return self.ts_meeting_feed_token
 
     @api.model_create_multi
     def create(self, vals_list):

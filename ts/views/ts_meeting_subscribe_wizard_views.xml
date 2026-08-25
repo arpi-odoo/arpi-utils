@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="ts_meeting_subscribe_wizard_view_form" model="ir.ui.view">
+        <field name="name">ts.meeting.subscribe.wizard.form</field>
+        <field name="model">ts.meeting.subscribe.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <p>
+                    Copy this link and add it as a "subscribe by URL" calendar in
+                    Google Calendar, Apple Calendar, Outlook, or any other calendar app.
+                    It will stay up to date automatically.
+                </p>
+                <field name="url" readonly="1"/>
+                <footer>
+                    <button string="Close" special="cancel" class="btn-primary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ts_meeting_subscribe_wizard" model="ir.actions.act_window">
+        <field name="name">Subscribe to Meetings Calendar</field>
+        <field name="res_model">ts.meeting.subscribe.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem
+        id="menu_ts_meeting_subscribe"
+        name="Subscribe to Calendar"
+        parent="menu_ts_root"
+        action="action_ts_meeting_subscribe_wizard"
+        groups="group_ts_member"
+        sequence="20"/>
+</odoo>

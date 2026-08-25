@@ -22,7 +22,7 @@ class TsMeeting(models.Model):
     name = fields.Char(required=True)
     date = fields.Datetime(required=True, default=fields.Datetime.now)
     duration = fields.Float(default=1.0, help="Duration in hours")
-    date_end = fields.Datetime(compute='_compute_date_end')
+    date_end = fields.Datetime(compute='_compute_date_end', store=True)
     agenda = fields.Html()
     minutes = fields.Html(string='Meeting Minutes')
     participant_ids = fields.Many2many('res.users', string='Participants')

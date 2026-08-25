@@ -6,6 +6,7 @@
     'summary': 'Module to handle all EVA related matters',
     'depends': [
         'resource_mail',
+        'website',
     ],
     'external_dependencies': {
         'python': ['requests'],
@@ -21,6 +22,7 @@
         'views/eva_team_views.xml',
         'views/eva_token_move_views.xml',
         'views/eva_views.xml',
+        'views/eva_website_templates.xml',
         'data/eva_map_data.xml',
         'data/ir_cron_data.xml',
     ],

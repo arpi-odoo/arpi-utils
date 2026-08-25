@@ -1,0 +1,403 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* ts
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.5a1+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-24 16:51+0000\n"
+"PO-Revision-Date: 2026-08-24 16:51+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: ts
+#. odoo-python
+#: code:addons/ts/models/ts_meeting.py:0
+msgid "%(count)s reminder email(s) sent successfully."
+msgstr ""
+
+#. module: ts
+#. odoo-python
+#: code:addons/ts/models/ts_meeting.py:0
+msgid "%(meeting)s: %(reason)s"
+msgstr ""
+
+#. module: ts
+#. odoo-python
+#: code:addons/ts/models/ts_meeting.py:0
+msgid ""
+"%(sent_count)s reminder email(s) sent, %(failed_count)s failed:\n"
+"%(details)s"
+msgstr ""
+
+#. module: ts
+#: model:mail.template,body_html:ts.mail_template_meeting_reminder
+msgid ""
+"<div style=\"margin: 0px; padding: 0px; font-size: 14px;\">\n"
+"                <p>Hello,</p>\n"
+"                <p>\n"
+"                    This is a reminder for the upcoming meeting\n"
+"                    <strong t-out=\"object.name\">Meeting</strong>\n"
+"                    scheduled on\n"
+"                    <strong t-out=\"format_datetime(object.date)\">08/20/2026</strong>.\n"
+"                </p>\n"
+"                <p>Agenda:</p>\n"
+"                <div t-out=\"object.agenda\"/>\n"
+"            </div>\n"
+"        "
+msgstr ""
+
+#. module: ts
+#: model_terms:ir.ui.view,arch_db:ts.ts_availability_view_form
+msgid "<i class=\"fa fa-long-arrow-right mx-2\" role=\"img\" aria-label=\"To\" title=\"To\"/>"
+msgstr ""
+
+#. module: ts
+#: model_terms:ir.ui.view,arch_db:ts.res_config_settings_view_form
+msgid "<span> days before the meeting</span>"
+msgstr ""
+
+#. module: ts
+#. odoo-python
+#: code:addons/ts/models/ts_availability_overlap.py:0
+msgid "Absent"
+msgstr ""
+
+#. module: ts
+#: model:ir.model.fields,field_description:ts.field_ts_availability_filter__active
+msgid "Active"
+msgstr ""
+
+#. module: ts
+#: model_terms:ir.actions.act_window,help:ts.action_ts_availability
+msgid "Add your availabilities to help find a good date for the next meeting"
+msgstr ""
+
+#. module: ts
+#: model:res.groups,name:ts.group_ts_administrator
+msgid "Administrator"
+msgstr ""
+
+#. module: ts
+#: model:ir.model.fields.selection,name:ts.selection__ts_availability_overlap__overlap_type__blue
+msgid "Administrators Available"
+msgstr ""
+
+#. module: ts
+#: model:ir.model.fields,field_description:ts.field_ts_meeting__agenda
+#: model_terms:ir.ui.view,arch_db:ts.ts_meeting_view_form
+msgid "Agenda"
+msgstr ""
+
+#. module: ts
+#: model:ir.actions.act_window,name:ts.action_ts_availability
+#: model:ir.ui.menu,name:ts.menu_ts_availabilities
+#: model_terms:ir.ui.view,arch_db:ts.ts_availability_view_calendar
+#: model_terms:ir.ui.view,arch_db:ts.ts_availability_view_list
+msgid "Availabilities"
+msgstr ""
+
+#. module: ts
+#: model:ir.model.fields,field_description:ts.field_ts_availability__availability_type
+#: model_terms:ir.ui.view,arch_db:ts.ts_availability_view_form
+#: model_terms:ir.ui.view,arch_db:ts.ts_availability_view_search
+msgid "Availability"
+msgstr ""
+
+#. module: ts
+#: model:ir.model.fields.selection,name:ts.selection__ts_availability__availability_type__full
+msgid "Available"
+msgstr ""
+
+#. module: ts
+#: model:ir.actions.act_window,name:ts.action_ts_availability_overlap
+#: model:ir.ui.menu,name:ts.menu_ts_availability_overlap
+#: model_terms:ir.ui.view,arch_db:ts.ts_availability_overlap_view_calendar
+msgid "Best Meeting Times"
+msgstr ""
+
+#. module: ts
+#: model:ir.model.fields,field_description:ts.field_ts_availability_filter__checked
+msgid "Checked"
+msgstr ""
+
+#. module: ts
+#: model:ir.model.fields,field_description:ts.field_ts_availability__color
+#: model:ir.model.fields,field_description:ts.field_ts_availability_overlap__color
+msgid "Color"
+msgstr ""
+
+#. module: ts
+#: model:ir.model,name:ts.model_res_config_settings
+msgid "Config Settings"
+msgstr ""
+
+#. module: ts
+#: model:ir.model.fields,field_description:ts.field_ts_availability__create_uid
+#: model:ir.model.fields,field_description:ts.field_ts_availability_filter__create_uid
+#: model:ir.model.fields,field_description:ts.field_ts_meeting__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: ts
+#: model:ir.model.fields,field_description:ts.field_ts_availability__create_date
+#: model:ir.model.fields,field_description:ts.field_ts_availability_filter__create_date
+#: model:ir.model.fields,field_description:ts.field_ts_meeting__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: ts
+#: model:ir.model.fields,field_description:ts.field_ts_meeting__date
+msgid "Date"
+msgstr ""
+
+#. module: ts
+#: model:ir.model.fields,field_description:ts.field_res_config_settings__ts_meeting_reminder_days
+msgid "Days Before Meeting to Send a Reminder"
+msgstr ""
+
+#. module: ts
+#: model:ir.model.fields,field_description:ts.field_res_config_settings__display_name
+#: model:ir.model.fields,field_description:ts.field_res_users__display_name
+#: model:ir.model.fields,field_description:ts.field_ts_availability__display_name
+#: model:ir.model.fields,field_description:ts.field_ts_availability_filter__display_name
+#: model:ir.model.fields,field_description:ts.field_ts_availability_overlap__display_name
+#: model:ir.model.fields,field_description:ts.field_ts_meeting__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: ts
+#: model:res.groups,name:ts.group_ts_member
+msgid "Effective Member"
+msgstr ""
+
+#. module: ts
+#: model:ir.model.fields,field_description:ts.field_ts_availability__stop_datetime
+msgid "End"
+msgstr ""
+
+#. module: ts
+#: model:ir.model.fields.selection,name:ts.selection__ts_availability_overlap__overlap_type__green
+msgid "Everyone Available"
+msgstr ""
+
+#. module: ts
+#: model:ir.model.fields,field_description:ts.field_res_config_settings__id
+#: model:ir.model.fields,field_description:ts.field_res_users__id
+#: model:ir.model.fields,field_description:ts.field_ts_availability__id
+#: model:ir.model.fields,field_description:ts.field_ts_availability_filter__id
+#: model:ir.model.fields,field_description:ts.field_ts_availability_overlap__id
+#: model:ir.model.fields,field_description:ts.field_ts_meeting__id
+msgid "ID"
+msgstr ""
+
+#. module: ts
+#: model:ir.model.fields,field_description:ts.field_ts_availability__write_uid
+#: model:ir.model.fields,field_description:ts.field_ts_availability_filter__write_uid
+#: model:ir.model.fields,field_description:ts.field_ts_meeting__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: ts
+#: model:ir.model.fields,field_description:ts.field_ts_availability__write_date
+#: model:ir.model.fields,field_description:ts.field_ts_availability_filter__write_date
+#: model:ir.model.fields,field_description:ts.field_ts_meeting__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: ts
+#: model:ir.model.fields.selection,name:ts.selection__ts_availability__availability_type__maybe
+msgid "Maybe"
+msgstr ""
+
+#. module: ts
+#: model:ir.model.fields,field_description:ts.field_ts_availability_filter__user_id
+msgid "Me"
+msgstr ""
+
+#. module: ts
+#: model:ir.model.fields,field_description:ts.field_ts_meeting__minutes
+#: model_terms:ir.ui.view,arch_db:ts.ts_meeting_view_form
+msgid "Meeting Minutes"
+msgstr ""
+
+#. module: ts
+#. odoo-python
+#: code:addons/ts/models/ts_meeting.py:0
+msgid "Meeting Reminder"
+msgstr ""
+
+#. module: ts
+#: model:ir.actions.act_window,name:ts.action_ts_meeting
+#: model:ir.ui.menu,name:ts.menu_ts_meetings
+#: model_terms:ir.ui.view,arch_db:ts.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:ts.ts_meeting_view_calendar
+msgid "Meetings"
+msgstr ""
+
+#. module: ts
+#: model:ir.model.fields,field_description:ts.field_ts_availability_filter__target_user_id
+msgid "Member"
+msgstr ""
+
+#. module: ts
+#: model_terms:ir.ui.view,arch_db:ts.ts_meeting_view_search
+msgid "Month"
+msgstr ""
+
+#. module: ts
+#: model_terms:ir.ui.view,arch_db:ts.ts_availability_view_search
+msgid "My Availabilities"
+msgstr ""
+
+#. module: ts
+#: model:ir.model.fields,field_description:ts.field_ts_meeting__name
+msgid "Name"
+msgstr ""
+
+#. module: ts
+#: model:res.groups.privilege,placeholder:ts.res_groups_privilege_ts
+msgid "No"
+msgstr ""
+
+#. module: ts
+#: model_terms:ir.actions.act_window,help:ts.action_ts_availability_overlap
+msgid "No availabilities recorded yet to compute overlap from"
+msgstr ""
+
+#. module: ts
+#: model:ir.model.fields.selection,name:ts.selection__ts_availability_overlap__overlap_type__grey
+msgid "Not Everyone Available"
+msgstr ""
+
+#. module: ts
+#: model:ir.model.fields,field_description:ts.field_ts_availability_overlap__overlap_type
+msgid "Overlap Type"
+msgstr ""
+
+#. module: ts
+#: model:ir.model.fields,field_description:ts.field_ts_meeting__participant_ids
+msgid "Participants"
+msgstr ""
+
+#. module: ts
+#: model:mail.template,subject:ts.mail_template_meeting_reminder
+msgid "Reminder: {{ object.name }}"
+msgstr ""
+
+#. module: ts
+#: model:ir.model.fields.selection,name:ts.selection__ts_availability__availability_type__remote
+msgid "Remote"
+msgstr ""
+
+#. module: ts
+#: model_terms:ir.ui.view,arch_db:ts.ts_availability_view_search
+msgid "Search Availabilities"
+msgstr ""
+
+#. module: ts
+#: model_terms:ir.ui.view,arch_db:ts.ts_meeting_view_form
+msgid "Send Reminder Email"
+msgstr ""
+
+#. module: ts
+#: model_terms:ir.ui.view,arch_db:ts.res_config_settings_view_form
+msgid "Send a Reminder Email to Participants"
+msgstr ""
+
+#. module: ts
+#: model:mail.template,description:ts.mail_template_meeting_reminder
+msgid "Sent to participants ahead of a meeting"
+msgstr ""
+
+#. module: ts
+#: model:ir.actions.act_window,name:ts.action_ts_config_settings
+#: model:ir.ui.menu,name:ts.menu_ts_config_settings
+msgid "Settings"
+msgstr ""
+
+#. module: ts
+#: model:ir.model.fields,field_description:ts.field_ts_availability__start_datetime
+msgid "Start"
+msgstr ""
+
+#. module: ts
+#: model:ir.model.fields,field_description:ts.field_ts_availability_overlap__start_datetime
+msgid "Start Datetime"
+msgstr ""
+
+#. module: ts
+#: model:ir.model.fields,field_description:ts.field_ts_availability_overlap__stop_datetime
+msgid "Stop Datetime"
+msgstr ""
+
+#. module: ts
+#: model:ir.model,name:ts.model_ts_availability
+msgid "TS Availability"
+msgstr ""
+
+#. module: ts
+#: model:ir.model,name:ts.model_ts_availability_filter
+msgid "TS Availability Calendar Filter"
+msgstr ""
+
+#. module: ts
+#: model:ir.model,name:ts.model_ts_availability_overlap
+msgid "TS Availability Overlap"
+msgstr ""
+
+#. module: ts
+#: model:ir.model,name:ts.model_ts_meeting
+msgid "TS Meeting"
+msgstr ""
+
+#. module: ts
+#: model:mail.template,name:ts.mail_template_meeting_reminder
+msgid "TS: Meeting Reminder"
+msgstr ""
+
+#. module: ts
+#: model:ir.actions.server,name:ts.ir_cron_ts_meeting_reminders_ir_actions_server
+msgid "TS: Send Meeting Reminders"
+msgstr ""
+
+#. module: ts
+#: model:ir.module.category,name:ts.module_category_ts
+#: model:ir.ui.menu,name:ts.menu_ts_root
+#: model:res.groups.privilege,name:ts.res_groups_privilege_ts
+#: model_terms:ir.ui.view,arch_db:ts.res_config_settings_view_form
+msgid "Tactical Strike"
+msgstr ""
+
+#. module: ts
+#. odoo-python
+#: code:addons/ts/models/ts_availability.py:0
+msgid "The end of an availability must be after its start."
+msgstr ""
+
+#. module: ts
+#: model:ir.model,name:ts.model_res_users
+#: model:ir.model.fields,field_description:ts.field_ts_availability__user_id
+#: model_terms:ir.ui.view,arch_db:ts.ts_availability_view_search
+msgid "User"
+msgstr ""
+
+#. module: ts
+#: model_terms:ir.ui.view,arch_db:ts.ts_availability_view_form
+msgid "When"
+msgstr ""
+
+#. module: ts
+#: model:ir.model.fields,field_description:ts.field_ts_availability_overlap__attendee_summary
+msgid "Who"
+msgstr ""
+
+#. module: ts
+#: model:ir.model.constraint,message:ts.constraint_ts_availability_filter_user_id_target_user_id_unique
+msgid "You cannot add the same member twice."
+msgstr ""

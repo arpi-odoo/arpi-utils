@@ -1,0 +1,952 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* eva
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.5a1+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-24 16:51+0000\n"
+"PO-Revision-Date: 2026-08-24 19:19+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.9\n"
+
+#. module: eva
+#: model_terms:ir.ui.view,arch_db:eva.eva_game_view_kanban
+msgid "<span class=\"px-2\" invisible=\"not team_1_id or not team_2_id\">vs</span>"
+msgstr ""
+
+#. module: eva
+#: model_terms:ir.ui.view,arch_db:eva.eva_game_view_form
+msgid "<span style=\"font-size: 2rem;\" class=\"px-5\">VS</span>"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_game__message_needaction
+#: model:ir.model.fields,field_description:eva.field_eva_map__message_needaction
+#: model:ir.model.fields,field_description:eva.field_eva_session__message_needaction
+msgid "Action Needed"
+msgstr "Action Requise"
+
+#. module: eva
+#: model_terms:ir.ui.view,arch_db:eva.eva_session_view_form
+msgid "Add Game"
+msgstr "Ajouter une Partie"
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_session__advanced_cost_distribution
+msgid "Advanced Cost Distribution"
+msgstr "Distribution Avancée des Coûts"
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_token_move__amount
+#: model_terms:ir.ui.view,arch_db:eva.eva_player_view_form
+msgid "Amount"
+msgstr "Quantité"
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_game__analysis
+#: model:ir.model.fields,field_description:eva.field_eva_session__analysis
+#: model_terms:ir.ui.view,arch_db:eva.eva_game_view_form
+#: model_terms:ir.ui.view,arch_db:eva.eva_session_view_form
+msgid "Analysis"
+msgstr "Analyse"
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_game__message_attachment_count
+#: model:ir.model.fields,field_description:eva.field_eva_map__message_attachment_count
+#: model:ir.model.fields,field_description:eva.field_eva_session__message_attachment_count
+msgid "Attachment Count"
+msgstr "Nombre de Fichiers Joints"
+
+#. module: eva
+#: model_terms:ir.ui.view,arch_db:eva.eva_player_view_form
+msgid "Available"
+msgstr "Disponible"
+
+#. module: eva
+#: model_terms:ir.ui.view,arch_db:eva.eva_session_view_search
+msgid "Available Slots"
+msgstr "Créneaux Disponibles"
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_player__avatar_128
+msgid "Avatar 128"
+msgstr ""
+
+#. module: eva
+#: model_terms:ir.ui.view,arch_db:eva.eva_player_view_form
+msgid "Balance"
+msgstr "Solde"
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_game__banner
+#: model:ir.model.fields,field_description:eva.field_eva_game_result__banner
+#: model:ir.model.fields,field_description:eva.field_eva_map__banner
+#: model:ir.model.fields,field_description:eva.field_eva_map__banner_card
+msgid "Banner"
+msgstr "Bannière"
+
+#. module: eva
+#. odoo-javascript
+#: code:addons/eva/static/src/views/fields/labeled_integer/labeled_integer_field.js:0
+msgid "CSS width of the value itself, e.g. '4em' or '3rem'. Defaults to '4em'."
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_session__calendar_color
+msgid "Calendar Color"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields.selection,name:eva.selection__eva_session__state__cancelled
+#: model:ir.model.fields.selection,name:eva.selection__eva_token_move__state__cancelled
+msgid "Cancelled"
+msgstr "Annulé"
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_team__captain_id
+msgid "Captain"
+msgstr "Capitaine"
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_map__comments
+#: model_terms:ir.ui.view,arch_db:eva.eva_map_view_form
+msgid "Comments"
+msgstr "Commentaires"
+
+#. module: eva
+#: model:ir.model.fields.selection,name:eva.selection__eva_session__state__confirmed
+msgid "Confirmed"
+msgstr "Confirmé"
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_token_move__cost
+#: model_terms:ir.ui.view,arch_db:eva.eva_session_view_form
+msgid "Cost"
+msgstr "Coût"
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_game__create_uid
+#: model:ir.model.fields,field_description:eva.field_eva_gg_sync__create_uid
+#: model:ir.model.fields,field_description:eva.field_eva_map__create_uid
+#: model:ir.model.fields,field_description:eva.field_eva_player__create_uid
+#: model:ir.model.fields,field_description:eva.field_eva_session__create_uid
+#: model:ir.model.fields,field_description:eva.field_eva_team__create_uid
+#: model:ir.model.fields,field_description:eva.field_eva_token_move__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_game__create_date
+#: model:ir.model.fields,field_description:eva.field_eva_gg_sync__create_date
+#: model:ir.model.fields,field_description:eva.field_eva_map__create_date
+#: model:ir.model.fields,field_description:eva.field_eva_player__create_date
+#: model:ir.model.fields,field_description:eva.field_eva_session__create_date
+#: model:ir.model.fields,field_description:eva.field_eva_team__create_date
+#: model:ir.model.fields,field_description:eva.field_eva_token_move__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields.selection,name:eva.selection__eva_session__division__d1
+msgid "D1"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields.selection,name:eva.selection__eva_session__division__d2
+msgid "D2"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields.selection,name:eva.selection__eva_session__division__d3
+msgid "D3"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields.selection,name:eva.selection__eva_session__division__d4
+msgid "D4"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_game__datetime
+#: model:ir.model.fields,field_description:eva.field_eva_session__datetime
+#: model:ir.model.fields,field_description:eva.field_eva_token_move__date
+msgid "Date"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_game_result__datetime
+msgid "Datetime"
+msgstr "Date et Heure"
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_session__datetime_end
+msgid "Datetime End"
+msgstr ""
+
+#. module: eva
+#: model_terms:ir.ui.view,arch_db:eva.eva_player_view_form
+msgid "Day"
+msgstr "Jour"
+
+#. module: eva
+#: model_terms:ir.ui.view,arch_db:eva.eva_session_view_form
+msgid "Detailed Cost"
+msgstr "Coût Détaillé"
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_game__display_name
+#: model:ir.model.fields,field_description:eva.field_eva_game_result__display_name
+#: model:ir.model.fields,field_description:eva.field_eva_gg_sync__display_name
+#: model:ir.model.fields,field_description:eva.field_eva_map__display_name
+#: model:ir.model.fields,field_description:eva.field_eva_player__display_name
+#: model:ir.model.fields,field_description:eva.field_eva_session__display_name
+#: model:ir.model.fields,field_description:eva.field_eva_session_matchup__display_name
+#: model:ir.model.fields,field_description:eva.field_eva_team__display_name
+#: model:ir.model.fields,field_description:eva.field_eva_token_move__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_game__division
+#: model:ir.model.fields,field_description:eva.field_eva_session__division
+msgid "Division"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields.selection,name:eva.selection__eva_session__state__done
+#: model:ir.model.fields.selection,name:eva.selection__eva_token_move__state__done
+msgid "Done"
+msgstr "Fini"
+
+#. module: eva
+#: model:ir.model.fields.selection,name:eva.selection__eva_session__state__draft
+#: model:ir.model.fields.selection,name:eva.selection__eva_token_move__state__draft
+msgid "Draft"
+msgstr "Brouillon"
+
+#. module: eva
+#: model:ir.model.fields.selection,name:eva.selection__eva_game_result__result__draw
+#: model_terms:ir.ui.view,arch_db:eva.eva_game_result_view_search
+#: model_terms:ir.ui.view,arch_db:eva.eva_game_view_form
+#: model_terms:ir.ui.view,arch_db:eva.eva_game_view_kanban
+#: model_terms:ir.ui.view,arch_db:eva.eva_game_view_list
+msgid "Draw"
+msgstr "Nul"
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_game__ebp
+msgid "EBP"
+msgstr ""
+
+#. module: eva
+#: model:ir.ui.menu,name:eva.menu_eva_root
+msgid "EVA"
+msgstr ""
+
+#. module: eva
+#: model:ir.model,name:eva.model_eva_game
+msgid "EVA Game"
+msgstr ""
+
+#. module: eva
+#: model:ir.model,name:eva.model_eva_game_result
+msgid "EVA Game Result (per team)"
+msgstr ""
+
+#. module: eva
+#: model:ir.model,name:eva.model_eva_map
+msgid "EVA Map"
+msgstr ""
+
+#. module: eva
+#: model:ir.model,name:eva.model_eva_player
+msgid "EVA Player"
+msgstr ""
+
+#. module: eva
+#: model:ir.model,name:eva.model_eva_session
+msgid "EVA Session"
+msgstr ""
+
+#. module: eva
+#: model:ir.model,name:eva.model_eva_session_matchup
+msgid "EVA Session Matchup"
+msgstr ""
+
+#. module: eva
+#: model:ir.model,name:eva.model_eva_team
+msgid "EVA Team"
+msgstr ""
+
+#. module: eva
+#: model:ir.model,name:eva.model_eva_token_move
+msgid "EVA Token Move"
+msgstr ""
+
+#. module: eva
+#: model:ir.model,name:eva.model_eva_gg_sync
+msgid "EVA.gg Competitive API Sync"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields.selection,name:eva.selection__eva_game_result__session_type__classic
+#: model:ir.model.fields.selection,name:eva.selection__eva_session__type__classic
+msgid "EVA: Battle Arena"
+msgstr ""
+
+#. module: eva
+#: model:ir.actions.server,name:eva.ir_cron_eva_subscriptions_ir_actions_server
+msgid "EVA: Subscriptions"
+msgstr ""
+
+#. module: eva
+#: model:ir.actions.server,name:eva.ir_cron_eva_gg_sync_ir_actions_server
+msgid "EVA: Sync Charleroi local league (eva.gg)"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_game__message_follower_ids
+#: model:ir.model.fields,field_description:eva.field_eva_map__message_follower_ids
+#: model:ir.model.fields,field_description:eva.field_eva_session__message_follower_ids
+msgid "Followers"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_game__message_partner_ids
+#: model:ir.model.fields,field_description:eva.field_eva_map__message_partner_ids
+#: model:ir.model.fields,field_description:eva.field_eva_session__message_partner_ids
+msgid "Followers (Partners)"
+msgstr ""
+
+#. module: eva
+#. odoo-javascript
+#: code:addons/eva/static/src/views/fields/labeled_integer/labeled_integer_field.js:0
+msgid "Format the value as an ordinal number (1st, 2nd, 3rd, 4th...)."
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_game_result__game_id
+#: model:ir.model.fields,field_description:eva.field_eva_map__game_ids
+#: model:ir.model.fields,field_description:eva.field_eva_session__game_ids
+msgid "Game"
+msgstr "Partie"
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_map__game_count
+#: model:ir.model.fields,field_description:eva.field_eva_session__game_count
+msgid "Game Count"
+msgstr "Nombre de Parties"
+
+#. module: eva
+#: model:ir.actions.act_window,name:eva.action_eva_game_result
+#: model:ir.ui.menu,name:eva.menu_eva_game_results
+msgid "Game Results"
+msgstr "Résultats des Parties"
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_game_result__session_type
+#: model:ir.model.fields,field_description:eva.field_eva_session__type
+msgid "Game Type"
+msgstr "Type de Partie"
+
+#. module: eva
+#: model:ir.actions.act_window,name:eva.action_eva_game
+#: model:ir.model.fields,field_description:eva.field_eva_session_matchup__game_count
+#: model:ir.ui.menu,name:eva.menu_eva_games
+#: model_terms:ir.ui.view,arch_db:eva.eva_map_view_form
+#: model_terms:ir.ui.view,arch_db:eva.eva_session_matchup_view_list
+#: model_terms:ir.ui.view,arch_db:eva.eva_session_view_form
+msgid "Games"
+msgstr "Parties"
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_game__has_message
+#: model:ir.model.fields,field_description:eva.field_eva_map__has_message
+#: model:ir.model.fields,field_description:eva.field_eva_session__has_message
+msgid "Has Message"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_game__id
+#: model:ir.model.fields,field_description:eva.field_eva_game_result__id
+#: model:ir.model.fields,field_description:eva.field_eva_gg_sync__id
+#: model:ir.model.fields,field_description:eva.field_eva_map__id
+#: model:ir.model.fields,field_description:eva.field_eva_player__id
+#: model:ir.model.fields,field_description:eva.field_eva_session__id
+#: model:ir.model.fields,field_description:eva.field_eva_session_matchup__id
+#: model:ir.model.fields,field_description:eva.field_eva_team__id
+#: model:ir.model.fields,field_description:eva.field_eva_token_move__id
+msgid "ID"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,help:eva.field_eva_game__message_needaction
+#: model:ir.model.fields,help:eva.field_eva_map__message_needaction
+#: model:ir.model.fields,help:eva.field_eva_session__message_needaction
+msgid "If checked, new messages require your attention."
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,help:eva.field_eva_game__message_has_error
+#: model:ir.model.fields,help:eva.field_eva_game__message_has_sms_error
+#: model:ir.model.fields,help:eva.field_eva_map__message_has_error
+#: model:ir.model.fields,help:eva.field_eva_map__message_has_sms_error
+#: model:ir.model.fields,help:eva.field_eva_session__message_has_error
+#: model:ir.model.fields,help:eva.field_eva_session__message_has_sms_error
+msgid "If checked, some messages have a delivery error."
+msgstr ""
+
+#. module: eva
+#. odoo-javascript
+#: code:addons/eva/static/src/views/fields/labeled_integer/labeled_integer_field.js:0
+msgid "Integer with unit"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_game__message_is_follower
+#: model:ir.model.fields,field_description:eva.field_eva_map__message_is_follower
+#: model:ir.model.fields,field_description:eva.field_eva_session__message_is_follower
+msgid "Is Follower"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_game__write_uid
+#: model:ir.model.fields,field_description:eva.field_eva_gg_sync__write_uid
+#: model:ir.model.fields,field_description:eva.field_eva_map__write_uid
+#: model:ir.model.fields,field_description:eva.field_eva_player__write_uid
+#: model:ir.model.fields,field_description:eva.field_eva_session__write_uid
+#: model:ir.model.fields,field_description:eva.field_eva_team__write_uid
+#: model:ir.model.fields,field_description:eva.field_eva_token_move__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_game__write_date
+#: model:ir.model.fields,field_description:eva.field_eva_game_result__write_date
+#: model:ir.model.fields,field_description:eva.field_eva_gg_sync__write_date
+#: model:ir.model.fields,field_description:eva.field_eva_map__write_date
+#: model:ir.model.fields,field_description:eva.field_eva_player__write_date
+#: model:ir.model.fields,field_description:eva.field_eva_session__write_date
+#: model:ir.model.fields,field_description:eva.field_eva_team__write_date
+#: model:ir.model.fields,field_description:eva.field_eva_token_move__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields.selection,name:eva.selection__eva_game_result__session_type__league
+#: model:ir.model.fields.selection,name:eva.selection__eva_session__type__league
+msgid "League"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_game__loser
+msgid "Loser"
+msgstr "Perdant"
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_game__loser_is_my_team
+msgid "Loser Is My Team"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields.selection,name:eva.selection__eva_game_result__result__loss
+#: model_terms:ir.ui.view,arch_db:eva.eva_game_result_view_search
+msgid "Loss"
+msgstr "Défaite"
+
+#. module: eva
+#. odoo-python
+#: code:addons/eva/models/eva_team.py:0
+msgid "Losses"
+msgstr "Défaites"
+
+#. module: eva
+#: model:ir.model.fields.selection,name:eva.selection__eva_token_move__move_type__manual
+msgid "Manual"
+msgstr "Manuel"
+
+#. module: eva
+#. odoo-javascript
+#: code:addons/eva/static/src/views/fields/many2one_with_fallback/many2one_with_fallback_field.js:0
+msgid "Many2one (with fallback text)"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_game__map_id
+#: model:ir.model.fields,field_description:eva.field_eva_game_result__map_id
+#: model_terms:ir.ui.view,arch_db:eva.eva_game_result_view_search
+#: model_terms:ir.ui.view,arch_db:eva.eva_game_view_search
+msgid "Map"
+msgstr "Carte"
+
+#. module: eva
+#: model:ir.actions.act_window,name:eva.action_eva_map
+#: model:ir.ui.menu,name:eva.menu_eva_maps
+msgid "Maps"
+msgstr "Cartes"
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_session_matchup__name
+msgid "Matchup"
+msgstr "Contre"
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_session__matchup_ids
+#: model_terms:ir.ui.view,arch_db:eva.eva_session_view_form
+msgid "Matchups"
+msgstr "Contres"
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_game__message_has_error
+#: model:ir.model.fields,field_description:eva.field_eva_map__message_has_error
+#: model:ir.model.fields,field_description:eva.field_eva_session__message_has_error
+msgid "Message Delivery error"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_game__message_ids
+#: model:ir.model.fields,field_description:eva.field_eva_map__message_ids
+#: model:ir.model.fields,field_description:eva.field_eva_session__message_ids
+msgid "Messages"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_map__minimap
+msgid "Minimap"
+msgstr ""
+
+#. module: eva
+#: model_terms:ir.ui.view,arch_db:eva.eva_game_result_view_search
+#: model_terms:ir.ui.view,arch_db:eva.eva_game_view_search
+msgid "Month"
+msgstr "Mois"
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_token_move__move_type
+msgid "Move Type"
+msgstr "Type de Transfert"
+
+#. module: eva
+#: model_terms:ir.ui.view,arch_db:eva.eva_player_view_form
+msgid "Moves"
+msgstr "Transferts"
+
+#. module: eva
+#: model_terms:ir.ui.view,arch_db:eva.eva_session_view_search
+msgid "My Sessions"
+msgstr "Mes Sessions"
+
+#. module: eva
+#: model_terms:ir.ui.view,arch_db:eva.eva_game_result_view_search
+#: model_terms:ir.ui.view,arch_db:eva.eva_game_view_search
+#: model_terms:ir.ui.view,arch_db:eva.eva_session_view_search
+msgid "My Team"
+msgstr "Mon Équipe"
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_map__my_team_game_count
+#: model:ir.model.fields,field_description:eva.field_eva_session__my_team_game_count
+msgid "My Team Game Count"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_map__my_team_session_count
+msgid "My Team Session Count"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_game__name
+#: model:ir.model.fields,field_description:eva.field_eva_game_result__name
+#: model:ir.model.fields,field_description:eva.field_eva_map__name
+#: model:ir.model.fields,field_description:eva.field_eva_player__player_name
+#: model:ir.model.fields,field_description:eva.field_eva_session__name
+#: model:ir.model.fields,field_description:eva.field_eva_team__name
+#: model_terms:ir.ui.view,arch_db:eva.eva_player_view_search
+msgid "Name"
+msgstr "Nom"
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_game__message_needaction_counter
+#: model:ir.model.fields,field_description:eva.field_eva_map__message_needaction_counter
+#: model:ir.model.fields,field_description:eva.field_eva_session__message_needaction_counter
+msgid "Number of Actions"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_game__message_has_error_counter
+#: model:ir.model.fields,field_description:eva.field_eva_map__message_has_error_counter
+#: model:ir.model.fields,field_description:eva.field_eva_session__message_has_error_counter
+msgid "Number of errors"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,help:eva.field_eva_game__message_needaction_counter
+#: model:ir.model.fields,help:eva.field_eva_map__message_needaction_counter
+#: model:ir.model.fields,help:eva.field_eva_session__message_needaction_counter
+msgid "Number of messages requiring action"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,help:eva.field_eva_game__message_has_error_counter
+#: model:ir.model.fields,help:eva.field_eva_map__message_has_error_counter
+#: model:ir.model.fields,help:eva.field_eva_session__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields.selection,name:eva.selection__eva_session__token_status__ok
+msgid "Ok"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_game_result__opponent_id
+#: model:ir.model.fields,field_description:eva.field_eva_session_matchup__team_b_id
+msgid "Opponent"
+msgstr "Adversaire"
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_session_matchup__team_b_wins
+msgid "Opponent Wins"
+msgstr ""
+
+#. module: eva
+#. odoo-javascript
+#: code:addons/eva/static/src/views/fields/labeled_integer/labeled_integer_field.js:0
+msgid "Ordinal"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields.selection,name:eva.selection__eva_game_result__session_type__other
+#: model:ir.model.fields.selection,name:eva.selection__eva_session__type__other
+msgid "Other"
+msgstr "Autre"
+
+#. module: eva
+#: model_terms:ir.ui.view,arch_db:eva.team_page_template
+msgid "Our Team"
+msgstr "Notre Équipe"
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_team__player_ids
+#: model:ir.model.fields,field_description:eva.field_eva_token_move__player_id
+msgid "Player"
+msgstr "Joueur"
+
+#. module: eva
+#: model:ir.actions.act_window,name:eva.action_eva_player
+#: model:ir.model.fields,field_description:eva.field_eva_game__player_ids
+#: model:ir.model.fields,field_description:eva.field_eva_session__player_ids
+#: model:ir.ui.menu,name:eva.menu_eva_players
+msgid "Players"
+msgstr "Joueurs"
+
+#. module: eva
+#: model:ir.model.fields.selection,name:eva.selection__eva_game_result__session_type__rabbids
+#: model:ir.model.fields.selection,name:eva.selection__eva_session__type__rabbids
+msgid "Rabbids: Color Chaos"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_game__replay
+msgid "Replay"
+msgstr ""
+
+#. module: eva
+#: model_terms:ir.ui.view,arch_db:eva.eva_player_view_form
+msgid "Reserved"
+msgstr "Réservé"
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_game_result__result
+#: model_terms:ir.ui.view,arch_db:eva.eva_game_result_view_search
+msgid "Result"
+msgstr "Résultat"
+
+#. module: eva
+#: model_terms:ir.ui.view,arch_db:eva.eva_map_view_form
+#: model_terms:ir.ui.view,arch_db:eva.eva_team_view_form
+msgid "Results"
+msgstr "Résultats"
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_game__message_has_sms_error
+#: model:ir.model.fields,field_description:eva.field_eva_map__message_has_sms_error
+#: model:ir.model.fields,field_description:eva.field_eva_session__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_session_matchup__score
+msgid "Score"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields.selection,name:eva.selection__eva_game_result__session_type__scrim
+#: model:ir.model.fields.selection,name:eva.selection__eva_session__type__scrim
+msgid "Scrim"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_game__session_id
+#: model:ir.model.fields,field_description:eva.field_eva_game_result__session_id
+#: model:ir.model.fields,field_description:eva.field_eva_session_matchup__session_id
+#: model:ir.model.fields,field_description:eva.field_eva_token_move__session_id
+#: model:ir.model.fields.selection,name:eva.selection__eva_token_move__move_type__session
+#: model_terms:ir.ui.view,arch_db:eva.eva_game_view_search
+msgid "Session"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_map__session_count
+#: model:ir.model.fields,field_description:eva.field_eva_player__session_count
+msgid "Session Count"
+msgstr ""
+
+#. module: eva
+#: model:ir.actions.act_window,name:eva.action_eva_session
+#: model:ir.model.fields,field_description:eva.field_eva_player__session_ids
+#: model:ir.ui.menu,name:eva.menu_eva_sessions
+#: model:ir.ui.menu,name:eva.menu_eva_sessions_menu
+#: model_terms:ir.ui.view,arch_db:eva.eva_map_view_form
+#: model_terms:ir.ui.view,arch_db:eva.eva_player_view_form
+msgid "Sessions"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_game__team_1_short_name
+#: model:ir.model.fields,field_description:eva.field_eva_game__team_2_short_name
+#: model:ir.model.fields,field_description:eva.field_eva_game__winner_short_name
+#: model:ir.model.fields,field_description:eva.field_eva_team__short_name
+msgid "Short Name"
+msgstr "Abbréviation"
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_session__state
+#: model:ir.model.fields,field_description:eva.field_eva_token_move__state
+msgid "State"
+msgstr "État"
+
+#. module: eva
+#: model:ir.model.fields.selection,name:eva.selection__eva_token_move__move_type__subscription
+#: model_terms:ir.ui.view,arch_db:eva.eva_player_view_form
+msgid "Subscription"
+msgstr "Abonnement"
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_map__tactics
+#: model_terms:ir.ui.view,arch_db:eva.eva_map_view_form
+msgid "Tactics"
+msgstr "Tactiques"
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_game_result__team_id
+#: model:ir.model.fields,field_description:eva.field_eva_player__team_id
+#: model:ir.model.fields,field_description:eva.field_eva_session_matchup__team_a_id
+#: model_terms:ir.ui.view,arch_db:eva.eva_game_result_view_search
+msgid "Team"
+msgstr "Équipe"
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_game__team_1_id
+#: model_terms:ir.ui.view,arch_db:eva.eva_game_view_form
+msgid "Team 1"
+msgstr "Équipe 1"
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_game__team_2_id
+#: model_terms:ir.ui.view,arch_db:eva.eva_game_view_form
+msgid "Team 2"
+msgstr "Équipe 2"
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_session_matchup__team_a_maps
+msgid "Team A Maps"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_session_matchup__team_a_name
+msgid "Team A Name"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_session_matchup__team_b_maps
+msgid "Team B Maps"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_session_matchup__team_b_name
+msgid "Team B Name"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_session_matchup__team_a_wins
+msgid "Team Wins"
+msgstr "Victoires de l'Équipe"
+
+#. module: eva
+#: model:ir.actions.act_window,name:eva.action_eva_team
+#: model:ir.ui.menu,name:eva.menu_eva_teams
+msgid "Teams"
+msgstr "Équipes"
+
+#. module: eva
+#. odoo-javascript
+#: code:addons/eva/static/src/views/fields/labeled_integer/labeled_integer_field.js:0
+msgid "Text shown after the value, e.g. 'tokens' or 'of each month'."
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_player__token_balance
+msgid "Token Balance"
+msgstr "Solde de Tokens"
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_session__token_cost
+msgid "Token Cost"
+msgstr "Coût en Tokens"
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_player__token_move_ids
+#: model:ir.model.fields,field_description:eva.field_eva_session__token_move_ids
+msgid "Token Move"
+msgstr "Transfert de Tokens"
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_player__token_move_count
+msgid "Token Move Count"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_session__token_status
+msgid "Token Status"
+msgstr ""
+
+#. module: eva
+#: model_terms:ir.ui.view,arch_db:eva.eva_player_view_form
+#: model_terms:ir.ui.view,arch_db:eva.eva_session_view_form
+msgid "Tokens"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_player__tokens_available
+msgid "Tokens Available"
+msgstr "Tokens Disponibles"
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_player__tokens_grant_day
+msgid "Tokens Grant Day"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_player__tokens_per_month
+msgid "Tokens Per Month"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_player__tokens_reserved
+msgid "Tokens Reserved"
+msgstr "Tokens Réservés"
+
+#. module: eva
+#. odoo-javascript
+#: code:addons/eva/static/src/views/fields/labeled_integer/labeled_integer_field.js:0
+msgid "Unit"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_player__user_id
+msgid "User"
+msgstr "Utilisateur"
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_player__name
+msgid "Username"
+msgstr "Pseudo"
+
+#. module: eva
+#: model:ir.model.fields.selection,name:eva.selection__eva_session__token_status__warning
+msgid "Warning"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_session__warning_text
+msgid "Warning Text"
+msgstr ""
+
+#. module: eva
+#. odoo-javascript
+#: code:addons/eva/static/src/views/fields/labeled_integer/labeled_integer_field.js:0
+msgid "Width"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields.selection,name:eva.selection__eva_game_result__result__win
+#: model_terms:ir.ui.view,arch_db:eva.eva_game_result_view_search
+msgid "Win"
+msgstr "Victoire"
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_game__winner
+#: model_terms:ir.ui.view,arch_db:eva.eva_game_view_search
+msgid "Winner"
+msgstr "Gagnant"
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_game__winner_is_my_team
+msgid "Winner Is My Team"
+msgstr ""
+
+#. module: eva
+#. odoo-python
+#: code:addons/eva/models/eva_team.py:0
+msgid "Wins"
+msgstr "Victoires"
+
+#. module: eva
+#: model_terms:ir.ui.view,arch_db:eva.eva_player_view_search
+msgid "With Available Tokens"
+msgstr "Avec des Tokens Disponibles"
+
+#. module: eva
+#: model:ir.model.fields.selection,name:eva.selection__eva_game_result__session_type__zombie
+#: model:ir.model.fields.selection,name:eva.selection__eva_session__type__zombie
+msgid "Zombie: Moon of the Dead"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_map__eva_gg_id
+msgid "eva.gg Map ID"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_game__eva_gg_match_id
+msgid "eva.gg Match ID"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_player__eva_gg_id
+msgid "eva.gg Player ID"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_session__eva_gg_session_key
+msgid "eva.gg Session Key"
+msgstr ""
+
+#. module: eva
+#: model:ir.model.fields,field_description:eva.field_eva_team__eva_gg_id
+msgid "eva.gg Team ID"
+msgstr ""
+
+#. module: eva
+#: model:ir.actions.act_window,name:eva.action_eva_token_move
+msgid "token_moves"
+msgstr ""

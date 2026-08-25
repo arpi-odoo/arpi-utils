@@ -110,16 +110,17 @@ class EvaSession(models.Model):
 
     def action_open_games(self):
         self.ensure_one()
+        context = {'search_default_group_by_winner': 1}
+        if self.my_team_game_count:
+            context['search_default_my_team'] = 1
+
         return {
             'type': 'ir.actions.act_window',
             'name': 'Games',
             'res_model': 'eva.game',
             'view_mode': 'kanban,list,form',
             'domain': [('session_id', '=', self.id)],
-            'context': {
-                'search_default_my_team': 1,
-                'search_default_group_by_winner': 1
-            },
+            'context': context,
         }
 
     def action_new_game(self):

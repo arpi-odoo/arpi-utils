@@ -1,7 +1,7 @@
 import logging
 import re
 from collections import Counter, defaultdict
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 import requests
 
@@ -176,7 +176,11 @@ class EvaGgSync(models.Model):
             value = value.astimezone(timezone.utc).replace(tzinfo=None)
         return value
 
-    def _get_or_create_session(self, session_key, division_number, day_matches):
+    # Session state only ever moves forward through here, and never past 'cancelled'
+    # (a user-cancelled session is left alone regardless of what eva.gg says).
+    _STATE_ORDER = {'draft': 0, 'confirmed': 1, 'done': 2}
+
+    def _get_or_create_session(self, session_key, division_number, play_date, day_matches):
         Session = self.env['eva.session']
         state = 'done' if all(m['status'] == 'completed' for m in day_matches) else 'confirmed'
 
@@ -189,6 +193,32 @@ class EvaGgSync(models.Model):
             return session
 
         earliest = min(self._to_utc_naive(m['scheduledDatetime']) for m in day_matches)
+
+        # Adopt a session someone created by hand before this fixture existed on eva.gg,
+        # instead of creating a duplicate: same day (not hour, since a manual entry's time
+        # is a guess), same game type and division, not yet linked to any eva.gg session.
+        # A cancelled one is excluded entirely, not just left at its current state: it
+        # should never be re-linked or re-timed either (same "never touch it" rule as
+        # for an already-linked session above).
+        day_start = datetime.combine(play_date, datetime.min.time())
+        manual_session = Session.search([
+            ('eva_gg_session_key', '=', False),
+            ('state', '!=', 'cancelled'),
+            ('type', '=', 'league'),
+            ('division', '=', f'D{division_number}'),
+            ('datetime', '>=', day_start),
+            ('datetime', '<', day_start + timedelta(days=1)),
+        ], limit=1)
+        if manual_session:
+            # Update the datetime first, in its own write: eva.session._check_state_transition
+            # reads session.datetime against the *pre-write* value, so bundling a 'done'
+            # promotion into the same write as the datetime fix would wrongly check it
+            # against the old, manually-guessed time instead of the real eva.gg schedule.
+            manual_session.write({'eva_gg_session_key': session_key, 'datetime': earliest})
+            if self._STATE_ORDER[manual_session.state] < self._STATE_ORDER[state]:
+                manual_session.state = state
+            return manual_session
+
         return Session.create({
             'eva_gg_session_key': session_key,
             'datetime': earliest,
@@ -264,7 +294,7 @@ class EvaGgSync(models.Model):
 
         for (division_number, play_date), day_matches in by_day.items():
             session_key = f'{tournament_id}:{division_number}:{play_date.isoformat()}'
-            session = self._get_or_create_session(session_key, division_number, day_matches)
+            session = self._get_or_create_session(session_key, division_number, play_date, day_matches)
             for match_summary in day_matches:
                 if match_summary['status'] == 'completed':
                     self._import_match(match_summary, session)

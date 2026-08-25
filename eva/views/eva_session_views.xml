@@ -20,8 +20,8 @@
                             <div class="o_stat_info">
                                 Games
                                 <span class="o_stat_value">
-                                    <field name="my_team_game_count"/>
-                                    (<field name="game_count"/>)
+                                    <field name="my_team_game_count" invisible="not my_team_game_count"/>
+                                    <span invisible="not my_team_game_count"> (</span><field name="game_count"/><span invisible="not my_team_game_count">)</span>
                                 </span>
                             </div>
                         </button>

@@ -18,12 +18,19 @@
             </div>
 
             <t t-foreach="docs" t-as="o">
-                <div class="mb-4 w-100" style="background-color: #1D1F25; padding: 24px 16px; box-sizing: border-box;">
-                    <h1 class="fw-bold" style="font-size: 48px; color: white; margin: 0;">
-                        <span t-out="o.name"/>
-                        -
-                        <span t-out="o.date" t-options="{'widget': 'date'}"/>
-                    </h1>
+                <div class="mb-4 w-100" style="background-color: #1D1F25; padding: 24px 24px; box-sizing: border-box;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <tr>
+                            <td style="text-align: left; vertical-align: middle;">
+                                <h1 class="fw-bold" style="font-size: 48px; color: white; margin: 0;">
+                                    <span t-out="o.name"/>
+                                </h1>
+                            </td>
+                            <td style="text-align: right; vertical-align: middle;">
+                                <span style="font-size: 24px; color: white;" t-out="o.date" t-options="{'widget': 'date'}"/>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
 
                 <p t-if="o.participant_ids" style="font-size: 24px;">

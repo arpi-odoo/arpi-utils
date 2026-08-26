@@ -6,7 +6,7 @@ from zoneinfo import ZoneInfo
 from dateutil.relativedelta import relativedelta
 
 from odoo import _, api, fields, models
-from odoo.tools import html2plaintext
+from odoo.tools import html2plaintext, is_html_empty
 
 try:
     import vobject
@@ -25,12 +25,18 @@ class TsMeeting(models.Model):
     date_end = fields.Datetime(compute='_compute_date_end', store=True)
     agenda = fields.Html()
     minutes = fields.Html(string='Meeting Minutes')
+    has_minutes = fields.Boolean(compute='_compute_has_minutes')
     participant_ids = fields.Many2many('res.users', string='Participants')
 
     @api.depends('date', 'duration')
     def _compute_date_end(self):
         for meeting in self:
             meeting.date_end = meeting.date and meeting.date + timedelta(hours=meeting.duration)
+
+    @api.depends('minutes')
+    def _compute_has_minutes(self):
+        for meeting in self:
+            meeting.has_minutes = not is_html_empty(meeting.minutes)
 
     def action_send_reminder_email(self):
         template = self.env.ref('ts.mail_template_meeting_reminder')

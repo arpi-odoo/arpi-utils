@@ -3,13 +3,32 @@
     <template id="report_ts_meeting">
         <t t-call="web.basic_layout">
             <t t-set="company" t-value="res_company"/>
-            <div class="footer d-flex w-100 justify-content-between align-items-center" style="background-color: #5F0707; color: white; padding: 8px 16px; box-sizing: border-box;">
-                <span t-out="company.name"/>
-                <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" alt="Logo" style="max-height: 40px;"/>
+
+            <div class="header" style="background-color: #1D1F25; color: white; padding: 16px; box-sizing: border-box;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr>
+                        <td style="text-align: left; vertical-align: middle;">
+                            <span style="font-size: 64px; font-weight: bold; color: white;">Meeting Minutes</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="footer" style="background-color: #5F0707; color: white; padding: 8px 16px; box-sizing: border-box;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr>
+                        <td style="text-align: left; vertical-align: middle;">
+                            <span t-out="company.name"/>
+                        </td>
+                        <td style="text-align: right; vertical-align: middle;">
+                            <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" alt="Logo" style="max-height: 40px;"/>
+                        </td>
+                    </tr>
+                </table>
             </div>
 
             <t t-foreach="docs" t-as="o">
-                <h1 class="fw-bold" style="font-size: 64px; color: #5F0707;">
+                <h1 class="fw-bold" style="font-size: 48px; color: #5F0707;">
                     <span t-out="o.name"/>
                     -
                     <span t-out="o.date" t-options="{'widget': 'date'}"/>
@@ -20,9 +39,11 @@
                     <li t-foreach="o.participant_ids" t-as="participant" t-out="participant.name"/>
                 </ul>
 
+                <hr t-if="o.agenda" style="border: none; border-top: 2px solid #1D1F25; margin: 24px 0;"/>
                 <h3 t-if="o.agenda" class="fw-bold" style="font-size: 32px;">Agenda</h3>
                 <div t-if="o.agenda" t-out="o.agenda"/>
 
+                <hr t-if="o.minutes" style="border: none; border-top: 2px solid #1D1F25; margin: 24px 0;"/>
                 <h3 t-if="o.minutes" class="fw-bold" style="font-size: 32px;">Meeting Minutes</h3>
                 <div t-if="o.minutes" t-out="o.minutes"/>
             </t>

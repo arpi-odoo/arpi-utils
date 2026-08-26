@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Odoo Server 19.5a1+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-26 18:16+0000\n"
-"PO-Revision-Date: 2026-08-26 20:23+0200\n"
+"PO-Revision-Date: 2026-08-26 20:43+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -61,13 +61,11 @@ msgstr ""
 "<div style=\"margin: 0px; padding: 0px; font-size: 14px;\">\n"
 "                <p>Bonjour,</p>\n"
 "                <p>\n"
-"                    Ceci est un rappel pour la réunion à venir\n"
+"                    Voici en fichier joint le PV de la réunion\n"
 "                    <strong t-out=\"object.name\">Réunion</strong>\n"
-"                    programmée pour le\n"
+"                    tenue le\n"
 "                    <strong t-out=\"format_datetime(object.date)\">08/20/2026</strong>.\n"
 "                </p>\n"
-"                <p>Ordre du Jour:</p>\n"
-"                <div t-out=\"object.agenda\"/>\n"
 "            </div>\n"
 "        "
 
@@ -529,9 +527,8 @@ msgstr "La fin d'une disponibilité doit être après le début."
 
 #. module: ts
 #: model:ir.model.fields,field_description:ts.field_res_users__ts_meeting_feed_token
-#, fuzzy
 msgid "Ts Meeting Feed Token"
-msgstr "Meilleurs Horaires pour les Réunions"
+msgstr ""
 
 #. module: ts
 #: model:ir.model.fields,field_description:ts.field_ts_meeting_subscribe_wizard__url

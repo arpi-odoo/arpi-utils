@@ -38,32 +38,45 @@ class TsMeeting(models.Model):
         for meeting in self:
             meeting.has_minutes = not is_html_empty(meeting.minutes)
 
-    def action_send_reminder_email(self):
-        template = self.env.ref('ts.mail_template_meeting_reminder')
-        sent_meetings = self.browse()
+    def _send_template_to_participants(self, template):
+        """ Send 'template' once per participant, each rendered in that
+            participant's own language, rather than one shared email
+            rendered in the language of the user triggering the send.
+        """
+        sent_count = 0
         failures = []
         for meeting in self:
-            if not meeting.participant_ids:
-                continue
-            mail_id = template.send_mail(meeting.id, force_send=True)
-            mail = self.env['mail.mail'].sudo().browse(mail_id).exists()
-            if not mail or mail.state == 'sent':
-                sent_meetings += meeting
-            else:
-                failures.append(_(
-                    '%(meeting)s: %(reason)s',
-                    meeting=meeting.name,
-                    reason=mail.failure_reason or mail.state,
-                ))
+            for participant in meeting.participant_ids:
+                if not participant.partner_id:
+                    continue
+                mail_id = template.with_context(lang=participant.lang).send_mail(
+                    meeting.id, force_send=True,
+                    email_values={'recipient_ids': [(6, 0, [participant.partner_id.id])]},
+                )
+                mail = self.env['mail.mail'].sudo().browse(mail_id).exists()
+                if not mail or mail.state == 'sent':
+                    sent_count += 1
+                else:
+                    failures.append(_(
+                        '%(meeting)s / %(participant)s: %(reason)s',
+                        meeting=meeting.name,
+                        participant=participant.name,
+                        reason=mail.failure_reason or mail.state,
+                    ))
+        return sent_count, failures
+
+    def action_send_reminder_email(self):
+        template = self.env.ref('ts.mail_template_meeting_reminder')
+        sent_count, failures = self._send_template_to_participants(template)
 
         if failures:
             message = _(
                 '%(sent_count)s email(s) sent, %(failed_count)s failed:\n%(details)s',
-                sent_count=len(sent_meetings), failed_count=len(failures), details='\n'.join(failures),
+                sent_count=sent_count, failed_count=len(failures), details='\n'.join(failures),
             )
             notification_type = 'danger'
         else:
-            message = _('%(count)s email(s) sent successfully.', count=len(sent_meetings))
+            message = _('%(count)s email(s) sent successfully.', count=sent_count)
             notification_type = 'success'
 
         return {
@@ -79,30 +92,16 @@ class TsMeeting(models.Model):
 
     def action_send_minutes_email(self):
         template = self.env.ref('ts.mail_template_meeting_minutes')
-        sent_meetings = self.browse()
-        failures = []
-        for meeting in self:
-            if not meeting.participant_ids:
-                continue
-            mail_id = template.send_mail(meeting.id, force_send=True)
-            mail = self.env['mail.mail'].sudo().browse(mail_id).exists()
-            if not mail or mail.state == 'sent':
-                sent_meetings += meeting
-            else:
-                failures.append(_(
-                    '%(meeting)s: %(reason)s',
-                    meeting=meeting.name,
-                    reason=mail.failure_reason or mail.state,
-                ))
+        sent_count, failures = self._send_template_to_participants(template)
 
         if failures:
             message = _(
                 '%(sent_count)s email(s) sent, %(failed_count)s failed:\n%(details)s',
-                sent_count=len(sent_meetings), failed_count=len(failures), details='\n'.join(failures),
+                sent_count=sent_count, failed_count=len(failures), details='\n'.join(failures),
             )
             notification_type = 'danger'
         else:
-            message = _('%(count)s email(s) sent successfully.', count=len(sent_meetings))
+            message = _('%(count)s email(s) sent successfully.', count=sent_count)
             notification_type = 'success'
 
         return {

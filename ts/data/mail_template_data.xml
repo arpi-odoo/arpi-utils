@@ -4,6 +4,7 @@
         <field name="name">TS: Meeting Reminder</field>
         <field name="model_id" ref="model_ts_meeting"/>
         <field name="subject">Reminder: {{ object.name }}</field>
+        <field name="email_from">"Tactical Strike" &lt;info.tacticalstrike@gmail.com&gt;</field>
         <field name="partner_to">{{ ','.join(map(str, object.participant_ids.partner_id.ids)) }}</field>
         <field name="use_default_to" eval="False"/>
         <field name="description">Sent to participants ahead of a meeting</field>
@@ -26,6 +27,7 @@
         <field name="name">TS: Meeting Minutes</field>
         <field name="model_id" ref="model_ts_meeting"/>
         <field name="subject">Meeting Minutes: {{ object.name }}</field>
+        <field name="email_from">"Tactical Strike" &lt;info.tacticalstrike@gmail.com&gt;</field>
         <field name="partner_to">{{ ','.join(map(str, object.participant_ids.partner_id.ids)) }}</field>
         <field name="use_default_to" eval="False"/>
         <field name="description">Sent to participants with the meeting minutes PDF attached</field>

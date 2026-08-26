@@ -18,21 +18,13 @@
             </div>
 
             <t t-foreach="docs" t-as="o">
-                <div style="background-color: #1D1F25; height: 120px; box-sizing: border-box; overflow: visible;">
-                    <table style="width: 100%; height: 100%; border-collapse: collapse;">
-                        <tr>
-                            <td style="text-align: left; vertical-align: middle; padding: 0 16px;">
-                                <span style="font-size: 64px; line-height: 1; font-weight: bold; color: white; white-space: nowrap;">Meeting Minutes</span>
-                            </td>
-                        </tr>
-                    </table>
+                <div style="background-color: #1D1F25; height: 80px; box-sizing: border-box; overflow: visible;">
+                    <h1 class="fw-bold" style="font-size: 48px; color: white;">
+                        <span t-out="o.name"/>
+                        -
+                        <span t-out="o.date" t-options="{'widget': 'date'}"/>
+                    </h1>
                 </div>
-
-                <h1 class="fw-bold" style="font-size: 48px; color: #5F0707;">
-                    <span t-out="o.name"/>
-                    -
-                    <span t-out="o.date" t-options="{'widget': 'date'}"/>
-                </h1>
 
                 <h3 t-if="o.participant_ids" style="font-size: 24px;">Participants</h3>
                 <ul t-if="o.participant_ids">

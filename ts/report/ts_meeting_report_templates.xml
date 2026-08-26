@@ -4,16 +4,6 @@
         <t t-call="web.basic_layout">
             <t t-set="company" t-value="res_company"/>
 
-            <div class="header" style="background-color: #1D1F25; height: 120px; box-sizing: border-box; overflow: visible; padding-top: 0;">
-                <table style="width: 100%; height: 100%; border-collapse: collapse;">
-                    <tr>
-                        <td style="text-align: left; vertical-align: middle; padding: 0 16px;">
-                            <span style="font-size: 64px; line-height: 1; font-weight: bold; color: white; white-space: nowrap;">Meeting Minutes</span>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-
             <div class="footer" style="background-color: #5F0707; color: white; padding: 8px 16px; box-sizing: border-box;">
                 <table style="width: 100%; border-collapse: collapse;">
                     <tr>
@@ -27,8 +17,17 @@
                 </table>
             </div>
 
-            <div style="margin-top: 32px;">
             <t t-foreach="docs" t-as="o">
+                <div style="background-color: #1D1F25; height: 120px; box-sizing: border-box; overflow: visible;">
+                    <table style="width: 100%; height: 100%; border-collapse: collapse;">
+                        <tr>
+                            <td style="text-align: left; vertical-align: middle; padding: 0 16px;">
+                                <span style="font-size: 64px; line-height: 1; font-weight: bold; color: white; white-space: nowrap;">Meeting Minutes</span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
                 <h1 class="fw-bold" style="font-size: 48px; color: #5F0707;">
                     <span t-out="o.name"/>
                     -
@@ -48,7 +47,6 @@
                 <h3 t-if="o.minutes" class="fw-bold" style="font-size: 32px;">Meeting Minutes</h3>
                 <div t-if="o.minutes" t-out="o.minutes"/>
             </t>
-            </div>
         </t>
     </template>
 </odoo>

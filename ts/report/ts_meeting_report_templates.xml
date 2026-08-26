@@ -18,8 +18,8 @@
             </div>
 
             <t t-foreach="docs" t-as="o">
-                <div style="background-color: #1D1F25; height: 80px; box-sizing: border-box; overflow: visible;">
-                    <h1 class="fw-bold" style="font-size: 48px; color: white;">
+                <div class="mb-4 w-100" style="background-color: #1D1F25; padding: 24px 16px; box-sizing: border-box;">
+                    <h1 class="fw-bold" style="font-size: 48px; color: white; margin: 0;">
                         <span t-out="o.name"/>
                         -
                         <span t-out="o.date" t-options="{'widget': 'date'}"/>

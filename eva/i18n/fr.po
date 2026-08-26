@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.5a1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-24 16:51+0000\n"
+"POT-Creation-Date: 2026-08-26 18:16+0000\n"
 "PO-Revision-Date: 2026-08-24 19:19+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -20,6 +20,16 @@ msgstr ""
 #. module: eva
 #: model_terms:ir.ui.view,arch_db:eva.eva_game_view_kanban
 msgid "<span class=\"px-2\" invisible=\"not team_1_id or not team_2_id\">vs</span>"
+msgstr ""
+
+#. module: eva
+#: model_terms:ir.ui.view,arch_db:eva.eva_session_view_form
+msgid "<span invisible=\"not my_team_game_count\"> (</span>"
+msgstr ""
+
+#. module: eva
+#: model_terms:ir.ui.view,arch_db:eva.eva_session_view_form
+msgid "<span invisible=\"not my_team_game_count\">)</span>"
 msgstr ""
 
 #. module: eva
@@ -750,8 +760,8 @@ msgstr "Tactiques"
 #: model:ir.model.fields,field_description:eva.field_eva_game_result__team_id
 #: model:ir.model.fields,field_description:eva.field_eva_player__team_id
 #: model:ir.model.fields,field_description:eva.field_eva_session_matchup__team_a_id
-#: model_terms:ir.ui.view,arch_db:eva.eva_game_result_view_search
 #: model:website.menu,name:eva.menu_eva_team
+#: model_terms:ir.ui.view,arch_db:eva.eva_game_result_view_search
 msgid "Team"
 msgstr "Équipe"
 

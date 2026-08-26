@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.5a1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-24 16:51+0000\n"
-"PO-Revision-Date: 2026-08-24 16:51+0000\n"
+"POT-Creation-Date: 2026-08-26 18:16+0000\n"
+"PO-Revision-Date: 2026-08-26 18:16+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -18,7 +18,7 @@ msgstr ""
 #. module: ts
 #. odoo-python
 #: code:addons/ts/models/ts_meeting.py:0
-msgid "%(count)s reminder email(s) sent successfully."
+msgid "%(count)s email(s) sent successfully."
 msgstr ""
 
 #. module: ts
@@ -31,8 +31,28 @@ msgstr ""
 #. odoo-python
 #: code:addons/ts/models/ts_meeting.py:0
 msgid ""
-"%(sent_count)s reminder email(s) sent, %(failed_count)s failed:\n"
+"%(sent_count)s email(s) sent, %(failed_count)s failed:\n"
 "%(details)s"
+msgstr ""
+
+#. module: ts
+#: model:ir.actions.report,print_report_name:ts.action_report_ts_meeting
+msgid "'Meeting - %s' % (object.name)"
+msgstr ""
+
+#. module: ts
+#: model:mail.template,body_html:ts.mail_template_meeting_minutes
+msgid ""
+"<div style=\"margin: 0px; padding: 0px; font-size: 14px;\">\n"
+"                <p>Hello,</p>\n"
+"                <p>\n"
+"                    Please find attached the minutes for the meeting\n"
+"                    <strong t-out=\"object.name\">Meeting</strong>\n"
+"                    held on\n"
+"                    <strong t-out=\"format_datetime(object.date)\">08/20/2026</strong>.\n"
+"                </p>\n"
+"            </div>\n"
+"        "
 msgstr ""
 
 #. module: ts
@@ -63,6 +83,11 @@ msgid "<span> days before the meeting</span>"
 msgstr ""
 
 #. module: ts
+#: model_terms:ir.ui.view,arch_db:ts.report_ts_meeting
+msgid "<strong>Participants: </strong>"
+msgstr ""
+
+#. module: ts
 #. odoo-python
 #: code:addons/ts/models/ts_availability_overlap.py:0
 msgid "Absent"
@@ -90,6 +115,7 @@ msgstr ""
 
 #. module: ts
 #: model:ir.model.fields,field_description:ts.field_ts_meeting__agenda
+#: model_terms:ir.ui.view,arch_db:ts.report_ts_meeting
 #: model_terms:ir.ui.view,arch_db:ts.ts_meeting_view_form
 msgid "Agenda"
 msgstr ""
@@ -127,6 +153,11 @@ msgid "Checked"
 msgstr ""
 
 #. module: ts
+#: model_terms:ir.ui.view,arch_db:ts.ts_meeting_subscribe_wizard_view_form
+msgid "Close"
+msgstr ""
+
+#. module: ts
 #: model:ir.model.fields,field_description:ts.field_ts_availability__color
 #: model:ir.model.fields,field_description:ts.field_ts_availability_overlap__color
 msgid "Color"
@@ -138,9 +169,18 @@ msgid "Config Settings"
 msgstr ""
 
 #. module: ts
+#: model_terms:ir.ui.view,arch_db:ts.ts_meeting_subscribe_wizard_view_form
+msgid ""
+"Copy this link and add it as a \"subscribe by URL\" calendar in\n"
+"                    Google Calendar, Apple Calendar, Outlook, or any other calendar app.\n"
+"                    It will stay up to date automatically."
+msgstr ""
+
+#. module: ts
 #: model:ir.model.fields,field_description:ts.field_ts_availability__create_uid
 #: model:ir.model.fields,field_description:ts.field_ts_availability_filter__create_uid
 #: model:ir.model.fields,field_description:ts.field_ts_meeting__create_uid
+#: model:ir.model.fields,field_description:ts.field_ts_meeting_subscribe_wizard__create_uid
 msgid "Created by"
 msgstr ""
 
@@ -148,12 +188,18 @@ msgstr ""
 #: model:ir.model.fields,field_description:ts.field_ts_availability__create_date
 #: model:ir.model.fields,field_description:ts.field_ts_availability_filter__create_date
 #: model:ir.model.fields,field_description:ts.field_ts_meeting__create_date
+#: model:ir.model.fields,field_description:ts.field_ts_meeting_subscribe_wizard__create_date
 msgid "Created on"
 msgstr ""
 
 #. module: ts
 #: model:ir.model.fields,field_description:ts.field_ts_meeting__date
 msgid "Date"
+msgstr ""
+
+#. module: ts
+#: model:ir.model.fields,field_description:ts.field_ts_meeting__date_end
+msgid "Date End"
 msgstr ""
 
 #. module: ts
@@ -168,7 +214,23 @@ msgstr ""
 #: model:ir.model.fields,field_description:ts.field_ts_availability_filter__display_name
 #: model:ir.model.fields,field_description:ts.field_ts_availability_overlap__display_name
 #: model:ir.model.fields,field_description:ts.field_ts_meeting__display_name
+#: model:ir.model.fields,field_description:ts.field_ts_meeting_subscribe_wizard__display_name
 msgid "Display Name"
+msgstr ""
+
+#. module: ts
+#: model_terms:ir.ui.view,arch_db:ts.ts_meeting_view_form
+msgid "Download PDF"
+msgstr ""
+
+#. module: ts
+#: model:ir.model.fields,field_description:ts.field_ts_meeting__duration
+msgid "Duration"
+msgstr ""
+
+#. module: ts
+#: model:ir.model.fields,help:ts.field_ts_meeting__duration
+msgid "Duration in hours"
 msgstr ""
 
 #. module: ts
@@ -187,12 +249,18 @@ msgid "Everyone Available"
 msgstr ""
 
 #. module: ts
+#: model:ir.model.fields,field_description:ts.field_ts_meeting__has_minutes
+msgid "Has Minutes"
+msgstr ""
+
+#. module: ts
 #: model:ir.model.fields,field_description:ts.field_res_config_settings__id
 #: model:ir.model.fields,field_description:ts.field_res_users__id
 #: model:ir.model.fields,field_description:ts.field_ts_availability__id
 #: model:ir.model.fields,field_description:ts.field_ts_availability_filter__id
 #: model:ir.model.fields,field_description:ts.field_ts_availability_overlap__id
 #: model:ir.model.fields,field_description:ts.field_ts_meeting__id
+#: model:ir.model.fields,field_description:ts.field_ts_meeting_subscribe_wizard__id
 msgid "ID"
 msgstr ""
 
@@ -200,6 +268,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:ts.field_ts_availability__write_uid
 #: model:ir.model.fields,field_description:ts.field_ts_availability_filter__write_uid
 #: model:ir.model.fields,field_description:ts.field_ts_meeting__write_uid
+#: model:ir.model.fields,field_description:ts.field_ts_meeting_subscribe_wizard__write_uid
 msgid "Last Updated by"
 msgstr ""
 
@@ -207,7 +276,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:ts.field_ts_availability__write_date
 #: model:ir.model.fields,field_description:ts.field_ts_availability_filter__write_date
 #: model:ir.model.fields,field_description:ts.field_ts_meeting__write_date
+#: model:ir.model.fields,field_description:ts.field_ts_meeting_subscribe_wizard__write_date
 msgid "Last Updated on"
+msgstr ""
+
+#. module: ts
+#: model_terms:ir.ui.view,arch_db:ts.report_ts_meeting
+msgid "Logo"
 msgstr ""
 
 #. module: ts
@@ -221,9 +296,17 @@ msgid "Me"
 msgstr ""
 
 #. module: ts
+#. odoo-python
+#: code:addons/ts/models/ts_meeting.py:0
+#: model:ir.actions.report,name:ts.action_report_ts_meeting
 #: model:ir.model.fields,field_description:ts.field_ts_meeting__minutes
 #: model_terms:ir.ui.view,arch_db:ts.ts_meeting_view_form
 msgid "Meeting Minutes"
+msgstr ""
+
+#. module: ts
+#: model:mail.template,subject:ts.mail_template_meeting_minutes
+msgid "Meeting Minutes: {{ object.name }}"
 msgstr ""
 
 #. module: ts
@@ -302,6 +385,11 @@ msgstr ""
 
 #. module: ts
 #: model_terms:ir.ui.view,arch_db:ts.ts_meeting_view_form
+msgid "Send Meeting Minutes"
+msgstr ""
+
+#. module: ts
+#: model_terms:ir.ui.view,arch_db:ts.ts_meeting_view_form
 msgid "Send Reminder Email"
 msgstr ""
 
@@ -313,6 +401,11 @@ msgstr ""
 #. module: ts
 #: model:mail.template,description:ts.mail_template_meeting_reminder
 msgid "Sent to participants ahead of a meeting"
+msgstr ""
+
+#. module: ts
+#: model:mail.template,description:ts.mail_template_meeting_minutes
+msgid "Sent to participants with the meeting minutes PDF attached"
 msgstr ""
 
 #. module: ts
@@ -337,6 +430,18 @@ msgid "Stop Datetime"
 msgstr ""
 
 #. module: ts
+#. odoo-javascript
+#: code:addons/ts/static/src/views/ts_meeting_calendar/ts_meeting_subscribe_cog_menu.xml:0
+msgid "Subscribe to Calendar"
+msgstr ""
+
+#. module: ts
+#: model:ir.actions.act_window,name:ts.action_ts_meeting_subscribe_wizard
+#: model:ir.model,name:ts.model_ts_meeting_subscribe_wizard
+msgid "Subscribe to Meetings Calendar"
+msgstr ""
+
+#. module: ts
 #: model:ir.model,name:ts.model_ts_availability
 msgid "TS Availability"
 msgstr ""
@@ -354,6 +459,11 @@ msgstr ""
 #. module: ts
 #: model:ir.model,name:ts.model_ts_meeting
 msgid "TS Meeting"
+msgstr ""
+
+#. module: ts
+#: model:mail.template,name:ts.mail_template_meeting_minutes
+msgid "TS: Meeting Minutes"
 msgstr ""
 
 #. module: ts
@@ -376,8 +486,24 @@ msgstr ""
 
 #. module: ts
 #. odoo-python
+#: code:addons/ts/models/ts_meeting.py:0
+msgid "Tactical Strike Meetings"
+msgstr ""
+
+#. module: ts
+#. odoo-python
 #: code:addons/ts/models/ts_availability.py:0
 msgid "The end of an availability must be after its start."
+msgstr ""
+
+#. module: ts
+#: model:ir.model.fields,field_description:ts.field_res_users__ts_meeting_feed_token
+msgid "Ts Meeting Feed Token"
+msgstr ""
+
+#. module: ts
+#: model:ir.model.fields,field_description:ts.field_ts_meeting_subscribe_wizard__url
+msgid "Url"
 msgstr ""
 
 #. module: ts

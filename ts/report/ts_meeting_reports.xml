@@ -1,10 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <record id="paperformat_ts_meeting" model="report.paperformat">
+        <field name="name">TS Meeting Minutes</field>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">10</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">10</field>
+        <field name="margin_right">10</field>
+        <field name="header_spacing">0</field>
+        <field name="header_line" eval="False"/>
+        <field name="dpi">90</field>
+    </record>
+
     <record id="action_report_ts_meeting" model="ir.actions.report">
         <field name="name">Meeting Minutes</field>
         <field name="model">ts.meeting</field>
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">ts.report_ts_meeting</field>
         <field name="print_report_name">'Meeting - %s' % (object.name)</field>
+        <field name="paperformat_id" ref="paperformat_ts_meeting"/>
     </record>
 </odoo>

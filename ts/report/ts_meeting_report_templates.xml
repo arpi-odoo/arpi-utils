@@ -1,28 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="report_ts_meeting">
-        <t t-call="web.html_container">
+        <t t-call="web.basic_layout">
             <t t-foreach="docs" t-as="o">
-                <t t-call="web.internal_layout">
-                    <div class="page">
-                        <h1 t-out="o.name" class="fw-bold" style="font-size: 64px;"/>
-                        <p>
-                            <strong>Date: </strong>
-                            <span t-out="o.date" t-options="{'widget': 'datetime'}"/>
-                        </p>
+                <h1 t-out="o.name" class="fw-bold" style="font-size: 64px;"/>
+                <p>
+                    <strong>Date: </strong>
+                    <span t-out="o.date" t-options="{'widget': 'datetime'}"/>
+                </p>
 
-                        <h3 t-if="o.participant_ids">Participants</h3>
-                        <ul t-if="o.participant_ids">
-                            <li t-foreach="o.participant_ids" t-as="participant" t-out="participant.name"/>
-                        </ul>
+                <h3 t-if="o.participant_ids">Participants</h3>
+                <ul t-if="o.participant_ids">
+                    <li t-foreach="o.participant_ids" t-as="participant" t-out="participant.name"/>
+                </ul>
 
-                        <h3 t-if="o.agenda" style="font-size: 32px;">Agenda</h3>
-                        <div t-if="o.agenda" t-out="o.agenda"/>
+                <h3 t-if="o.agenda" style="font-size: 32px;">Agenda</h3>
+                <div t-if="o.agenda" t-out="o.agenda"/>
 
-                        <h3 t-if="o.minutes" style="font-size: 32px;">Meeting Minutes</h3>
-                        <div t-if="o.minutes" t-out="o.minutes"/>
-                    </div>
-                </t>
+                <h3 t-if="o.minutes" style="font-size: 32px;">Meeting Minutes</h3>
+                <div t-if="o.minutes" t-out="o.minutes"/>
             </t>
         </t>
     </template>

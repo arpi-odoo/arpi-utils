@@ -6,10 +6,12 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="action_send_reminder_email" type="object" invisible="not participant_ids"
+                    <button name="action_send_reminder_email" type="object" invisible="not participant_ids or minutes"
                             string="Send Reminder Email" class="btn-primary"/>
-                    <button name="%(action_report_ts_meeting)d" type="action"
+                    <button name="%(action_report_ts_meeting)d" type="action" invisible="not minutes"
                             string="Download PDF"/>
+                    <button name="action_send_minutes_email" type="object" invisible="not minutes"
+                            string="Send Meeting Minutes" class="btn-primary"/>
                 </header>
                 <sheet>
                     <div class="oe_title">

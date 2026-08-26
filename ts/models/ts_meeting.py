@@ -58,12 +58,12 @@ class TsMeeting(models.Model):
 
         if failures:
             message = _(
-                '%(sent_count)s reminder email(s) sent, %(failed_count)s failed:\n%(details)s',
+                '%(sent_count)s email(s) sent, %(failed_count)s failed:\n%(details)s',
                 sent_count=len(sent_meetings), failed_count=len(failures), details='\n'.join(failures),
             )
             notification_type = 'danger'
         else:
-            message = _('%(count)s reminder email(s) sent successfully.', count=len(sent_meetings))
+            message = _('%(count)s email(s) sent successfully.', count=len(sent_meetings))
             notification_type = 'success'
 
         return {
@@ -97,12 +97,12 @@ class TsMeeting(models.Model):
 
         if failures:
             message = _(
-                '%(sent_count)s meeting minutes email(s) sent, %(failed_count)s failed:\n%(details)s',
+                '%(sent_count)s email(s) sent, %(failed_count)s failed:\n%(details)s',
                 sent_count=len(sent_meetings), failed_count=len(failures), details='\n'.join(failures),
             )
             notification_type = 'danger'
         else:
-            message = _('%(count)s meeting minutes email(s) sent successfully.', count=len(sent_meetings))
+            message = _('%(count)s email(s) sent successfully.', count=len(sent_meetings))
             notification_type = 'success'
 
         return {

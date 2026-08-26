@@ -31,11 +31,9 @@
                 </p>
 
                 <hr t-if="o.agenda" style="border: none; border-top: 2px solid #1D1F25; margin: 24px 0;"/>
-                <h3 t-if="o.agenda" class="fw-bold" style="font-size: 32px;">Agenda</h3>
                 <div t-if="o.agenda" t-out="o.agenda"/>
 
                 <hr t-if="o.minutes" style="border: none; border-top: 2px solid #1D1F25; margin: 24px 0;"/>
-                <h3 t-if="o.minutes" class="fw-bold" style="font-size: 32px;">Meeting Minutes</h3>
                 <div t-if="o.minutes" t-out="o.minutes"/>
             </t>
         </t>

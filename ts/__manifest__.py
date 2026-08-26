@@ -11,11 +11,11 @@
     'data': [
         'security/ts_security.xml',
         'security/ir.access.csv',
+        'report/ts_meeting_report_templates.xml',
+        'report/ts_meeting_reports.xml',
         'data/mail_template_data.xml',
         'data/ir_cron_data.xml',
         'data/ts_data.xml',
-        'report/ts_meeting_report_templates.xml',
-        'report/ts_meeting_reports.xml',
         'views/ts_meeting_views.xml',
         'views/ts_meeting_subscribe_wizard_views.xml',
         'views/ts_availability_views.xml',

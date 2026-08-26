@@ -71,6 +71,45 @@ class TsMeeting(models.Model):
             },
         }
 
+    def action_send_minutes_email(self):
+        template = self.env.ref('ts.mail_template_meeting_minutes')
+        sent_meetings = self.browse()
+        failures = []
+        for meeting in self:
+            if not meeting.participant_ids:
+                continue
+            mail_id = template.send_mail(meeting.id, force_send=True)
+            mail = self.env['mail.mail'].sudo().browse(mail_id)
+            if mail.state == 'sent':
+                sent_meetings += meeting
+            else:
+                failures.append(_(
+                    '%(meeting)s: %(reason)s',
+                    meeting=meeting.name,
+                    reason=mail.failure_reason or mail.state,
+                ))
+
+        if failures:
+            message = _(
+                '%(sent_count)s meeting minutes email(s) sent, %(failed_count)s failed:\n%(details)s',
+                sent_count=len(sent_meetings), failed_count=len(failures), details='\n'.join(failures),
+            )
+            notification_type = 'danger'
+        else:
+            message = _('%(count)s meeting minutes email(s) sent successfully.', count=len(sent_meetings))
+            notification_type = 'success'
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': _('Meeting Minutes'),
+                'message': message,
+                'type': notification_type,
+                'sticky': bool(failures),
+            },
+        }
+
     def _get_ics_feed(self):
         """ Return a single iCalendar file (bytes) listing all meetings in self,
             meant to be served as a subscribable feed (see the ts.controllers.main

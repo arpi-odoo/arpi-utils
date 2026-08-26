@@ -46,8 +46,8 @@ class TsMeeting(models.Model):
             if not meeting.participant_ids:
                 continue
             mail_id = template.send_mail(meeting.id, force_send=True)
-            mail = self.env['mail.mail'].sudo().browse(mail_id)
-            if mail.state == 'sent':
+            mail = self.env['mail.mail'].sudo().browse(mail_id).exists()
+            if not mail or mail.state == 'sent':
                 sent_meetings += meeting
             else:
                 failures.append(_(
@@ -85,8 +85,8 @@ class TsMeeting(models.Model):
             if not meeting.participant_ids:
                 continue
             mail_id = template.send_mail(meeting.id, force_send=True)
-            mail = self.env['mail.mail'].sudo().browse(mail_id)
-            if mail.state == 'sent':
+            mail = self.env['mail.mail'].sudo().browse(mail_id).exists()
+            if not mail or mail.state == 'sent':
                 sent_meetings += meeting
             else:
                 failures.append(_(

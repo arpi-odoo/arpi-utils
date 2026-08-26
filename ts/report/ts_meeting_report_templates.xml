@@ -27,6 +27,7 @@
                 </table>
             </div>
 
+            <div style="margin-top: 32px;">
             <t t-foreach="docs" t-as="o">
                 <h1 class="fw-bold" style="font-size: 48px; color: #5F0707;">
                     <span t-out="o.name"/>
@@ -47,6 +48,7 @@
                 <h3 t-if="o.minutes" class="fw-bold" style="font-size: 32px;">Meeting Minutes</h3>
                 <div t-if="o.minutes" t-out="o.minutes"/>
             </t>
+            </div>
         </t>
     </template>
 </odoo>

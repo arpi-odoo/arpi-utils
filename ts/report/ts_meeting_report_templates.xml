@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_ts_meeting">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h1 t-out="o.name"/>
+                        <p>
+                            <strong>Date: </strong>
+                            <span t-out="o.date" t-options="{'widget': 'datetime'}"/>
+                        </p>
+
+                        <h3 t-if="o.participant_ids">Participants</h3>
+                        <ul t-if="o.participant_ids">
+                            <li t-foreach="o.participant_ids" t-as="participant" t-out="participant.name"/>
+                        </ul>
+
+                        <h3 t-if="o.agenda">Agenda</h3>
+                        <div t-if="o.agenda" t-out="o.agenda"/>
+
+                        <h3 t-if="o.minutes">Meeting Minutes</h3>
+                        <div t-if="o.minutes" t-out="o.minutes"/>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

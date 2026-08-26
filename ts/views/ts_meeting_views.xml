@@ -8,6 +8,8 @@
                 <header>
                     <button name="action_send_reminder_email" type="object" invisible="not participant_ids"
                             string="Send Reminder Email" class="btn-primary"/>
+                    <button name="%(action_report_ts_meeting)d" type="action"
+                            string="Download PDF"/>
                 </header>
                 <sheet>
                     <div class="oe_title">

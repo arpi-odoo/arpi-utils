@@ -25,10 +25,20 @@ export class TsAvailabilityCalendarController extends CalendarController {
     // In week view, the currently displayed week is unambiguous, so generate
     // for it directly. In any other scale (day/month/year) there is no single
     // sensible week to pick, so ask the user for a date range instead.
+    //
+    // Deliberately not using this.model.rangeStart/rangeEnd here: on a
+    // touch-capable browser the model silently widens that range by one
+    // extra week on each side for swipe support (calendar_model.js
+    // loadSurroundings), which would generate the previous/next week too.
+    // Recomputing the week bounds from the anchor date instead always
+    // matches only the week actually being looked at.
     async onGenerateAvailabilities() {
         if (this.model.scale === "week") {
-            const dateFrom = this.model.rangeStart.toISODate();
-            const dateTo = this.model.rangeEnd.plus({ days: 1 }).toISODate();
+            const firstDayOfWeek = this.model.meta.firstDayOfWeek;
+            const currentWeekOffset = (this.model.date.weekday - firstDayOfWeek + 7) % 7;
+            const weekStart = this.model.date.minus({ days: currentWeekOffset }).startOf("day");
+            const dateFrom = weekStart.toISODate();
+            const dateTo = weekStart.plus({ weeks: 1 }).toISODate();
             await this.orm.call(
                 "res.users", "action_generate_availabilities_from_weekly_disponibilities",
                 [dateFrom, dateTo]

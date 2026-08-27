@@ -9,7 +9,8 @@ class ResUsers(models.Model):
     _inherit = 'res.users'
 
     ts_meeting_feed_token = fields.Char(copy=False)
-    weekly_disponibility_ids = fields.One2many('ts.weekly_disponibility', 'user_id', string='Weekly Disponibilities')
+    weekly_disponibility_ids = fields.One2many(
+        'ts.weekly_disponibility', 'user_id', string='Weekly Disponibilities', user_writeable=True)
 
     @api.model
     def action_generate_availabilities_from_weekly_disponibilities(self, date_from, date_to):

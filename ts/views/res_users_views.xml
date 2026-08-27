@@ -8,7 +8,12 @@
             <notebook position="inside">
                 <page string="Weekly Disponibilities" name="ts_weekly_disponibilities" groups="ts.group_ts_member">
                     <field name="weekly_disponibility_ids">
-                        <list editable="bottom">
+                        <!-- Without explicit create/delete here, this list silently inherits
+                             the parent form's create="False" delete="False" (computed from
+                             whether the current user can create/delete res.users records
+                             themselves, not from ts.weekly_disponibility's own access rights),
+                             which hides "Add a line" for anyone who isn't a user admin. -->
+                        <list editable="bottom" create="1" delete="1">
                             <field name="weekday"/>
                             <field name="start_hour" widget="float_time"/>
                             <field name="stop_hour" widget="float_time"/>

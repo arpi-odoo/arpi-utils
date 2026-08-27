@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="ts.TsAvailabilityCalendarController.buttons">
-        <button class="btn btn-secondary" t-on-click="() => this.onGenerateAvailabilities()">
+        <button class="btn btn-primary" t-on-click="() => this.onGenerateAvailabilities()">
             Generate Availabilities
         </button>
     </t>

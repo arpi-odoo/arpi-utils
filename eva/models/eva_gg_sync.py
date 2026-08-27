@@ -87,6 +87,16 @@ class EvaGgSync(models.Model):
     def _sync_lineup(self, team, remote_team_id):
         try:
             members = self._request(f'teams/{remote_team_id}/members')
+        except requests.HTTPError as exc:
+            if exc.response is not None and exc.response.status_code == 404:
+                # A team can disappear from eva.gg entirely (e.g. it dissolved); that's
+                # an expected data condition, not a failure worth an ERROR-level page.
+                _logger.warning(
+                    'eva.gg sync: team %r (%s) no longer exists on eva.gg, skipping lineup sync',
+                    team.name, remote_team_id)
+            else:
+                _logger.exception('eva.gg sync: failed to fetch lineup for team %s', remote_team_id)
+            return
         except requests.RequestException:
             _logger.exception('eva.gg sync: failed to fetch lineup for team %s', remote_team_id)
             return

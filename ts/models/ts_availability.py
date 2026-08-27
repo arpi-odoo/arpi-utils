@@ -2,6 +2,12 @@
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
+AVAILABILITY_TYPES = [
+    ('full', 'Available'),
+    ('remote', 'Remote'),
+    ('maybe', 'Maybe'),
+]
+
 AVAILABILITY_COLORS = {
     'full': '#2E7D32',
     'remote': '#1565C0',
@@ -17,13 +23,11 @@ class TsAvailability(models.Model):
     user_id = fields.Many2one(
         'res.users', string='User', required=True, index=True,
         default=lambda self: self.env.user)
+    weekly_disponibility_id = fields.Many2one(
+        'ts.weekly_disponibility', string='Generated From', ondelete='set null', copy=False)
     start_datetime = fields.Datetime(string='Start', required=True)
     stop_datetime = fields.Datetime(string='End', required=True)
-    availability_type = fields.Selection([
-        ('full', 'Available'),
-        ('remote', 'Remote'),
-        ('maybe', 'Maybe'),
-    ], string='Availability', required=True, default='full')
+    availability_type = fields.Selection(AVAILABILITY_TYPES, string='Availability', required=True, default='full')
     color = fields.Char(compute='_compute_color')
 
     @api.depends('availability_type')

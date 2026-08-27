@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_users_form_simple_modif_inherit_ts" model="ir.ui.view">
+        <field name="name">res.users.preferences.form.inherit.ts</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form_simple_modif"/>
+        <field name="arch" type="xml">
+            <notebook position="inside">
+                <page string="Weekly Disponibilities" name="ts_weekly_disponibilities" groups="ts.group_ts_member">
+                    <field name="weekly_disponibility_ids">
+                        <list editable="bottom">
+                            <field name="weekday"/>
+                            <field name="start_hour" widget="float_time"/>
+                            <field name="stop_hour" widget="float_time"/>
+                            <field name="availability_type"/>
+                        </list>
+                    </field>
+                    <p class="text-muted">
+                        Save your changes, then use the "Generate Availabilities" button on your
+                        availability calendar to apply this template to your calendar.
+                    </p>
+                </page>
+            </notebook>
+        </field>
+    </record>
+</odoo>

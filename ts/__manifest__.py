@@ -21,6 +21,8 @@
         'views/ts_availability_views.xml',
         'views/ts_availability_overlap_views.xml',
         'views/res_config_settings_views.xml',
+        'views/ts_weekly_disponibility_generate_wizard_views.xml',
+        'views/res_users_views.xml',
     ],
     'assets': {
         'web.assets_backend': [

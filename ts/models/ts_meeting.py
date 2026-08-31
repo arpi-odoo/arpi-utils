@@ -1,4 +1,5 @@
 
+import re
 from datetime import datetime, time, timedelta
 from urllib.parse import urlparse
 from zoneinfo import ZoneInfo
@@ -12,6 +13,17 @@ try:
     import vobject
 except ImportError:
     vobject = None
+
+
+def _agenda_to_plaintext(agenda_html):
+    """ html2plaintext() only turns `</p>`, `<tr>` and `<br>` tags into newlines,
+    so a bullet/numbered list (a very common shape for a meeting agenda) was
+    collapsing into a single space-separated line: give it explicit <br/>
+    tags around each list item, which it already knows how to break on.
+    """
+    agenda_html = re.sub(r'<li[^>]*>', '<br/>- ', agenda_html)
+    agenda_html = agenda_html.replace('</li>', '<br/>')
+    return html2plaintext(agenda_html)
 
 
 class TsMeeting(models.Model):
@@ -138,7 +150,7 @@ class TsMeeting(models.Model):
             event.add('dtend').value = meeting.date_end.replace(tzinfo=ZoneInfo('UTC'))
             event.add('summary').value = meeting.name
             if meeting.agenda:
-                description = html2plaintext(meeting.agenda)
+                description = _agenda_to_plaintext(meeting.agenda)
                 if description:
                     event.add('description').value = description
             for participant in meeting.participant_ids:

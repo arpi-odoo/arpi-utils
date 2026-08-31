@@ -272,6 +272,12 @@ class EvaSession(models.Model):
             event.add('dtstart').value = session.datetime.replace(tzinfo=ZoneInfo('UTC'))
             event.add('dtend').value = session.datetime_end.replace(tzinfo=ZoneInfo('UTC'))
             event.add('summary').value = session.name
+            if session.matchup_ids:
+                description = '\n'.join(
+                    f'({matchup.team_a_id.short_name}) {matchup.team_a_wins} - {matchup.team_b_wins} ({matchup.team_b_id.short_name})'
+                    for matchup in session.matchup_ids
+                )
+                event.add('description').value = description
             for player in session.player_ids:
                 if player.user_id.email:
                     attendee = event.add('attendee')

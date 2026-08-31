@@ -5,11 +5,11 @@ from markupsafe import Markup
 from odoo import _, api, fields, models
 from odoo.tools import SQL
 
-OVERLAP_COLORS = {
-    'green': '#2E7D32',
-    'blue': '#1565C0',
-    'grey': '#9E9E9E',
-}
+# Endpoints of the red → green gradient used for `color`, keyed by how much
+# of the group is covered (0 members present → all members present).
+NOBODY_AVAILABLE_COLOR = (211, 47, 47)  # Material red 700, #D32F2F
+EVERYONE_AVAILABLE_COLOR = (46, 125, 50)  # Material green 800, #2E7D32
+NO_MEMBERS_COLOR = '#9E9E9E'  # grey fallback for the (practically impossible) 0/0 case
 AVAILABILITY_TYPE_ORDER = ['full', 'remote', 'maybe']
 
 
@@ -21,18 +21,22 @@ class TsAvailabilityOverlap(models.Model):
 
     start_datetime = fields.Datetime(readonly=True)
     stop_datetime = fields.Datetime(readonly=True)
-    overlap_type = fields.Selection([
-        ('green', 'Everyone Available'),
-        ('blue', 'Administrators Available'),
-        ('grey', 'Not Everyone Available'),
-    ], readonly=True)
+    covered_members = fields.Integer(string='Members Present', readonly=True)
+    total_members = fields.Integer(string='Total Members', readonly=True)
     color = fields.Char(compute='_compute_color')
     attendee_summary = fields.Html(string='Who', compute='_compute_attendee_summary', sanitize=False)
 
-    @api.depends('overlap_type')
+    @api.depends('covered_members', 'total_members')
     def _compute_color(self):
         for overlap in self:
-            overlap.color = OVERLAP_COLORS.get(overlap.overlap_type, OVERLAP_COLORS['grey'])
+            if not overlap.total_members:
+                overlap.color = NO_MEMBERS_COLOR
+                continue
+            ratio = overlap.covered_members / overlap.total_members
+            overlap.color = '#%02X%02X%02X' % tuple(
+                round(start + (end - start) * ratio)
+                for start, end in zip(NOBODY_AVAILABLE_COLOR, EVERYONE_AVAILABLE_COLOR)
+            )
 
     @api.depends('start_datetime', 'stop_datetime')
     def _compute_attendee_summary(self):
@@ -64,11 +68,10 @@ class TsAvailabilityOverlap(models.Model):
                 lines.append(Markup('<b>%s:</b> %s') % (_('Absent'), ', '.join(absentees)))
             overlap.attendee_summary = Markup('<br/>').join(lines) if lines else False
 
-    @api.depends('overlap_type')
+    @api.depends('covered_members', 'total_members')
     def _compute_display_name(self):
-        labels = dict(self._fields['overlap_type']._description_selection(self.env))
         for overlap in self:
-            overlap.display_name = labels.get(overlap.overlap_type, '')
+            overlap.display_name = f'{overlap.covered_members}/{overlap.total_members}'
 
     @property
     def _table_sql(self):
@@ -109,33 +112,19 @@ class TsAvailabilityOverlap(models.Model):
                         SELECT 1 FROM ts_availability a
                        WHERE a.start_datetime <= t AND a.stop_datetime >= next_t
                    )
-            ), segment_coverage AS (
-                SELECT
-                    s.start_datetime,
-                    s.stop_datetime,
-                    (SELECT count(*) FROM members) AS total_members,
-                    (SELECT count(*) FROM admins) AS total_admins,
-                    count(DISTINCT a.user_id) FILTER (
-                        WHERE a.user_id IN (SELECT user_id FROM members)
-                    ) AS covered_members,
-                    count(DISTINCT a.user_id) FILTER (
-                        WHERE a.user_id IN (SELECT user_id FROM admins)
-                    ) AS covered_admins
-                  FROM segments s
-                  LEFT JOIN ts_availability a
-                    ON a.availability_type = 'full'
-                   AND a.start_datetime <= s.start_datetime
-                   AND a.stop_datetime >= s.stop_datetime
-                 GROUP BY s.start_datetime, s.stop_datetime
             )
             SELECT
-                row_number() OVER (ORDER BY start_datetime) AS id,
-                start_datetime,
-                stop_datetime,
-                CASE
-                    WHEN total_members > 0 AND covered_members = total_members THEN 'green'
-                    WHEN total_admins > 0 AND covered_admins = total_admins THEN 'blue'
-                    ELSE 'grey'
-                END AS overlap_type
-              FROM segment_coverage
+                row_number() OVER (ORDER BY s.start_datetime) AS id,
+                s.start_datetime,
+                s.stop_datetime,
+                (SELECT count(*) FROM members) AS total_members,
+                count(DISTINCT a.user_id) FILTER (
+                    WHERE a.user_id IN (SELECT user_id FROM members)
+                ) AS covered_members
+              FROM segments s
+              LEFT JOIN ts_availability a
+                ON a.availability_type = 'full'
+               AND a.start_datetime <= s.start_datetime
+               AND a.stop_datetime >= s.stop_datetime
+             GROUP BY s.start_datetime, s.stop_datetime
         )""", administrator_group_id=administrator_group_id, member_group_id=member_group_id)

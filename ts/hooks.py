@@ -18,3 +18,8 @@ def post_init_hook(env):
         env['ts.availability.filter']._sync_all_member_filters()
     except Exception:
         _logger.exception('failed to sync availability filters during post_init_hook')
+
+    try:
+        env['ts.availability.overlap.filter']._sync_all_member_filters()
+    except Exception:
+        _logger.exception('failed to sync availability overlap filters during post_init_hook')

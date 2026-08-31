@@ -8,6 +8,8 @@
                       date_start="start_datetime" date_stop="stop_datetime"
                       mode="week" scales="day,week,month" color="color" quick_create="0"
                       event_open_popup="true" create="0" edit="0" delete="0">
+                <field name="target_user_id" invisible="1" filters="1" avatar_field="avatar_128"
+                       write_model="ts.availability.overlap.filter" write_field="target_user_id" filter_field="checked"/>
                 <field name="attendee_summary" nolabel="1"/>
             </calendar>
         </field>

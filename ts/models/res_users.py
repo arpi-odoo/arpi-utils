@@ -67,10 +67,12 @@ class ResUsers(models.Model):
         users = super().create(vals_list)
         if any('group_ids' in vals for vals in vals_list):
             self.env['ts.availability.filter']._sync_all_member_filters()
+            self.env['ts.availability.overlap.filter']._sync_all_member_filters()
         return users
 
     def write(self, vals):
         result = super().write(vals)
         if 'group_ids' in vals:
             self.env['ts.availability.filter']._sync_all_member_filters()
+            self.env['ts.availability.overlap.filter']._sync_all_member_filters()
         return result

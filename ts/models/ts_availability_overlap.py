@@ -21,12 +21,53 @@ class TsAvailabilityOverlap(models.Model):
 
     start_datetime = fields.Datetime(readonly=True)
     stop_datetime = fields.Datetime(readonly=True)
-    covered_members = fields.Integer(string='Members Present', readonly=True)
-    total_members = fields.Integer(string='Total Members', readonly=True)
+    # Who counts towards total_members/covered_members: every effective
+    # member/administrator by default, or only the ones the calendar's member
+    # selector (see the "target_user_id" field below) left checked, passed
+    # along as the `ts_overlap_member_ids` context key by the JS view code.
+    covered_members = fields.Integer(string='Members Present', compute='_compute_member_coverage')
+    total_members = fields.Integer(string='Total Members', compute='_compute_member_coverage')
     color = fields.Char(compute='_compute_color')
     attendee_summary = fields.Html(string='Who', compute='_compute_attendee_summary', sanitize=False)
+    # Not a real per-row attribute (a segment isn't tied to a single user):
+    # this only exists so the calendar view can offer the same "sidebar of
+    # members with checkboxes" widget as the Availabilities calendar. Its
+    # value is never read; the widget's selection reaches us as the
+    # `ts_overlap_member_ids` context key instead (see the view's JS).
+    target_user_id = fields.Many2one('res.users', string='Member', compute='_compute_target_user_id')
+
+    def _compute_target_user_id(self):
+        for overlap in self:
+            overlap.target_user_id = False
+
+    def _get_ts_overlap_members(self):
+        selected_member_ids = self.env.context.get('ts_overlap_member_ids')
+        if selected_member_ids is not None:
+            return self.env['res.users'].browse(selected_member_ids).exists()
+        return self.env['res.users'].search([('all_group_ids', 'in', self.env.ref('ts.group_ts_member').id)])
+
+    @api.depends('start_datetime', 'stop_datetime')
+    @api.depends_context('ts_overlap_member_ids')
+    def _compute_member_coverage(self):
+        # An elementary segment is, by construction, either fully inside or
+        # fully outside any given availability row's span (see _table_sql),
+        # so a plain containment check is enough to know who covers it.
+        members = self._get_ts_overlap_members()
+        for overlap in self:
+            overlap.total_members = len(members)
+            if not (overlap.start_datetime and overlap.stop_datetime) or not members:
+                overlap.covered_members = 0
+                continue
+            covering_availabilities = self.env['ts.availability'].sudo().search([
+                ('availability_type', '=', 'full'),
+                ('user_id', 'in', members.ids),
+                ('start_datetime', '<=', overlap.start_datetime),
+                ('stop_datetime', '>=', overlap.stop_datetime),
+            ])
+            overlap.covered_members = len(set(covering_availabilities.user_id.ids))
 
     @api.depends('covered_members', 'total_members')
+    @api.depends_context('ts_overlap_member_ids')
     def _compute_color(self):
         for overlap in self:
             if not overlap.total_members:
@@ -69,62 +110,34 @@ class TsAvailabilityOverlap(models.Model):
             overlap.attendee_summary = Markup('<br/>').join(lines) if lines else False
 
     @api.depends('covered_members', 'total_members')
+    @api.depends_context('ts_overlap_member_ids')
     def _compute_display_name(self):
         for overlap in self:
             overlap.display_name = f'{overlap.covered_members}/{overlap.total_members}'
 
     @property
     def _table_sql(self):
-        administrator_group_id = self.env.ref('ts.group_ts_administrator').id
-        member_group_id = self.env.ref('ts.group_ts_member').id
-        # Members and administrators are computed here (rather than relying on
-        # group implication) because an administrator isn't necessarily also
-        # an explicit row of group_ts_member in res_groups_users_rel.
         return SQL("""(
-            WITH admins AS (
-                SELECT uid AS user_id
-                  FROM res_groups_users_rel
-                 WHERE gid = %(administrator_group_id)s
-            ), explicit_members AS (
-                SELECT uid AS user_id
-                  FROM res_groups_users_rel
-                 WHERE gid = %(member_group_id)s
-            ), members AS (
-                SELECT user_id FROM explicit_members
-                UNION
-                SELECT user_id FROM admins
-            ), points AS (
+            WITH points AS (
                 SELECT start_datetime AS t FROM ts_availability
                 UNION
                 SELECT stop_datetime AS t FROM ts_availability
             ), ordered_points AS (
                 SELECT t, lead(t) OVER (ORDER BY t) AS next_t
                   FROM points
-            ), segments AS (
-                SELECT t AS start_datetime, next_t AS stop_datetime
-                  FROM ordered_points
-                 WHERE next_t IS NOT NULL AND next_t > t
-                   -- Skip pure gaps (no one has recorded anything at all here):
-                   -- without this, the segment between the last slot of one day
-                   -- and the first slot of a later day would still be emitted,
-                   -- as one giant grey block spanning the days in between.
-                   AND EXISTS (
-                        SELECT 1 FROM ts_availability a
-                       WHERE a.start_datetime <= t AND a.stop_datetime >= next_t
-                   )
             )
             SELECT
-                row_number() OVER (ORDER BY s.start_datetime) AS id,
-                s.start_datetime,
-                s.stop_datetime,
-                (SELECT count(*) FROM members) AS total_members,
-                count(DISTINCT a.user_id) FILTER (
-                    WHERE a.user_id IN (SELECT user_id FROM members)
-                ) AS covered_members
-              FROM segments s
-              LEFT JOIN ts_availability a
-                ON a.availability_type = 'full'
-               AND a.start_datetime <= s.start_datetime
-               AND a.stop_datetime >= s.stop_datetime
-             GROUP BY s.start_datetime, s.stop_datetime
-        )""", administrator_group_id=administrator_group_id, member_group_id=member_group_id)
+                row_number() OVER (ORDER BY t) AS id,
+                t AS start_datetime,
+                next_t AS stop_datetime
+              FROM ordered_points
+             WHERE next_t IS NOT NULL AND next_t > t
+               -- Skip pure gaps (no one has recorded anything at all here):
+               -- without this, the segment between the last slot of one day
+               -- and the first slot of a later day would still be emitted,
+               -- as one giant grey block spanning the days in between.
+               AND EXISTS (
+                    SELECT 1 FROM ts_availability a
+                   WHERE a.start_datetime <= t AND a.stop_datetime >= next_t
+               )
+        )""")

@@ -1,4 +1,5 @@
 
+from . import res_users
 from . import eva_game
 from . import eva_game_result
 from . import eva_gg_sync

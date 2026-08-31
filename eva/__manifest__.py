@@ -14,6 +14,7 @@
     'data': [
         'security/ir.access.csv',
         'views/eva_session_views.xml',
+        'views/eva_session_subscribe_wizard_views.xml',
         'views/eva_session_matchup_views.xml',
         'views/eva_map_views.xml',
         'views/eva_player_views.xml',

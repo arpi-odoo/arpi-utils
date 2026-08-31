@@ -1,8 +1,15 @@
 from datetime import timedelta
+from urllib.parse import urlparse
+from zoneinfo import ZoneInfo
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 from odoo.fields import Command
+
+try:
+    import vobject
+except ImportError:
+    vobject = None
 
 # Purely for calendar display (how long an event visually spans); not tied to
 # any specific game's real duration.
@@ -242,3 +249,33 @@ class EvaSession(models.Model):
         empty = self.env['eva.token.move']
         for session in self:
             moves_by_session.get(session, empty).unlink()
+
+    def _get_ics_feed(self):
+        """ Return a single iCalendar file (bytes) listing all sessions in self,
+            meant to be served as a subscribable feed (see the eva.controllers.main
+            /eva/sessions/<uid>/<token>.ics route).
+        """
+        if not vobject:
+            return b''
+
+        base_url = self.env['ir.config_parameter'].sudo().get_str('web.base.url')
+        uid_host = urlparse(base_url).hostname or 'eva'
+
+        cal = vobject.iCalendar()
+        cal.add('x-wr-calname').value = _('EVA Sessions')
+        cal.add('method').value = 'PUBLISH'
+
+        for session in self:
+            event = cal.add('vevent')
+            event.add('uid').value = f'eva-session-{session.id}@{uid_host}'
+            event.add('dtstamp').value = fields.Datetime.now().replace(tzinfo=ZoneInfo('UTC'))
+            event.add('dtstart').value = session.datetime.replace(tzinfo=ZoneInfo('UTC'))
+            event.add('dtend').value = session.datetime_end.replace(tzinfo=ZoneInfo('UTC'))
+            event.add('summary').value = session.name
+            for player in session.player_ids:
+                if player.user_id.email:
+                    attendee = event.add('attendee')
+                    attendee.value = f'MAILTO:{player.user_id.email}'
+                    attendee.params['CN'] = [player.name.replace('"', "'")]
+
+        return cal.serialize().encode('utf-8')

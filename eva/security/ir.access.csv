@@ -1,5 +1,6 @@
 id,name,model_id,group_id/id,operation,domain
 access_eva_session,eva.session,eva.session,base.group_user,crud,
+access_eva_session_subscribe_wizard,eva.session.subscribe.wizard,eva.session.subscribe.wizard,base.group_user,crud,
 access_eva_map,eva.map,eva.map,base.group_user,crud,
 access_eva_player,eva.player,eva.player,base.group_user,crud,
 access_eva_game,eva.game,eva.game,base.group_user,crud,

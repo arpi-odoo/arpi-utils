@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="eva.EvaSessionSubscribeCogMenu">
+        <DropdownItem class="'o_eva_session_subscribe_menu'" onSelected.bind="this.onSubscribeClick">
+            <i class="fa fa-fw fa-calendar-plus-o me-1"/>Subscribe to Calendar
+        </DropdownItem>
+    </t>
+
+</templates>

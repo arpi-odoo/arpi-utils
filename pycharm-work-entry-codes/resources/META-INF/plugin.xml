@@ -1,0 +1,27 @@
+<idea-plugin>
+    <id>com.arpi.odoo.workentry</id>
+    <name>Odoo Work Entry Codes</name>
+    <version>0.2.0</version>
+    <vendor email="arpi@odoo.com">arpi-odoo</vendor>
+    <description><![CDATA[
+        Maps hr.work.entry.type code literals ('002.00', 'LEAVE110', ...) in Python and XML files to the
+        generic &lt;record&gt; defining them: an inline hint shows the work entry type name, Ctrl+click jumps
+        to the record.
+    ]]></description>
+    <idea-version since-build="253"/>
+
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <fileBasedIndex implementation="com.arpi.odoo.workentry.WorkEntryTypeIndex"/>
+        <codeInsight.declarativeInlayProvider language="Python" providerId="arpi.odoo.workentry.python"
+                implementationClass="com.arpi.odoo.workentry.WorkEntryInlayHintsProvider"
+                isEnabledByDefault="true" group="VALUES_GROUP"
+                bundle="messages.WorkEntryBundle" nameKey="inlay.provider.name"/>
+        <codeInsight.declarativeInlayProvider language="XML" providerId="arpi.odoo.workentry.xml"
+                implementationClass="com.arpi.odoo.workentry.WorkEntryInlayHintsProvider"
+                isEnabledByDefault="true" group="VALUES_GROUP"
+                bundle="messages.WorkEntryBundle" nameKey="inlay.provider.name"/>
+        <gotoDeclarationHandler implementation="com.arpi.odoo.workentry.WorkEntryGotoDeclarationHandler"/>
+    </extensions>
+</idea-plugin>

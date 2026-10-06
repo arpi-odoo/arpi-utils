@@ -30,7 +30,8 @@ class EvaSession(models.Model):
     _inherit = ['mail.thread']
     _order = 'datetime desc'
 
-    name = fields.Char(compute='_compute_name')
+    name = fields.Char(compute='_compute_name', inverse='_inverse_name', readonly=False)
+    manual_name = fields.Char()
     display_name = fields.Char(compute='_compute_name')
     datetime = fields.Datetime(required=True, string='Date', default=lambda self: fields.Datetime.now())
     datetime_end = fields.Datetime(compute='_compute_datetime_end', store=True)
@@ -139,15 +140,26 @@ class EvaSession(models.Model):
             'context': {'default_session_id': self.id},
         }
 
-    @api.depends('state', 'type', 'division')
+    @api.depends('type', 'division', 'datetime', 'manual_name')
     def _compute_name(self):
-        game_type_selection = dict(self._fields['type']._description_selection(self.env))
         for session in self:
-            name = game_type_selection[session.type]
-            if session.type == 'league':
-                name += f' {session.division}'
+            name = session.manual_name or session._get_default_name()
             session.name = name
             session.display_name = f'{name} - {session.datetime.date()}'
+
+    def _inverse_name(self):
+        # The form also sends back the computed default (e.g. after changing the type), so
+        # only a name that differs from that default counts as a manual override. Clearing
+        # the name falls back to the computed one again.
+        for session in self:
+            session.manual_name = session.name if session.name != session._get_default_name() else False
+
+    def _get_default_name(self):
+        self.ensure_one()
+        name = dict(self._fields['type']._description_selection(self.env))[self.type]
+        if self.type == 'league':
+            name += f' {self.division}'
+        return name
 
     @api.depends('player_ids.token_balance', 'token_cost', 'advanced_cost_distribution', 'token_move_ids.cost')
     def _compute_warning_text(self):

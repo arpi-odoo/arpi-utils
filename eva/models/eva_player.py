@@ -25,7 +25,7 @@ class EvaPlayer(models.Model):
     tokens_reserved = fields.Integer(compute='_compute_tokens_reserved', store=True)
     tokens_available = fields.Integer(compute='_compute_tokens_available', store=True)
 
-    @api.depends('token_move_ids.amount')
+    @api.depends('token_move_ids.amount', 'token_move_ids.state')
     def _compute_token_balance(self):
         for player in self:
             player.token_balance = sum(player.token_move_ids.filtered(lambda m: m.state == 'done').mapped('amount'))
@@ -41,7 +41,7 @@ class EvaPlayer(models.Model):
                     'date': fields.Date.today(),
                 })
 
-    @api.depends('session_ids.token_cost', 'token_balance')
+    @api.depends('token_move_ids.amount', 'token_move_ids.state', 'token_balance')
     def _compute_tokens_reserved(self):
         for player in self:
             tokens_reserved = -sum(player.token_move_ids.filtered(lambda m: m.state == 'draft').mapped('amount'))

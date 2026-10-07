@@ -37,8 +37,8 @@
                     <group>
                         <group>
                             <field name="winner" placeholder="Draw" options="{'no_create': True}"/>
-                            <field name="replay"/>
-                            <field name="ebp"/>
+                            <field name="replay" widget="url"/>
+                            <field name="ebp" widget="url"/>
                         </group>
                         <group>
                             <field name="map_id"/>

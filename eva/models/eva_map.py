@@ -10,6 +10,7 @@ class EvaMap(models.Model):
     banner = fields.Image()
     banner_card = fields.Image(related='banner', max_width=512, max_height=288, store=True)
     minimap = fields.Image()
+    calls_image = fields.Image(string='Calls Overview', help='A single image showing all the calls on the map.')
     tactics = fields.Html()
     comments = fields.Html()
     eva_gg_id = fields.Char(string='eva.gg Map ID', index=True, copy=False)

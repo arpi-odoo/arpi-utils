@@ -10,7 +10,8 @@
                         <button name="action_open_call_trainer"
                             class="oe_stat_button"
                             icon="target"
-                            type="object">
+                            type="object"
+                            invisible="not call_count">
                             <div class="o_stat_info">
                                 Call Trainer
                                 <span class="o_stat_value">
@@ -73,6 +74,7 @@
                             <field name="comments" nolabel="1" type="html" options="{'collaborative': True}"/>
                         </page>
                         <page string="Calls" name="calls">
+                            <field name="calls_image" widget="image" nolabel="1" class="d-block text-center mb-3" options="{'img_class': 'img-fluid'}"/>
                             <field name="call_ids" nolabel="1" context="{'default_map_id': id}"/>
                         </page>
                     </notebook>

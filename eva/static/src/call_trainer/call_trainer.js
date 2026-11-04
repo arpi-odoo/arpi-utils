@@ -199,6 +199,10 @@ export class CallTrainer extends Component {
         this.stopTimers();
         this.leaveChannel();
         this.trainingId = false;
+        // Switch screens before dropping the training: the lobby/game/results
+        // templates would otherwise re-render with a null training while the
+        // home data loads.
+        this.state.screen = "loading";
         this.state.training = null;
         this.props.updateActionState?.({ resId: false });
         if (this.mapId) {

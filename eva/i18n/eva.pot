@@ -184,6 +184,11 @@ msgid "D4"
 msgstr ""
 
 #. module: eva
+#: model:ir.model.fields.selection,name:eva.selection__eva_session__division__d5
+msgid "D5"
+msgstr ""
+
+#. module: eva
 #: model:ir.model.fields,field_description:eva.field_eva_game__datetime
 #: model:ir.model.fields,field_description:eva.field_eva_session__datetime
 #: model:ir.model.fields,field_description:eva.field_eva_token_move__date

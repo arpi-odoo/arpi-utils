@@ -15,6 +15,8 @@ class EvaMap(models.Model):
     eva_gg_id = fields.Char(string='eva.gg Map ID', index=True, copy=False)
 
     game_ids = fields.One2many('eva.game', 'map_id')
+    call_ids = fields.One2many('eva.map.call', 'map_id', string='Calls')
+    call_count = fields.Integer(compute='_compute_call_count')
     game_count = fields.Integer(compute='_compute_game_count')
     my_team_game_count = fields.Integer(compute='_compute_my_team_game_count')
     session_count = fields.Integer(compute='_compute_session_count')
@@ -24,6 +26,11 @@ class EvaMap(models.Model):
     def _compute_game_count(self):
         for _map in self:
             _map.game_count = len(_map.game_ids)
+
+    @api.depends('call_ids')
+    def _compute_call_count(self):
+        for _map in self:
+            _map.call_count = len(_map.call_ids)
 
     def _compute_my_team_game_count(self):
         my_team = self.env['eva.player'].search([('user_id', '=', self.env.uid)], limit=1).team_id
@@ -83,3 +90,10 @@ class EvaMap(models.Model):
                 'search_default_group_by_result': 2,
             },
         }
+
+    def action_open_call_trainer(self):
+        self.ensure_one()
+        action = self.env['ir.actions.actions']._for_xml_id('eva.action_eva_call_trainer')
+        action['params'] = {'map_id': self.id}
+        action['context'] = {'active_id': self.id, 'active_model': 'eva.map'}
+        return action

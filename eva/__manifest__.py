@@ -5,6 +5,7 @@
     'sequence': 292,
     'summary': 'Module to handle all EVA related matters',
     'depends': [
+        'bus',
         'resource_mail',
         'website',
     ],
@@ -23,6 +24,7 @@
         'views/eva_team_views.xml',
         'views/eva_token_move_views.xml',
         'views/eva_views.xml',
+        'views/eva_call_training_views.xml',
         'views/eva_website_templates.xml',
         'data/eva_map_data.xml',
         'data/ir_cron_data.xml',
@@ -36,6 +38,9 @@
             # The graph view (Chart.js) itself lives in the lazy-loaded bundle below,
             # not in assets_backend, so anything extending it must move there too.
             ('remove', 'eva/static/src/views/eva_game_result_graph/**/*'),
+        ],
+        'web.assets_tests': [
+            'eva/static/tests/tours/**/*',
         ],
         'web.assets_backend_lazy': [
             'eva/static/src/views/eva_game_result_graph/**/*',

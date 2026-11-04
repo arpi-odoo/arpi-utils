@@ -7,6 +7,17 @@
             <form>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
+                        <button name="action_open_call_trainer"
+                            class="oe_stat_button"
+                            icon="target"
+                            type="object">
+                            <div class="o_stat_info">
+                                Call Trainer
+                                <span class="o_stat_value">
+                                    <field name="call_count"/> calls
+                                </span>
+                            </div>
+                        </button>
                         <button name="action_open_sessions"
                             class="oe_stat_button"
                             icon="event_upcoming" icon_class="oi-filled"
@@ -60,6 +71,9 @@
                         </page>
                         <page string="Comments">
                             <field name="comments" nolabel="1" type="html" options="{'collaborative': True}"/>
+                        </page>
+                        <page string="Calls" name="calls">
+                            <field name="call_ids" nolabel="1" context="{'default_map_id': id}"/>
                         </page>
                     </notebook>
                 </sheet>

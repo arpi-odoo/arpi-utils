@@ -1,0 +1,313 @@
+<?xml version="1.0"?>
+<odoo>
+    <!-- Calls -->
+    <record id="eva_map_call_view_form" model="ir.ui.view">
+        <field name="name">eva.map.call.form</field>
+        <field name="model">eva.map.call</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_answers"
+                            class="oe_stat_button"
+                            icon="insights"
+                            invisible="not id"
+                            type="object">
+                            <div class="o_stat_info">Stats</div>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="e.g. Box"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="map_id" invisible="context.get('default_map_id')"/>
+                            <field name="aliases" placeholder="e.g. Middle Door, MD"/>
+                        </group>
+                    </group>
+                    <field name="image_ids" mode="kanban" context="{'default_call_id': id}">
+                        <kanban>
+                            <templates>
+                                <t t-name="card" class="p-0">
+                                    <field name="image_512" widget="image" class="w-100" options="{'img_class': 'w-100 object-fit-cover', 'size': [0, 160]}"/>
+                                </t>
+                            </templates>
+                        </kanban>
+                        <form>
+                            <field name="image" widget="image" class="w-100"/>
+                        </form>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="eva_map_call_view_list" model="ir.ui.view">
+        <field name="name">eva.map.call.list</field>
+        <field name="model">eva.map.call</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="cover_image" widget="image" options="{'size': [96, 54], 'img_class': 'rounded object-fit-cover'}"/>
+                <field name="name"/>
+                <field name="map_id" column_invisible="context.get('default_map_id')"/>
+                <field name="aliases"/>
+                <field name="image_count" string="Images"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Trainings -->
+    <record id="eva_call_training_view_list" model="ir.ui.view">
+        <field name="name">eva.call.training.list</field>
+        <field name="model">eva.call.training</field>
+        <field name="arch" type="xml">
+            <list create="false" edit="false" delete="false">
+                <field name="start_date"/>
+                <field name="map_id"/>
+                <field name="host_id" widget="many2one_avatar_user"/>
+                <field name="participant_count" string="Players"/>
+                <field name="round_count"/>
+                <field name="lives"/>
+                <field name="time_per_round"/>
+                <field name="state" widget="badge" decoration-info="state == 'lobby'" decoration-warning="state == 'running'" decoration-success="state == 'done'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="eva_call_training_view_form" model="ir.ui.view">
+        <field name="name">eva.call.training.form</field>
+        <field name="model">eva.call.training</field>
+        <field name="arch" type="xml">
+            <form create="false" edit="false" delete="false">
+                <header>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><h1><field name="name"/></h1></div>
+                    <group>
+                        <group>
+                            <field name="map_id"/>
+                            <field name="host_id" widget="many2one_avatar_user"/>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                        </group>
+                        <group>
+                            <field name="round_count"/>
+                            <field name="lives"/>
+                            <field name="time_per_round"/>
+                        </group>
+                    </group>
+                    <field name="participant_ids">
+                        <list default_order="score desc">
+                            <field name="user_id" widget="many2one_avatar_user"/>
+                            <field name="state"/>
+                            <field name="score"/>
+                            <field name="correct_count"/>
+                            <field name="mistake_count"/>
+                            <field name="accuracy" widget="progressbar"/>
+                            <field name="avg_response_time" digits="[16, 2]"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Participants (score history) -->
+    <record id="eva_call_training_participant_view_list" model="ir.ui.view">
+        <field name="name">eva.call.training.participant.list</field>
+        <field name="model">eva.call.training.participant</field>
+        <field name="arch" type="xml">
+            <list create="false" edit="false" delete="false">
+                <field name="date"/>
+                <field name="user_id" widget="many2one_avatar_user"/>
+                <field name="map_id"/>
+                <field name="training_id" optional="hide"/>
+                <field name="score"/>
+                <field name="correct_count"/>
+                <field name="round_count" string="Rounds"/>
+                <field name="mistake_count"/>
+                <field name="accuracy" widget="progressbar"/>
+                <field name="avg_response_time" digits="[16, 2]"/>
+                <field name="state" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="eva_call_training_participant_view_graph" model="ir.ui.view">
+        <field name="name">eva.call.training.participant.graph</field>
+        <field name="model">eva.call.training.participant</field>
+        <field name="arch" type="xml">
+            <graph type="line">
+                <field name="date" interval="week"/>
+                <field name="accuracy" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="eva_call_training_participant_view_pivot" model="ir.ui.view">
+        <field name="name">eva.call.training.participant.pivot</field>
+        <field name="model">eva.call.training.participant</field>
+        <field name="arch" type="xml">
+            <pivot>
+                <field name="map_id" type="row"/>
+                <field name="date" interval="month" type="col"/>
+                <field name="accuracy" type="measure"/>
+                <field name="score" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="eva_call_training_participant_view_search" model="ir.ui.view">
+        <field name="name">eva.call.training.participant.search</field>
+        <field name="model">eva.call.training.participant</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="user_id"/>
+                <field name="map_id"/>
+                <filter name="mine" string="Mine" domain="[('user_id', '=', uid)]"/>
+                <filter name="finished" string="Finished" domain="[('state', '=', 'finished')]"/>
+                <separator/>
+                <filter name="date" string="Date" date="date"/>
+                <group>
+                    <filter name="group_by_user" string="Player" context="{'group_by': 'user_id'}"/>
+                    <filter name="group_by_map" string="Map" context="{'group_by': 'map_id'}"/>
+                    <filter name="group_by_week" string="Week" context="{'group_by': 'date:week'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_eva_call_training_participant" model="ir.actions.act_window">
+        <field name="name">Call Trainer Scores</field>
+        <field name="res_model">eva.call.training.participant</field>
+        <field name="view_mode">graph,pivot,list</field>
+        <field name="search_view_id" ref="eva_call_training_participant_view_search"/>
+        <field name="context">{'search_default_mine': 1, 'search_default_finished': 1, 'search_default_group_by_map': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No Call Trainer score yet</p>
+            <p>Open a map and click "Call Trainer" to start training your calls.</p>
+        </field>
+    </record>
+
+    <!-- Answers (per-call history) -->
+    <record id="eva_call_training_answer_view_list" model="ir.ui.view">
+        <field name="name">eva.call.training.answer.list</field>
+        <field name="model">eva.call.training.answer</field>
+        <field name="arch" type="xml">
+            <list create="false" edit="false" delete="false">
+                <field name="date"/>
+                <field name="user_id" widget="many2one_avatar_user"/>
+                <field name="map_id"/>
+                <field name="image" widget="image" options="{'size': [96, 54], 'img_class': 'rounded object-fit-cover'}"/>
+                <field name="call_id"/>
+                <field name="answer"/>
+                <field name="result" widget="badge" decoration-success="result == 'correct'" decoration-danger="result == 'wrong'" decoration-warning="result == 'timeout'"/>
+                <field name="response_time" digits="[16, 2]"/>
+                <field name="points" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="eva_call_training_answer_view_graph" model="ir.ui.view">
+        <field name="name">eva.call.training.answer.graph</field>
+        <field name="model">eva.call.training.answer</field>
+        <field name="arch" type="xml">
+            <graph type="line">
+                <field name="date" interval="week"/>
+                <field name="success_rate" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="eva_call_training_answer_view_pivot" model="ir.ui.view">
+        <field name="name">eva.call.training.answer.pivot</field>
+        <field name="model">eva.call.training.answer</field>
+        <field name="arch" type="xml">
+            <pivot>
+                <field name="call_id" type="row"/>
+                <field name="date" interval="month" type="col"/>
+                <field name="success_rate" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="eva_call_training_answer_view_search" model="ir.ui.view">
+        <field name="name">eva.call.training.answer.search</field>
+        <field name="model">eva.call.training.answer</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="call_id"/>
+                <field name="map_id"/>
+                <field name="user_id"/>
+                <field name="answer"/>
+                <filter name="mine" string="Mine" domain="[('user_id', '=', uid)]"/>
+                <separator/>
+                <filter name="correct" string="Correct" domain="[('result', '=', 'correct')]"/>
+                <filter name="missed" string="Missed" domain="[('result', '!=', 'correct')]"/>
+                <separator/>
+                <filter name="date" string="Date" date="date"/>
+                <group>
+                    <filter name="group_by_call" string="Call" context="{'group_by': 'call_id'}"/>
+                    <filter name="group_by_map" string="Map" context="{'group_by': 'map_id'}"/>
+                    <filter name="group_by_user" string="Player" context="{'group_by': 'user_id'}"/>
+                    <filter name="group_by_result" string="Result" context="{'group_by': 'result'}"/>
+                    <filter name="group_by_week" string="Week" context="{'group_by': 'date:week'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_eva_call_training_answer" model="ir.actions.act_window">
+        <field name="name">Call Stats</field>
+        <field name="res_model">eva.call.training.answer</field>
+        <field name="view_mode">pivot,graph,list</field>
+        <field name="search_view_id" ref="eva_call_training_answer_view_search"/>
+        <field name="context">{'search_default_mine': 1, 'pivot_row_groupby': ['map_id', 'call_id']}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No answer yet</p>
+            <p>Open a map and click "Call Trainer" to start training your calls.</p>
+        </field>
+    </record>
+
+    <record id="action_eva_call_training" model="ir.actions.act_window">
+        <field name="name">Call Trainings</field>
+        <field name="res_model">eva.call.training</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- The game itself -->
+    <record id="action_eva_call_trainer" model="ir.actions.client">
+        <field name="name">Call Trainer</field>
+        <field name="tag">eva_call_trainer</field>
+        <field name="path">call-trainer</field>
+    </record>
+
+    <menuitem
+        id="menu_eva_call_trainer_menu"
+        name="Call Trainer"
+        parent="menu_eva_root"
+        sequence="35"/>
+
+    <menuitem
+        id="menu_eva_call_trainer_scores"
+        name="Scores"
+        parent="menu_eva_call_trainer_menu"
+        action="action_eva_call_training_participant"
+        sequence="10"/>
+
+    <menuitem
+        id="menu_eva_call_trainer_stats"
+        name="Call Stats"
+        parent="menu_eva_call_trainer_menu"
+        action="action_eva_call_training_answer"
+        sequence="20"/>
+
+    <menuitem
+        id="menu_eva_call_trainer_trainings"
+        name="Trainings"
+        parent="menu_eva_call_trainer_menu"
+        action="action_eva_call_training"
+        sequence="30"/>
+</odoo>

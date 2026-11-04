@@ -16,9 +16,6 @@ USER_AGENT = 'Odoo-EVA-Sync/1.0 (internal club tool; contact: arpi-utils)'
 # Charleroi local league, all divisions. To widen the import further, add
 # region ids here.
 CHARLEROI_REGION_ID = '2408110785608632319'
-# Matches eva.session's 'division' selection (D1-D4); anything outside this is
-# some other competition format and is skipped rather than crashing the cron.
-VALID_DIVISION_NUMBERS = {1, 2, 3, 4}
 
 # Players commonly name themselves "<TEAM TAG>x<username>" (e.g. "TSxBk", "C4SxAngess");
 # the run before the 'x' is the team's actual short name, not the username. Tags can
@@ -30,6 +27,13 @@ TAGGED_USERNAME_RE = re.compile(r'^([A-Z][A-Z0-9]*)x(.+)$')
 class EvaGgSync(models.Model):
     _name = 'eva.gg.sync'
     _description = 'EVA.gg Competitive API Sync'
+
+    def _valid_division_numbers(self):
+        # Derived from eva.session's 'division' selection (D1, D2, ...) so a new
+        # division only needs adding there. eva.gg groups outside it are some other
+        # competition format and are skipped rather than crashing the cron.
+        selection = self.env['eva.session']._fields['division'].selection
+        return {int(value[1:]) for value, _label in selection}
 
     def _request(self, path, params=None):
         response = requests.get(
@@ -284,12 +288,13 @@ class EvaGgSync(models.Model):
             'offset': 0,
             'limit': 100,
         })
+        valid_division_numbers = self._valid_division_numbers()
         relevant = [
             match_summary for match_summary in matches['items']
             # Some never-played fixtures in a since-completed tournament (e.g. a
             # playoff round that never happened) carry no schedule at all; skip them.
             if match_summary.get('scheduledDatetime')
-            and (match_summary.get('group') or {}).get('number') in VALID_DIVISION_NUMBERS
+            and (match_summary.get('group') or {}).get('number') in valid_division_numbers
         ]
         # Group same-day fixtures of the same division into a single session, keyed
         # by the day they were actually scheduled to be played (not when results

@@ -57,6 +57,7 @@ class EvaSession(models.Model):
             ('D2', 'D2'),
             ('D3', 'D3'),
             ('D4', 'D4'),
+            ('D5', 'D5'),
         ],
         required=True, default='D1')
     player_ids = fields.Many2many(

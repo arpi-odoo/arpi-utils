@@ -26,3 +26,18 @@ class EvaWebsite(http.Controller):
             ('Content-Type', 'text/calendar; charset=utf-8'),
             ('Content-Length', len(content)),
         ])
+
+    @http.route('/eva/call_trainer/<int:participant_id>/<int:round_number>/image', type='http', auth='user')
+    def eva_call_trainer_image(self, participant_id, round_number, **kwargs):
+        """Serve a Call Trainer round's image to its player only, and only once
+        that round has been reached, without exposing which call it belongs to."""
+        participant = request.env['eva.call.training.participant'].sudo().browse(participant_id)
+        if not participant.exists() or participant.user_id != request.env.user:
+            return request.not_found()
+        reached = participant.answered_count + (1 if participant.state == 'playing' else 0)
+        rounds = participant.training_id.round_ids.sorted('sequence')
+        if not 1 <= round_number <= min(reached, len(rounds)):
+            return request.not_found()
+        image = rounds[round_number - 1].image_id
+        stream = request.env['ir.binary']._get_image_stream_from(image, 'image', filename='call')
+        return stream.get_response(content_security_policy=None)

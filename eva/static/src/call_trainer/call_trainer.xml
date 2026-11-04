@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="eva.CallTrainer">
+        <div t-attf-class="o_action o_eva_call_trainer bg-view h-100 overflow-auto {{ this.props.className or '' }}">
+            <div class="container py-4">
+                <t t-if="this.state.screen === 'loading'">
+                    <div class="text-center text-muted py-5"><i class="fa fa-circle-o-notch fa-spin fa-2x"/></div>
+                </t>
+                <t t-elif="this.state.screen === 'home'" t-call="eva.CallTrainer.Home"/>
+                <t t-elif="this.state.screen === 'lobby'" t-call="eva.CallTrainer.Lobby"/>
+                <t t-elif="this.state.screen === 'results'" t-call="eva.CallTrainer.Results"/>
+                <t t-else="" t-call="eva.CallTrainer.Game"/>
+            </div>
+        </div>
+    </t>
+
+    <!-- Landing page: settings, open lobbies, history -->
+    <t t-name="eva.CallTrainer.Home">
+        <t t-if="!this.state.home">
+            <h1 class="mb-4">Call Trainer</h1>
+            <p t-if="!this.state.maps.length" class="text-muted">
+                No map has calls yet. Add some in the "Calls" tab of a map.
+            </p>
+            <div class="row g-3">
+                <div t-foreach="this.state.maps" t-as="map" t-key="map.id" class="col-6 col-md-4 col-lg-3">
+                    <button class="o_eva_call_trainer_map btn p-0 w-100 position-relative overflow-hidden rounded" t-on-click="() => this.selectMap(map.id)">
+                        <img t-if="map.banner_card" class="w-100 object-fit-cover" t-attf-src="data:image/webp;base64,{{ map.banner_card }}" alt=""/>
+                        <span class="position-absolute bottom-0 start-0 w-100 p-2 text-white text-uppercase fw-bold text-start" t-out="map.name"/>
+                    </button>
+                </div>
+            </div>
+        </t>
+        <t t-else="">
+            <t t-set="home" t-value="this.state.home"/>
+            <div class="d-flex align-items-center gap-3 mb-4">
+                <h1 class="mb-0 me-auto">
+                    <i class="oi oi-fw me-2" data-icon="target"/>
+                    <a href="#" t-on-click.prevent="() => this.openMap()" t-out="home.map.name"/> calls
+                </h1>
+                <button class="btn btn-secondary" t-on-click="() => this.openStats()">
+                    <i class="oi me-1" data-icon="insights"/>My call stats
+                </button>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h4 class="card-title">New training</h4>
+                            <p class="text-muted">
+                                <t t-out="home.call_count"/> calls, <t t-out="home.image_count"/> images.
+                                Find the call name of each spot: small typos are fine.
+                            </p>
+                            <div t-if="!this.canPlay" class="alert alert-warning">
+                                This map has no call with an image yet. Add some in the "Calls" tab of the map.
+                            </div>
+                            <div class="row g-3 mb-4">
+                                <div class="col-4">
+                                    <label class="form-label" for="eva_ct_rounds">Rounds</label>
+                                    <input id="eva_ct_rounds" type="number" min="1" max="100" class="form-control"
+                                        t-att-value="this.state.settings.round_count"
+                                        t-on-change="(ev) => this.onSettingInput('round_count', ev)"/>
+                                </div>
+                                <div class="col-4">
+                                    <label class="form-label" for="eva_ct_lives">Allowed mistakes</label>
+                                    <input id="eva_ct_lives" type="number" min="0" class="form-control"
+                                        t-att-value="this.state.settings.lives"
+                                        t-on-change="(ev) => this.onSettingInput('lives', ev)"/>
+                                </div>
+                                <div class="col-4">
+                                    <label class="form-label" for="eva_ct_time">Seconds / round</label>
+                                    <input id="eva_ct_time" type="number" min="3" max="120" class="form-control"
+                                        t-att-value="this.state.settings.time_per_round"
+                                        t-on-change="(ev) => this.onSettingInput('time_per_round', ev)"/>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-wrap gap-2">
+                                <button class="btn btn-primary btn-lg" t-att-disabled="!this.canPlay" t-on-click="() => this.createTraining(true)">
+                                    <i class="oi me-1" data-icon="play_arrow"/>Play solo
+                                </button>
+                                <button class="btn btn-secondary btn-lg" t-att-disabled="!this.canPlay" t-on-click="() => this.createTraining(false)">
+                                    <i class="oi me-1" data-icon="groups"/>Create a lobby
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h4 class="card-title">Join a training</h4>
+                            <p t-if="!home.open_trainings.length" class="text-muted mb-0">
+                                No open lobby on this map. Create one and invite your teammates!
+                            </p>
+                            <ul class="list-group list-group-flush">
+                                <li t-foreach="home.open_trainings" t-as="training" t-key="training.id"
+                                    class="list-group-item d-flex align-items-center gap-3 px-0">
+                                    <div class="me-auto">
+                                        <div class="fw-bold">
+                                            <t t-out="training.host"/>'s lobby
+                                            <span t-if="training.state === 'running'" class="badge text-bg-warning ms-1">In progress</span>
+                                        </div>
+                                        <small class="text-muted">
+                                            <t t-out="training.round_count"/> rounds ·
+                                            <t t-out="training.lives"/> mistakes allowed ·
+                                            <t t-out="training.time_per_round"/>s ·
+                                            <t t-out="training.participant_names.join(', ')"/>
+                                        </small>
+                                    </div>
+                                    <button t-if="training.is_mine" class="btn btn-sm btn-primary" t-on-click="() => this.openTraining(training.id)">
+                                        <t t-if="training.state === 'running'">Resume</t><t t-else="">Open</t>
+                                    </button>
+                                    <button t-else="" class="btn btn-sm btn-primary" t-on-click="() => this.joinTraining(training.id)">Join</button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12" t-if="home.my_results.length">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                My last trainings
+                                <small t-if="home.best_accuracy !== false" class="text-muted fs-6 ms-2">
+                                    best accuracy: <t t-out="Math.round(home.best_accuracy)"/>%
+                                </small>
+                            </h4>
+                            <table class="table table-sm align-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th class="text-end">Score</th>
+                                        <th class="text-end">Correct</th>
+                                        <th class="text-end">Accuracy</th>
+                                        <th class="text-end">Rank</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="home.my_results" t-as="result" t-key="result.training_id"
+                                        class="cursor-pointer" t-on-click="() => this.openTraining(result.training_id)">
+                                        <td t-out="this.formatDate(result.date)"/>
+                                        <td class="text-end fw-bold" t-out="result.score"/>
+                                        <td class="text-end"><t t-out="result.correct_count"/> / <t t-out="result.round_count"/></td>
+                                        <td class="text-end"><t t-out="Math.round(result.accuracy)"/>%</td>
+                                        <td class="text-end">
+                                            <t t-if="result.rank"><t t-out="result.rank"/> / <t t-out="result.participant_count"/></t>
+                                            <span t-else="" class="text-muted">solo</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </t>
+
+    <!-- Waiting for players -->
+    <t t-name="eva.CallTrainer.Lobby">
+        <t t-set="training" t-value="this.training"/>
+        <div class="card mx-auto" style="max-width: 720px;">
+            <div class="card-body">
+                <h2 class="card-title"><t t-out="training.map.name"/>: lobby</h2>
+                <p class="text-muted">
+                    <t t-out="training.round_count"/> rounds ·
+                    <t t-out="training.lives"/> mistakes allowed ·
+                    <t t-out="training.time_per_round"/> seconds per round
+                </p>
+                <ul class="list-group mb-4">
+                    <li t-foreach="training.participants" t-as="participant" t-key="participant.id"
+                        class="list-group-item d-flex align-items-center gap-2">
+                        <img class="rounded-circle o_eva_call_trainer_avatar" t-att-src="this.avatarUrl(participant.user_id)" alt=""/>
+                        <span t-out="participant.name"/>
+                        <span t-if="participant.user_id === training.host.id" class="badge text-bg-primary ms-auto">Host</span>
+                    </li>
+                </ul>
+                <div class="d-flex flex-wrap gap-2 align-items-center">
+                    <button t-if="training.is_host" class="btn btn-primary btn-lg" t-on-click="() => this.startTraining()">
+                        <i class="oi me-1" data-icon="play_arrow"/>Start
+                    </button>
+                    <button t-elif="!this.me" class="btn btn-primary btn-lg" t-on-click="() => this.joinTraining(training.id)">Join</button>
+                    <span t-else="" class="text-muted me-2">
+                        <i class="fa fa-circle-o-notch fa-spin me-1"/>Waiting for <t t-out="training.host.name"/> to start...
+                    </span>
+                    <button class="btn btn-secondary" t-on-click="() => this.copyInviteLink()">
+                        <i class="oi me-1" data-icon="link"/>Copy invite link
+                    </button>
+                    <button class="btn btn-link ms-auto" t-on-click="() => this.leaveTraining()">
+                        <t t-if="this.me">Leave</t><t t-else="">Back</t>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <!-- Countdown, rounds and answer feedback -->
+    <t t-name="eva.CallTrainer.Game">
+        <t t-set="training" t-value="this.training"/>
+        <div class="row g-4">
+            <div class="col-lg-9">
+                <div class="d-flex align-items-center gap-3 mb-2 fs-5">
+                    <span>
+                        Round
+                        <strong t-out="this.state.round ? this.state.round.round_number : 1"/>
+                        / <t t-out="training.round_count"/>
+                    </span>
+                    <span class="o_eva_call_trainer_lives text-danger" title="Mistakes left">
+                        <t t-set="lives" t-value="this.livesDisplay"/>
+                        <t t-if="lives.text"><i class="oi" data-icon="favorite"/> <t t-out="lives.text"/></t>
+                        <t t-elif="!lives.hearts.length"><small class="text-muted">Sudden death</small></t>
+                        <t t-else="">
+                            <i t-foreach="lives.hearts" t-as="alive" t-key="alive_index"
+                               t-attf-class="oi {{ alive ? 'oi-filled' : 'opacity-25' }}" data-icon="favorite"/>
+                        </t>
+                    </span>
+                    <span class="ms-auto">Score <strong t-out="this.me.score"/></span>
+                </div>
+                <div class="progress mb-3" style="height: 8px;">
+                    <div t-attf-class="progress-bar {{ this.timerBarClass }}"
+                         t-attf-style="width: {{ (this.state.screen === 'countdown' ? 1 : this.timeRatio) * 100 }}%; transition: none;"/>
+                </div>
+
+                <div class="o_eva_call_trainer_stage position-relative rounded overflow-hidden bg-black d-flex align-items-center justify-content-center">
+                    <t t-if="this.state.screen === 'countdown'">
+                        <div class="text-center text-white">
+                            <div class="text-uppercase opacity-75">Get ready</div>
+                            <div class="o_eva_call_trainer_countdown fw-bold" t-out="this.state.countdown"/>
+                        </div>
+                    </t>
+                    <t t-elif="this.state.round">
+                        <img class="o_eva_call_trainer_image" t-att-src="this.state.round.image_url" alt="Which call is this?"/>
+                        <t t-set="feedback" t-value="this.state.feedback"/>
+                        <div t-if="this.state.screen === 'feedback'"
+                             t-attf-class="o_eva_call_trainer_feedback position-absolute bottom-0 start-0 w-100 p-3 text-center text-white {{ feedback.result === 'correct' ? 'bg-success' : 'bg-danger' }}">
+                            <t t-if="feedback.result === 'correct'">
+                                <div class="fs-3 fw-bold"><i class="oi me-2" data-icon="check"/><t t-out="feedback.expected"/></div>
+                                <div>+<t t-out="feedback.points"/></div>
+                            </t>
+                            <t t-else="">
+                                <div class="fs-6 opacity-75">
+                                    <t t-if="feedback.result === 'timeout'">Time's up!</t>
+                                    <t t-else="">"<t t-out="feedback.answer"/>" is wrong</t>
+                                </div>
+                                <div class="fs-3 fw-bold">It was <t t-out="feedback.expected"/></div>
+                            </t>
+                            <small class="opacity-75">Press Enter to continue</small>
+                        </div>
+                    </t>
+                </div>
+
+                <div class="input-group input-group-lg mt-3">
+                    <input t-ref="this.answerInput" type="text" class="form-control" placeholder="Call name, then Enter"
+                        autocomplete="off" autocapitalize="off" spellcheck="false"
+                        t-att-disabled="this.state.screen !== 'round'"
+                        t-att-value="this.state.answer"
+                        t-on-input="(ev) => this.onAnswerInput(ev)"
+                        t-on-keydown="(ev) => this.onAnswerKeydown(ev)"/>
+                    <button class="btn btn-primary" t-att-disabled="this.state.screen !== 'round'" t-on-click="() => this.submitAnswer()">
+                        Answer
+                    </button>
+                </div>
+                <div class="d-flex mt-2">
+                    <span class="text-muted small"><t t-out="Math.ceil(this.state.timeLeft)"/>s left</span>
+                    <button class="btn btn-link btn-sm ms-auto text-muted" t-on-click="() => this.leaveTraining()">Give up</button>
+                </div>
+            </div>
+            <div class="col-lg-3" t-if="training.participants.length > 1">
+                <t t-call="eva.CallTrainer.Leaderboard"/>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="eva.CallTrainer.Leaderboard">
+        <ul class="list-group">
+            <li t-foreach="this.training.participants" t-as="participant" t-key="participant.id"
+                t-attf-class="list-group-item d-flex align-items-center gap-2 {{ participant.is_me ? 'active' : '' }}">
+                <span class="fw-bold o_eva_call_trainer_rank" t-out="participant.rank"/>
+                <img class="rounded-circle o_eva_call_trainer_avatar" t-att-src="this.avatarUrl(participant.user_id)" alt=""/>
+                <div class="me-auto text-truncate">
+                    <div class="text-truncate" t-out="participant.name"/>
+                    <small class="opacity-75" t-out="this.participantStatus(participant)"/>
+                </div>
+                <strong t-out="participant.score"/>
+            </li>
+        </ul>
+    </t>
+
+    <!-- Scores at the end -->
+    <t t-name="eva.CallTrainer.Results">
+        <t t-set="training" t-value="this.training"/>
+        <div class="d-flex flex-wrap align-items-center gap-2 mb-4">
+            <h2 class="mb-0 me-auto">
+                <i class="oi me-2" data-icon="trophy"/><t t-out="training.map.name"/>: results
+                <small t-if="training.state === 'running'" class="text-muted fs-6 ms-2">
+                    <i class="fa fa-circle-o-notch fa-spin me-1"/>others are still playing
+                </small>
+            </h2>
+            <button t-if="training.rematch_id" class="btn btn-primary" t-on-click="() => this.joinTraining(training.rematch_id)">
+                <i class="oi me-1" data-icon="groups"/>Join the rematch
+            </button>
+            <button t-elif="this.me" class="btn btn-primary" t-on-click="() => this.rematch()">
+                <i class="oi me-1" data-icon="replay"/>Play again
+            </button>
+            <button class="btn btn-secondary" t-on-click="() => this.openStats()">
+                <i class="oi me-1" data-icon="insights"/>My call stats
+            </button>
+            <button class="btn btn-secondary" t-on-click="() => this.loadHome()">Back</button>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-body p-0">
+                <table class="table align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th class="ps-3">#</th>
+                            <th>Player</th>
+                            <th class="text-end">Score</th>
+                            <th class="text-end">Correct</th>
+                            <th class="text-end">Mistakes</th>
+                            <th class="text-end d-none d-md-table-cell">Avg. time</th>
+                            <th class="text-end pe-3">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="training.participants" t-as="participant" t-key="participant.id"
+                            t-attf-class="{{ participant.is_me ? 'table-active' : '' }}">
+                            <td class="ps-3 fw-bold" t-out="participant.rank"/>
+                            <td>
+                                <img class="rounded-circle o_eva_call_trainer_avatar me-2" t-att-src="this.avatarUrl(participant.user_id)" alt=""/>
+                                <t t-out="participant.name"/>
+                            </td>
+                            <td class="text-end fw-bold" t-out="participant.score"/>
+                            <td class="text-end"><t t-out="participant.correct_count"/> / <t t-out="training.round_count"/></td>
+                            <td class="text-end" t-out="participant.mistake_count"/>
+                            <td class="text-end d-none d-md-table-cell" t-out="this.formatSeconds(participant.avg_response_time)"/>
+                            <td class="text-end pe-3 text-muted" t-out="this.participantStatus(participant)"/>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <t t-if="this.myAnswers.length">
+            <h4>My rounds</h4>
+            <div class="row g-3">
+                <div t-foreach="this.myAnswers" t-as="answer" t-key="answer.round_number" class="col-6 col-md-4 col-lg-3">
+                    <div t-attf-class="card h-100 border-2 {{ answer.result === 'correct' ? 'border-success' : 'border-danger' }}">
+                        <img class="card-img-top o_eva_call_trainer_thumb" t-att-src="answer.image_url" alt=""/>
+                        <div class="card-body p-2">
+                            <div class="d-flex">
+                                <strong class="me-auto" t-out="answer.call"/>
+                                <span t-if="answer.result === 'correct'" class="text-success">+<t t-out="answer.points"/></span>
+                            </div>
+                            <small class="text-muted">
+                                <t t-if="answer.result === 'timeout'">Timed out</t>
+                                <t t-elif="answer.result === 'wrong'">Answered "<t t-out="answer.answer"/>"</t>
+                                <t t-else=""><t t-out="this.formatSeconds(answer.response_time)"/></t>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </t>
+
+</templates>

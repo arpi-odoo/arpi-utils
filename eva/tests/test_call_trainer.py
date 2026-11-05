@@ -1,4 +1,5 @@
 import io
+from unittest.mock import patch
 
 from odoo.exceptions import AccessError, UserError
 from odoo.tests import HttpCase, new_test_user, tagged, TransactionCase
@@ -141,6 +142,26 @@ class TestCallTrainer(TransactionCase):
         self.assertEqual(training.host_id, self.user_b)
         training.with_user(self.user_b).action_leave()
         self.assertFalse(training.exists())
+
+    def test_one_lobby_at_a_time(self):
+        Training = self.env['eva.call.training'].with_user(self.user_a)
+        old = Training.browse(Training.create_training(self.map.id, 3, 1, 10))
+        new = Training.browse(Training.create_training(self.map.id, 3, 1, 10))
+        # A's first lobby, which only had A, is gone.
+        self.assertFalse(old.exists())
+        other = Training.with_user(self.user_b).browse(
+            Training.with_user(self.user_b).create_training(self.map.id, 3, 1, 10))
+        other.with_user(self.user_a).action_join()
+        # Joining B's lobby leaves A's own one.
+        self.assertFalse(new.exists())
+        self.assertEqual(other.participant_ids.user_id, self.user_a | self.user_b)
+
+    def test_lobbies_notification(self):
+        Training = self.env['eva.call.training'].with_user(self.user_a)
+        with patch.object(type(self.env['res.groups']), '_bus_send', autospec=True) as bus_send:
+            Training.create_training(self.map.id, 3, 1, 10)
+        bus_send.assert_called_once_with(
+            self.env.ref('base.group_user'), 'eva.call.training/lobbies_updated', {'map_id': self.map.id})
 
     def test_abandoned_player(self):
         Training = self.env['eva.call.training'].with_user(self.user_a)

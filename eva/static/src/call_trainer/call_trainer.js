@@ -45,6 +45,7 @@ export class CallTrainer extends Component {
         this.feedbackTimeout = null;
         this.countdownTimer = null;
         this.refreshTimeout = null;
+        this.homeRefreshTimeout = null;
         this.pollTimer = null;
         this.focusAnswer = false;
 
@@ -67,6 +68,11 @@ export class CallTrainer extends Component {
                 this.scheduleRefresh();
             }
         });
+        this.unsubscribeLobbies = this.busService.subscribe("eva.call.training/lobbies_updated", (payload) => {
+            if (this.state.screen === "home" && payload.map_id === this.mapId) {
+                this.scheduleHomeRefresh();
+            }
+        });
 
         this.onKeydown = (ev) => {
             if (ev.key === "Enter" && this.state.screen === "feedback") {
@@ -87,9 +93,11 @@ export class CallTrainer extends Component {
         onWillUnmount(() => {
             browser.removeEventListener("keydown", this.onKeydown);
             this.unsubscribe();
+            this.unsubscribeLobbies();
             this.leaveChannel();
             this.stopTimers();
             browser.clearTimeout(this.refreshTimeout);
+            browser.clearTimeout(this.homeRefreshTimeout);
         });
     }
 
@@ -212,6 +220,20 @@ export class CallTrainer extends Component {
             this.state.maps = await this.orm.searchRead("eva.map", [["call_ids", "!=", false]], ["name", "banner_card"]);
         }
         this.state.screen = "home";
+    }
+
+    scheduleHomeRefresh() {
+        browser.clearTimeout(this.homeRefreshTimeout);
+        this.homeRefreshTimeout = browser.setTimeout(() => this.refreshHome(), 150);
+    }
+
+    /** Reload the home data in place (e.g. someone opened a lobby). */
+    async refreshHome() {
+        const mapId = this.mapId;
+        const home = await this.orm.call(TRAINING_MODEL, "get_trainer_home", [mapId]);
+        if (this.state.screen === "home" && this.mapId === mapId) {
+            this.state.home = home;
+        }
     }
 
     selectMap(mapId) {

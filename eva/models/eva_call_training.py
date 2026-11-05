@@ -84,6 +84,25 @@ class EvaCallTraining(models.Model):
         for training in self:
             training._bus_send('eva.call.training/updated', {'training_id': training.id})
 
+    def _notify_lobbies(self):
+        """Tell the Call Trainer home pages that the open lobbies of these
+        trainings' maps changed (created, joined, left, started)."""
+        group_user = self.env.ref('base.group_user')
+        for game_map in self.map_id:
+            group_user._bus_send('eva.call.training/lobbies_updated', {'map_id': game_map.id})
+
+    def _leave_other_lobbies(self):
+        """A player waits in one lobby at a time: joining or creating one
+        leaves the others (closing them when nobody's left), so that lobbies
+        whose host moved on don't linger and get joined by mistake."""
+        others = self.search([
+            ('state', '=', 'lobby'),
+            ('id', 'not in', self.ids),
+            ('participant_ids.user_id', '=', self.env.uid),
+        ])
+        for training in others:
+            training.action_leave()
+
     def _get_my_participant(self):
         self.ensure_one()
         return self.participant_ids.filtered(lambda p: p.user_id == self.env.user)[:1]
@@ -158,6 +177,7 @@ class EvaCallTraining(models.Model):
     def create_training(self, map_id, round_count, lives, time_per_round, solo=False):
         if not self._get_playable_calls(map_id):
             raise UserError(self.env._('There are no calls with images on this map yet.'))
+        self._leave_other_lobbies()
         training = self.sudo().create({
             'map_id': map_id,
             'host_id': self.env.uid,
@@ -172,6 +192,8 @@ class EvaCallTraining(models.Model):
         training = training.sudo(False)
         if solo:
             training.action_start()
+        else:
+            training._notify_lobbies()
         return training.id
 
     def action_join(self):
@@ -180,12 +202,14 @@ class EvaCallTraining(models.Model):
             return True
         if self.state != 'lobby':
             raise UserError(self.env._('This training has already started, you can no longer join it.'))
+        self._leave_other_lobbies()
         self._touch()
         self.env['eva.call.training.participant'].sudo().create({
             'training_id': self.id,
             'user_id': self.env.uid,
         })
         self._notify_update()
+        self._notify_lobbies()
         return True
 
     def action_leave(self):
@@ -194,6 +218,7 @@ class EvaCallTraining(models.Model):
         if not participant:
             return True
         if self.state == 'lobby':
+            self._notify_lobbies()
             participant.sudo().unlink()
             remaining = self.participant_ids
             if not remaining:
@@ -217,6 +242,7 @@ class EvaCallTraining(models.Model):
         self.sudo().write({'state': 'running', 'start_date': fields.Datetime.now()})
         self.participant_ids.sudo().write({'state': 'playing', 'last_activity': time.time()})
         self._notify_update()
+        self._notify_lobbies()
         return True
 
     def action_rematch(self):

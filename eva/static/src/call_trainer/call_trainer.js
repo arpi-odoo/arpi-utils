@@ -2,6 +2,7 @@ import { Component, onMounted, onPatched, onWillStart, onWillUnmount, proxy, sig
 import { browser } from "@web/core/browser/browser";
 import { deserializeDateTime, formatDateTime } from "@web/core/l10n/dates";
 import { _t } from "@web/core/l10n/translation";
+import { RPCError } from "@web/core/network/rpc";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { standardActionServiceProps } from "@web/webclient/actions/action_plugin";
@@ -13,6 +14,11 @@ const FEEDBACK_DELAY = { correct: 900, wrong: 2200, timeout: 2200 };
 // While waiting for the others to finish, check now and then in case one of
 // them left without a word (the server then ends their training).
 const RESULTS_POLL_DELAY = 15000;
+// The home page and the lobby are kept up to date through the bus, and also
+// refreshed now and then in case a notification is missed (websocket down or
+// not reachable through the proxy, tab asleep...): joining or starting a
+// training must never depend on a manual reload.
+const LIVE_POLL_DELAY = 4000;
 const TRAINING_MODEL = "eva.call.training";
 const PARTICIPANT_MODEL = "eva.call.training.participant";
 
@@ -45,8 +51,9 @@ export class CallTrainer extends Component {
         this.feedbackTimeout = null;
         this.countdownTimer = null;
         this.refreshTimeout = null;
-        this.homeRefreshTimeout = null;
         this.pollTimer = null;
+        this.livePollTimer = null;
+        this.livePolling = false;
         this.focusAnswer = false;
 
         this.state = proxy({
@@ -63,16 +70,20 @@ export class CallTrainer extends Component {
             busy: false,
         });
 
-        this.unsubscribe = this.busService.subscribe("eva.call.training/updated", (payload) => {
+        const unsubscribeTraining = this.busService.subscribe("eva.call.training/updated", (payload) => {
             if (payload.training_id === this.trainingId) {
                 this.scheduleRefresh();
             }
         });
-        this.unsubscribeLobbies = this.busService.subscribe("eva.call.training/lobbies_updated", (payload) => {
-            if (this.state.screen === "home" && payload.map_id === this.mapId) {
-                this.scheduleHomeRefresh();
+        const unsubscribeLobbies = this.busService.subscribe("eva.call.training/lobbies_updated", (payload) => {
+            if (this.state.screen === "home" && payload.map_id === Number(this.mapId)) {
+                this.scheduleRefresh();
             }
         });
+        this.unsubscribe = () => {
+            unsubscribeTraining();
+            unsubscribeLobbies();
+        };
 
         this.onKeydown = (ev) => {
             if (ev.key === "Enter" && this.state.screen === "feedback") {
@@ -82,7 +93,19 @@ export class CallTrainer extends Component {
         };
 
         onWillStart(() => this.load());
-        onMounted(() => browser.addEventListener("keydown", this.onKeydown));
+        // Mobile apps suspend the page (and its websocket) in the background,
+        // e.g. while sharing the invite link: catch up as soon as it's back.
+        this.onVisibilityChange = () => {
+            if (!document.hidden) {
+                this.livePoll();
+            }
+        };
+
+        onMounted(() => {
+            browser.addEventListener("keydown", this.onKeydown);
+            document.addEventListener("visibilitychange", this.onVisibilityChange);
+            this.livePollTimer = browser.setInterval(() => this.livePoll(), LIVE_POLL_DELAY);
+        });
         onPatched(() => {
             const input = this.answerInput();
             if (this.focusAnswer && input) {
@@ -92,12 +115,12 @@ export class CallTrainer extends Component {
         });
         onWillUnmount(() => {
             browser.removeEventListener("keydown", this.onKeydown);
+            document.removeEventListener("visibilitychange", this.onVisibilityChange);
             this.unsubscribe();
-            this.unsubscribeLobbies();
             this.leaveChannel();
             this.stopTimers();
             browser.clearTimeout(this.refreshTimeout);
-            browser.clearTimeout(this.homeRefreshTimeout);
+            browser.clearInterval(this.livePollTimer);
         });
     }
 
@@ -215,25 +238,13 @@ export class CallTrainer extends Component {
         this.props.updateActionState?.({ resId: false });
         if (this.mapId) {
             this.state.home = await this.orm.call(TRAINING_MODEL, "get_trainer_home", [this.mapId]);
+            this.channel = this.state.home.channel;
+            this.busService.addChannel(this.channel);
         } else {
             this.state.home = null;
             this.state.maps = await this.orm.searchRead("eva.map", [["call_ids", "!=", false]], ["name", "banner_card"]);
         }
         this.state.screen = "home";
-    }
-
-    scheduleHomeRefresh() {
-        browser.clearTimeout(this.homeRefreshTimeout);
-        this.homeRefreshTimeout = browser.setTimeout(() => this.refreshHome(), 150);
-    }
-
-    /** Reload the home data in place (e.g. someone opened a lobby). */
-    async refreshHome() {
-        const mapId = this.mapId;
-        const home = await this.orm.call(TRAINING_MODEL, "get_trainer_home", [mapId]);
-        if (this.state.screen === "home" && this.mapId === mapId) {
-            this.state.home = home;
-        }
     }
 
     selectMap(mapId) {
@@ -270,15 +281,59 @@ export class CallTrainer extends Component {
 
     scheduleRefresh() {
         browser.clearTimeout(this.refreshTimeout);
-        this.refreshTimeout = browser.setTimeout(() => this.refreshTraining(), 150);
+        this.refreshTimeout = browser.setTimeout(() => {
+            if (this.state.screen === "home") {
+                this.refreshHome();
+            } else {
+                this.refreshTraining();
+            }
+        }, 150);
     }
 
-    async refreshTraining() {
+    async refreshHome() {
+        const mapId = this.mapId;
+        if (!mapId) {
+            return;
+        }
+        const home = await this.orm.silent.call(TRAINING_MODEL, "get_trainer_home", [mapId]);
+        if (this.state.screen === "home" && this.mapId === mapId) {
+            this.state.home = home;
+        }
+    }
+
+    /**
+     * Safety net for the bus on the screens waiting for others: the open
+     * trainings on the home page, and the players / start in the lobby.
+     */
+    async livePoll() {
+        if (this.livePolling || document.hidden) {
+            return;
+        }
+        this.livePolling = true;
+        try {
+            if (this.state.screen === "home") {
+                await this.refreshHome();
+            } else if (this.state.screen === "lobby") {
+                await this.refreshTraining({ silent: true });
+            }
+        } catch (error) {
+            // Network hiccups are retried at the next tick; a server error in
+            // the lobby means it's gone (e.g. everyone else left).
+            if (error instanceof RPCError && this.state.screen === "lobby") {
+                await this.loadHome();
+            }
+        } finally {
+            this.livePolling = false;
+        }
+    }
+
+    async refreshTraining({ silent = false } = {}) {
         if (!this.trainingId) {
             return;
         }
         const previousState = this.training?.state;
-        const training = await this.orm.call(TRAINING_MODEL, "get_trainer_state", [[this.trainingId]]);
+        const orm = silent ? this.orm.silent : this.orm;
+        const training = await orm.call(TRAINING_MODEL, "get_trainer_state", [[this.trainingId]]);
         if (training.id !== this.trainingId) {
             return; // Navigated away meanwhile.
         }

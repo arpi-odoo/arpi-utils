@@ -1,10 +1,12 @@
 import io
+import json
 from unittest.mock import patch
 
 from odoo.exceptions import AccessError, UserError
 from odoo.tests import HttpCase, new_test_user, tagged, TransactionCase
 from odoo.tools import BinaryBytes
 
+from odoo.addons.bus.tests.common import WebsocketCase
 from odoo.addons.eva.models.eva_map_call import normalize_call, typo_distance
 
 
@@ -158,10 +160,10 @@ class TestCallTrainer(TransactionCase):
 
     def test_lobbies_notification(self):
         Training = self.env['eva.call.training'].with_user(self.user_a)
-        with patch.object(type(self.env['res.groups']), '_bus_send', autospec=True) as bus_send:
+        with patch.object(type(self.env['bus.bus']), '_sendone', autospec=True) as sendone:
             Training.create_training(self.map.id, 3, 1, 10)
-        bus_send.assert_called_once_with(
-            self.env.ref('base.group_user'), 'eva.call.training/lobbies_updated', {'map_id': self.map.id})
+        sendone.assert_called_once_with(
+            self.env['bus.bus'], self.map, 'eva.call.training/lobbies_updated', {'map_id': self.map.id})
 
     def test_abandoned_player(self):
         Training = self.env['eva.call.training'].with_user(self.user_a)
@@ -193,3 +195,35 @@ class TestCallTrainerTour(HttpCase):
             'image_ids': [(0, 0, {'image': _image()})],
         })
         self.start_tour(f'/odoo/action-eva.action_eva_map/{game_map.id}', 'eva_call_trainer_solo', login='admin')
+
+
+@tagged('post_install', '-at_install')
+class TestCallTrainerBus(WebsocketCase):
+
+    def test_lobby_notifications(self):
+        user_a = new_test_user(self.env, 'eva_ws_a', groups='base.group_user', password='eva_ws_a_pwd')
+        user_b = new_test_user(self.env, 'eva_ws_b', groups='base.group_user')
+        game_map = self.env['eva.map'].create({'name': 'WS Map'})
+        self.env['eva.map.call'].create({
+            'map_id': game_map.id, 'name': 'Box', 'image_ids': [(0, 0, {'image': _image()})],
+        })
+        Training = self.env['eva.call.training'].with_user(user_a)
+        training = Training.browse(Training.create_training(game_map.id, 3, 1, 10))
+        self.trigger_notification_dispatching()
+
+        session = self.authenticate('eva_ws_a', 'eva_ws_a_pwd')
+        ws = self.websocket_connect(cookie=f'session_id={session.sid}')
+        home_channel = Training.get_trainer_home(game_map.id)['channel']
+        self.subscribe(ws, [training._bus_channel_name(), home_channel], self.env['bus.bus']._bus_last_id())
+        training.with_user(user_b).action_join()
+        self.trigger_notification_dispatching()
+        # One frame per channel.
+        notifications = json.loads(ws.recv()) + json.loads(ws.recv())
+        self.assertEqual(
+            sorted((n['message']['type'], n['message']['payload']) for n in notifications),
+            [
+                ('eva.call.training/lobbies_updated', {'map_id': game_map.id}),
+                ('eva.call.training/updated', {'training_id': training.id}),
+            ],
+        )
+

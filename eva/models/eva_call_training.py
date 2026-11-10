@@ -85,11 +85,12 @@ class EvaCallTraining(models.Model):
             training._bus_send('eva.call.training/updated', {'training_id': training.id})
 
     def _notify_lobbies(self):
-        """Tell the Call Trainer home pages that the open lobbies of these
-        trainings' maps changed (created, joined, left, started)."""
-        group_user = self.env.ref('base.group_user')
+        """Tell the Call Trainer home pages of the trainings' maps that the
+        list of open trainings changed (created, joined, left, started)."""
         for game_map in self.map_id:
-            group_user._bus_send('eva.call.training/lobbies_updated', {'map_id': game_map.id})
+            # _sendone: the target is a record, only subscribable by internal
+            # users through ir.websocket.
+            self.env['bus.bus']._sendone(game_map, 'eva.call.training/lobbies_updated', {'map_id': game_map.id})
 
     def _leave_other_lobbies(self):
         """A player waits in one lobby at a time: joining or creating one
@@ -337,6 +338,7 @@ class EvaCallTraining(models.Model):
         ], order='accuracy desc, score desc', limit=1)
         return {
             'map': {'id': game_map.id, 'name': game_map.name},
+            'channel': f'eva.call.trainer.map_{game_map.id}',
             'call_count': len(calls),
             'image_count': sum(calls.mapped('image_count')),
             'open_trainings': [{
